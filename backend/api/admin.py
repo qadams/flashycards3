@@ -6,5 +6,8 @@ from django.contrib import admin
 from api.models import *
 
 # Register your models here.
+admin.site.register(Deck, DeckAdmin)
+admin.site.register(Flashcard, FlashcardAdmin)
+
 admin.site.register(Event, EventAdmin)
 admin.site.register(ApiKey, ApiKeyAdmin)

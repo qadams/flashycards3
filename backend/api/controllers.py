@@ -40,6 +40,9 @@ import json, datetime, pytz
 from django.core import serializers
 import requests
 
+from rest_framework import viewsets
+from models import Flashcard, Deck
+from serializers import FlashcardSerializer, DeckSerializer
 
 def home(request):
    """
@@ -129,3 +132,39 @@ class ActivateIFTTT(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (parsers.JSONParser,parsers.FormParser)
     renderer_classes = (renderers.JSONRenderer, )
+
+class FlashcardViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Flashcard to be CRUDed.
+    """
+    queryset = Flashcard.objects.all()
+    serializer_class = FlashcardSerializer
+
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    #                       IsOwnerOrReadOnly,)
+    #
+    # @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    # def highlight(self, request, *args, **kwargs):
+    #     flashcard = self.get_object()
+    #     return Response(flashcard.highlighted)
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save(owner=self.request.user)
+
+class DeckViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Deck to be CRUDed.
+    """
+    queryset = Deck.objects.all()
+    serializer_class = DeckSerializer
+
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    #                       IsOwnerOrReadOnly,)
+    #
+    # @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    # def highlight(self, request, *args, **kwargs):
+    #     deck = self.get_object()
+    #     return Response(deck.highlighted)
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save(owner=self.request.user)
