@@ -15,7 +15,6 @@ docker-compose build
 In order to setup FlashyCards app,
 ```bash
 
-#In Django
 docker-compose run django bash
 python manage.py makemigrations
 python manage.py migrate
@@ -24,7 +23,9 @@ exit
 ```
 
 ## Run App
+```bash
 docker-compose up
+```
 
 ## License
 MIT License
