@@ -2,45 +2,31 @@
 
 FlashyCards is a browser application that will allow a registered user to create a deck of flashcards and be able to use them to study or review. Use this as a tool to your advantage and you will surely ace the exam!
 
+Docker is Needed
+
 ## Installation
 ```bash
-#Have Homebrew installed on Mac
-#Install Ember
-brew update
-brew upgrade node
-brew install node
-npm install -g npm
-npm install -g ember-cli
-
-#Pull down dependencies for frontend
-git clone https://github.com/qadams/flashycards-test.git
-cd frontend
-npm install
-
-#Make sure to install python
-#Install Django
-easy_install pip
-pip install virtualenv
-export PYTHONUSERBASE=$HOME
-pip install--user virtualenv
-virtualenv -p /usr/bin/python2.7 venv
-source venv/bin/activate
-pip install django
-pip install djangorestframework
-pip install django-cors-headers
-pip install djangorestframework-jsonapi==2.0.0-beta.2
+git clone --recursive https://github.com/qadams/flashycards3.git
+cd flashycards3
+docker-compose build
 ```
 
 ## Getting Started
-In order to run FlashyCards app,
+In order to setup FlashyCards app,
 ```bash
-#In frontend directory
-ember s
-#In Django project directory
-python manage.py runserver
+
+#In Django
+docker-compose run django bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser --username admin --email admin
+exit
 ```
 
-# License
+## Run App
+docker-compose up
+
+## License
 MIT License
 
 Copyright (c) 2018 Quinn Adams
