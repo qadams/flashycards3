@@ -201,6 +201,8 @@ All these mockups are tied to some user story one way or the other. They are all
 
 ### Level 3: Components
 
-As of right now, I am not exactly sure what components I will be using in my website as I have been making durastic changes on how my website functions.
 
 ![](pictures/componentsArch.png)
+
+
+![](pictures/componentsArch2.png)

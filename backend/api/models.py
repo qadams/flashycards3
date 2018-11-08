@@ -54,4 +54,4 @@ class Flashcard(models.Model):
         resource_name = "flashcard"
 
 class FlashcardAdmin(admin.ModelAdmin):
-    list_display = ('term','defition')
+    list_display = ('term','definition')
