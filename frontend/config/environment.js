@@ -1,5 +1,5 @@
 /* eslint-env node */
-
+// ember build -w -o ../backend/static/ember
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'littlebits-frontend',

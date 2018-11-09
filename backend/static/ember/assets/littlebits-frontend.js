@@ -2,6 +2,16 @@
 
 
 
+define('littlebits-frontend/adapters/application', ['exports', 'ember-data'], function (exports, _emberData) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _emberData.default.JSONAPIAdapter.extend({
+    namespace: 'api'
+  });
+});
 define('littlebits-frontend/app', ['exports', 'littlebits-frontend/resolver', 'ember-load-initializers', 'littlebits-frontend/config/environment'], function (exports, _resolver, _emberLoadInitializers, _environment) {
   'use strict';
 
@@ -144,6 +154,32 @@ define('littlebits-frontend/components/bs-button', ['exports', 'ember-bootstrap/
     enumerable: true,
     get: function () {
       return _bsButton.default;
+    }
+  });
+});
+define('littlebits-frontend/components/bs-carousel', ['exports', 'ember-bootstrap/components/bs-carousel'], function (exports, _bsCarousel) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _bsCarousel.default;
+    }
+  });
+});
+define('littlebits-frontend/components/bs-carousel/slide', ['exports', 'ember-bootstrap/components/bs-carousel/slide'], function (exports, _slide) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _slide.default;
     }
   });
 });
@@ -784,7 +820,7 @@ define('littlebits-frontend/components/bs-tooltip/element', ['exports', 'ember-b
     }
   });
 });
-define('littlebits-frontend/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, _emberWormhole) {
+define('littlebits-frontend/components/ember-popper-targeting-parent', ['exports', 'ember-popper/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -793,7 +829,20 @@ define('littlebits-frontend/components/ember-wormhole', ['exports', 'ember-wormh
   Object.defineProperty(exports, 'default', {
     enumerable: true,
     get: function () {
-      return _emberWormhole.default;
+      return _emberPopperTargetingParent.default;
+    }
+  });
+});
+define('littlebits-frontend/components/ember-popper', ['exports', 'ember-popper/components/ember-popper'], function (exports, _emberPopper) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberPopper.default;
     }
   });
 });
@@ -985,32 +1034,6 @@ define("littlebits-frontend/components/liquid-versions", ["exports", "liquid-fir
     }
   });
 });
-define('littlebits-frontend/components/masonry-grid/component', ['exports', 'ember-masonry-grid/components/masonry-grid/component'], function (exports, _component) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function () {
-      return _component.default;
-    }
-  });
-});
-define('littlebits-frontend/components/masonry-item/component', ['exports', 'ember-masonry-grid/components/masonry-item/component'], function (exports, _component) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function () {
-      return _component.default;
-    }
-  });
-});
 define('littlebits-frontend/components/welcome-page', ['exports', 'ember-welcome-page/components/welcome-page'], function (exports, _welcomePage) {
   'use strict';
 
@@ -1098,19 +1121,33 @@ define('littlebits-frontend/helpers/app-version', ['exports', 'littlebits-fronte
     value: true
   });
   exports.appVersion = appVersion;
-  var version = _environment.default.APP.version;
   function appVersion(_) {
     var hash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    if (hash.hideSha) {
-      return version.match(_regexp.versionRegExp)[0];
+    var version = _environment.default.APP.version;
+    // e.g. 1.0.0-alpha.1+4jds75hf
+
+    // Allow use of 'hideSha' and 'hideVersion' For backwards compatibility
+    var versionOnly = hash.versionOnly || hash.hideSha;
+    var shaOnly = hash.shaOnly || hash.hideVersion;
+
+    var match = null;
+
+    if (versionOnly) {
+      if (hash.showExtended) {
+        match = version.match(_regexp.versionExtendedRegExp); // 1.0.0-alpha.1
+      }
+      // Fallback to just version
+      if (!match) {
+        match = version.match(_regexp.versionRegExp); // 1.0.0
+      }
     }
 
-    if (hash.hideVersion) {
-      return version.match(_regexp.shaRegExp)[0];
+    if (shaOnly) {
+      match = version.match(_regexp.shaRegExp); // 4jds75hf
     }
 
-    return version;
+    return match ? match[0] : version;
   }
 
   exports.default = Ember.Helper.helper(appVersion);
@@ -1153,64 +1190,95 @@ define('littlebits-frontend/helpers/bs-eq', ['exports', 'ember-bootstrap/helpers
     }
   });
 });
-define('littlebits-frontend/helpers/is-after', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-after'], function (exports, _environment, _isAfter) {
+define('littlebits-frontend/helpers/cancel-all', ['exports', 'ember-concurrency/helpers/cancel-all'], function (exports, _cancelAll) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isAfter.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _cancelAll.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/is-before', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-before'], function (exports, _environment, _isBefore) {
+define('littlebits-frontend/helpers/is-after', ['exports', 'ember-moment/helpers/is-after'], function (exports, _isAfter) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isBefore.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isAfter.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/is-between', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-between'], function (exports, _environment, _isBetween) {
+define('littlebits-frontend/helpers/is-before', ['exports', 'ember-moment/helpers/is-before'], function (exports, _isBefore) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isBetween.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isBefore.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/is-same-or-after', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-same-or-after'], function (exports, _environment, _isSameOrAfter) {
+define('littlebits-frontend/helpers/is-between', ['exports', 'ember-moment/helpers/is-between'], function (exports, _isBetween) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isSameOrAfter.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isBetween.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/is-same-or-before', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-same-or-before'], function (exports, _environment, _isSameOrBefore) {
+define('littlebits-frontend/helpers/is-same-or-after', ['exports', 'ember-moment/helpers/is-same-or-after'], function (exports, _isSameOrAfter) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isSameOrBefore.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isSameOrAfter.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/is-same', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/is-same'], function (exports, _environment, _isSame) {
+define('littlebits-frontend/helpers/is-same-or-before', ['exports', 'ember-moment/helpers/is-same-or-before'], function (exports, _isSameOrBefore) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _isSame.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isSameOrBefore.default;
+    }
+  });
+});
+define('littlebits-frontend/helpers/is-same', ['exports', 'ember-moment/helpers/is-same'], function (exports, _isSame) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _isSame.default;
+    }
   });
 });
 define('littlebits-frontend/helpers/lf-lock-model', ['exports', 'liquid-fire/helpers/lf-lock-model'], function (exports, _lfLockModel) {
@@ -1251,34 +1319,43 @@ define('littlebits-frontend/helpers/lf-or', ['exports', 'liquid-fire/helpers/lf-
     }
   });
 });
-define('littlebits-frontend/helpers/moment-add', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-add'], function (exports, _environment, _momentAdd) {
+define('littlebits-frontend/helpers/moment-add', ['exports', 'ember-moment/helpers/moment-add'], function (exports, _momentAdd) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentAdd.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentAdd.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-calendar', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-calendar'], function (exports, _environment, _momentCalendar) {
+define('littlebits-frontend/helpers/moment-calendar', ['exports', 'ember-moment/helpers/moment-calendar'], function (exports, _momentCalendar) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentCalendar.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentCalendar.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-diff', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-diff'], function (exports, _environment, _momentDiff) {
+define('littlebits-frontend/helpers/moment-diff', ['exports', 'ember-moment/helpers/moment-diff'], function (exports, _momentDiff) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentDiff.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentDiff.default;
+    }
   });
 });
 define('littlebits-frontend/helpers/moment-duration', ['exports', 'ember-moment/helpers/moment-duration'], function (exports, _momentDuration) {
@@ -1294,74 +1371,95 @@ define('littlebits-frontend/helpers/moment-duration', ['exports', 'ember-moment/
     }
   });
 });
-define('littlebits-frontend/helpers/moment-format', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-format'], function (exports, _environment, _momentFormat) {
+define('littlebits-frontend/helpers/moment-format', ['exports', 'ember-moment/helpers/moment-format'], function (exports, _momentFormat) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentFormat.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentFormat.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-from-now', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-from-now'], function (exports, _environment, _momentFromNow) {
+define('littlebits-frontend/helpers/moment-from-now', ['exports', 'ember-moment/helpers/moment-from-now'], function (exports, _momentFromNow) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentFromNow.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentFromNow.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-from', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-from'], function (exports, _environment, _momentFrom) {
+define('littlebits-frontend/helpers/moment-from', ['exports', 'ember-moment/helpers/moment-from'], function (exports, _momentFrom) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentFrom.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentFrom.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-subtract', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-subtract'], function (exports, _environment, _momentSubtract) {
+define('littlebits-frontend/helpers/moment-subtract', ['exports', 'ember-moment/helpers/moment-subtract'], function (exports, _momentSubtract) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentSubtract.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentSubtract.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-to-date', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-to-date'], function (exports, _environment, _momentToDate) {
+define('littlebits-frontend/helpers/moment-to-date', ['exports', 'ember-moment/helpers/moment-to-date'], function (exports, _momentToDate) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentToDate.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentToDate.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-to-now', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-to-now'], function (exports, _environment, _momentToNow) {
+define('littlebits-frontend/helpers/moment-to-now', ['exports', 'ember-moment/helpers/moment-to-now'], function (exports, _momentToNow) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentToNow.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentToNow.default;
+    }
   });
 });
-define('littlebits-frontend/helpers/moment-to', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/helpers/moment-to'], function (exports, _environment, _momentTo) {
+define('littlebits-frontend/helpers/moment-to', ['exports', 'ember-moment/helpers/moment-to'], function (exports, _momentTo) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = _momentTo.default.extend({
-    globalAllowEmpty: !!Ember.get(_environment.default, 'moment.allowEmpty')
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _momentTo.default;
+    }
   });
 });
 define('littlebits-frontend/helpers/moment-unix', ['exports', 'ember-moment/helpers/unix'], function (exports, _unix) {
@@ -1374,12 +1472,6 @@ define('littlebits-frontend/helpers/moment-unix', ['exports', 'ember-moment/help
     enumerable: true,
     get: function () {
       return _unix.default;
-    }
-  });
-  Object.defineProperty(exports, 'unix', {
-    enumerable: true,
-    get: function () {
-      return _unix.unix;
     }
   });
 });
@@ -1409,6 +1501,19 @@ define('littlebits-frontend/helpers/now', ['exports', 'ember-moment/helpers/now'
     }
   });
 });
+define('littlebits-frontend/helpers/perform', ['exports', 'ember-concurrency/helpers/perform'], function (exports, _perform) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _perform.default;
+    }
+  });
+});
 define('littlebits-frontend/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _pluralize) {
   'use strict';
 
@@ -1425,6 +1530,19 @@ define('littlebits-frontend/helpers/singularize', ['exports', 'ember-inflector/l
   });
   exports.default = _singularize.default;
 });
+define('littlebits-frontend/helpers/task', ['exports', 'ember-concurrency/helpers/task'], function (exports, _task) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _task.default;
+    }
+  });
+});
 define('littlebits-frontend/helpers/unix', ['exports', 'ember-moment/helpers/unix'], function (exports, _unix) {
   'use strict';
 
@@ -1437,10 +1555,23 @@ define('littlebits-frontend/helpers/unix', ['exports', 'ember-moment/helpers/uni
       return _unix.default;
     }
   });
-  Object.defineProperty(exports, 'unix', {
+});
+define('littlebits-frontend/helpers/utc', ['exports', 'ember-moment/helpers/utc'], function (exports, _utc) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
     enumerable: true,
     get: function () {
-      return _unix.unix;
+      return _utc.default;
+    }
+  });
+  Object.defineProperty(exports, 'utc', {
+    enumerable: true,
+    get: function () {
+      return _utc.utc;
     }
   });
 });
@@ -1450,9 +1581,15 @@ define('littlebits-frontend/initializers/app-version', ['exports', 'ember-cli-ap
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var _config$APP = _environment.default.APP,
-      name = _config$APP.name,
-      version = _config$APP.version;
+
+
+  var name = void 0,
+      version = void 0;
+  if (_environment.default.APP) {
+    name = _environment.default.APP.name;
+    version = _environment.default.APP.version;
+  }
+
   exports.default = {
     name: 'App Version',
     initialize: (0, _initializerFactory.default)(name, version)
@@ -1520,6 +1657,19 @@ define('littlebits-frontend/initializers/data-adapter', ['exports'], function (e
     before: 'store',
     initialize: function initialize() {}
   };
+});
+define('littlebits-frontend/initializers/ember-concurrency', ['exports', 'ember-concurrency/initializers/ember-concurrency'], function (exports, _emberConcurrency) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberConcurrency.default;
+    }
+  });
 });
 define('littlebits-frontend/initializers/ember-data', ['exports', 'ember-data/setup-container', 'ember-data'], function (exports, _setupContainer) {
   'use strict';
@@ -1649,7 +1799,7 @@ define('littlebits-frontend/initializers/transforms', ['exports'], function (exp
     initialize: function initialize() {}
   };
 });
-define("littlebits-frontend/instance-initializers/ember-data", ["exports", "ember-data/instance-initializers/initialize-store-service"], function (exports, _initializeStoreService) {
+define("littlebits-frontend/instance-initializers/ember-data", ["exports", "ember-data/initialize-store-service"], function (exports, _initializeStoreService) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -1667,6 +1817,20 @@ define('littlebits-frontend/mixins/active-link', ['exports', 'ember-cli-active-l
     value: true
   });
   exports.default = _activeLink.default;
+});
+define("littlebits-frontend/models/event", ["exports", "ember-data"], function (exports, _emberData) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _emberData.default.Model.extend({
+    eventtype: _emberData.default.attr("string"),
+    timestamp: _emberData.default.attr("date"),
+    userid: _emberData.default.attr("string"),
+    requestor: _emberData.default.attr("string")
+
+  });
 });
 define('littlebits-frontend/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   'use strict';
@@ -1722,7 +1886,8 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
     getData: function getData() {
       var items = Ember.A([]);
       return Ember.$.get('/api/events').then(function (events) {
-        events.forEach(function (event) {
+        console.log(events);
+        events.data.forEach(function (event) {
           // console.log(event);
           items.addObject({
             id: event.pk,
@@ -1742,7 +1907,7 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
       });
     },
     model: function model() {
-      return this.getData();
+      return this.store.findAll('event');
     },
     setupController: function setupController(controller, model) {
       this._super(controller, model);
@@ -1818,9 +1983,9 @@ define('littlebits-frontend/services/auth-manager', ['exports'], function (expor
 			//make api request
 			Ember.$.post('/api/session', data, function (response) {
 
-				if (response.isauthenticated) {
+				if (response.data.isauthenticated) {
 					//success
-					auth.set('userid', response.userid);
+					auth.set('userid', response.data.userid);
 					auth.set('isLoggedIn', true);
 
 					if (remember) {
@@ -1914,14 +2079,15 @@ define("littlebits-frontend/services/liquid-fire-transitions", ["exports", "liqu
   });
   exports.default = _transitionMap.default;
 });
-define('littlebits-frontend/services/moment', ['exports', 'littlebits-frontend/config/environment', 'ember-moment/services/moment'], function (exports, _environment, _moment) {
+define('littlebits-frontend/services/moment', ['exports', 'ember-moment/services/moment', 'littlebits-frontend/config/environment'], function (exports, _moment, _environment) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  var get = Ember.get;
   exports.default = _moment.default.extend({
-    defaultFormat: Ember.get(_environment.default, 'moment.outputFormat')
+    defaultFormat: get(_environment.default, 'moment.outputFormat')
   });
 });
 define("littlebits-frontend/templates/application", ["exports"], function (exports) {
@@ -1930,7 +2096,33 @@ define("littlebits-frontend/templates/application", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "X5AnBve3", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"id\",\"sidebar\"],[15,\"class\",\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\t\\t\\t\\t    \"],[11,\"p\",[]],[15,\"class\",\"sidebar-p\"],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/NGC-logo.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"        \"],[11,\"h4\",[]],[13],[0,\"Dashboard Demo App\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[4,\" <p class=\\\"sidebar-p\\\"></p> \"],[0,\"\\n\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"class\",\"social\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"a\",[]],[15,\"href\",\"https://github.com/MLHale/\"],[15,\"data-animate-hover\",\"pulse\"],[15,\"target\",\"_blank\"],[15,\"class\",\"external facebook\"],[13],[11,\"i\",[]],[15,\"class\",\"fa fa-github\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"a\",[]],[15,\"href\",\"https://scholar.google.com/citations?user=YGtxqR4AAAAJ&hl\"],[15,\"data-animate-hover\",\"pulse\"],[15,\"target\",\"_blank\"],[15,\"class\",\"external facebook\"],[13],[11,\"i\",[]],[15,\"class\",\"fa fa-google\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"a\",[]],[15,\"href\",\"https://twitter.com/mlhale_\"],[15,\"target\",\"_blank\"],[15,\"data-animate-hover\",\"pulse\"],[15,\"class\",\"external twitter\"],[13],[11,\"i\",[]],[15,\"class\",\"fa fa-twitter\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"a\",[]],[15,\"href\",\"mailto:mlhale@unomaha.edu\"],[15,\"target\",\"_blank\"],[15,\"data-animate-hover\",\"pulse\"],[15,\"class\",\"email\"],[13],[11,\"i\",[]],[15,\"class\",\"fa fa-envelope\"],[13],[14],[14],[14],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"copyright\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"class\",\"credit\"],[13],[0,\"©2017 Dr. Matthew Hale\"],[14],[0,\"\\n\\n\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t        \"],[11,\"div\",[]],[15,\"class\",\"btn btn-block btn-lg btn-success\"],[5,[\"action\"],[[28,[null]],\"activateIFTTT\"]],[13],[11,\"span\",[]],[15,\"class\",\"glyphicon glyphicon-play\"],[13],[14],[0,\" Turn IFTTT On\"],[14],[0,\"\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[14],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[11,\"h1\",[]],[15,\"class\",\"small-navbar-heading\"],[13],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"CYBR8470 Demo APP\"]],\"locals\":[]},null],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "655e2u7H", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"id\",\"sidebar\"],[15,\"class\",\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\t\\t\\t\\t    \"],[11,\"p\",[]],[15,\"class\",\"sidebar-p\"],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"copyright\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"class\",\"credit\"],[13],[0,\"©2018 Quinn Adams\"],[14],[0,\"\\n\\n\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[14],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+});
+define('littlebits-frontend/templates/components/ember-popper-targeting-parent', ['exports', 'ember-popper/templates/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberPopperTargetingParent.default;
+    }
+  });
+});
+define('littlebits-frontend/templates/components/ember-popper', ['exports', 'ember-popper/templates/components/ember-popper'], function (exports, _emberPopper) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberPopper.default;
+    }
+  });
 });
 define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   "use strict";
@@ -1938,7 +2130,7 @@ define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "Zk1WfZuT", "block": "{\"statements\":[[4,\"   *** PORTFOLIO ***\"],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"content\"]]],null,{\"statements\":[[6,[\"masonry-grid\"],null,[[\"items\",\"customLayout\",\"gutter\"],[[28,[\"content\"]],true,10]],{\"statements\":[[6,[\"masonry-item\"],null,[[\"item\",\"grid\",\"class\"],[[28,[\"item\"]],[28,[\"grid\"]],\"box-masonry col-xs-12 col-sm-6 col-md-3 col-lg-3\"]],{\"statements\":[[6,[\"if\"],[[28,[\"item\",\"link\"]]],null,{\"statements\":[[6,[\"link-to\"],[[28,[\"item\",\"link\"]]],[[\"class\"],[\"box-masonry-image with-hover-overlay with-hover-icon\"]],{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"if\"],[[28,[\"item\",\"link_external\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[11,\"a\",[]],[16,\"href\",[34,[[28,[\"item\",\"link_external\"]]]]],[15,\"target\",\"_blank\"],[15,\"class\",\"box-masonry-image with-hover-overlay with-hover-icon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\\t\\t\\t\"]],\"locals\":[]}]],\"locals\":[]}],[0,\"\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"box-masonry-text\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"h5\",[]],[13],[0,\"(ID: \"],[1,[28,[\"item\",\"id\"]],false],[0,\") \"],[1,[28,[\"item\",\"eventtype\"]],false],[14],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"box-masonry-desription\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[1,[33,[\"moment-format\"],[[28,[\"item\",\"timestamp\"]],\"dddd MMMM Do YYYY h:mm:ss a\"],null],false],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[\"item\",\"index\",\"grid\"]},null]],\"locals\":[]},{\"statements\":[[6,[\"masonry-grid\"],null,[[\"items\",\"customLayout\",\"gutter\"],[[28,[\"defaultitems\"]],true,10]],{\"statements\":[[6,[\"masonry-item\"],null,[[\"item\",\"grid\",\"class\"],[[28,[\"item\"]],[28,[\"grid\"]],\"box-masonry col-xs-12 col-sm-6 col-md-5 col-lg-5\"]],{\"statements\":[[6,[\"if\"],[[28,[\"item\",\"link\"]]],null,{\"statements\":[[6,[\"link-to\"],[[28,[\"item\",\"link\"]]],[[\"class\"],[\"box-masonry-image with-hover-overlay with-hover-icon\"]],{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"if\"],[[28,[\"item\",\"link_external\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[11,\"a\",[]],[16,\"href\",[34,[[28,[\"item\",\"link_external\"]]]]],[15,\"target\",\"_blank\"],[15,\"class\",\"box-masonry-image with-hover-overlay with-hover-icon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],[28,[\"item\",\"img\"]]]]],[15,\"class\",\"img-responsive\"],[13],[14],[0,\"\\n\\t\\t\\t\"]],\"locals\":[]}]],\"locals\":[]}],[0,\"\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"box-masonry-text\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"h4\",[]],[13],[0,\" \"],[11,\"a\",[]],[15,\"href\",\"#\"],[13],[1,[28,[\"item\",\"title\"]],false],[14],[14],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"box-masonry-desription\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[1,[28,[\"item\",\"description\"]],false],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[\"item\",\"index\",\"grid\"]},null]],\"locals\":[]}],[0,\"\\n\"],[4,\"   *** PORTFOLIO END ***\\n\"],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "Y+qZ1zF9", "block": "{\"statements\":[[0,\"hello world\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
 });
 define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   "use strict";
@@ -1946,7 +2138,7 @@ define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "JZyXJmQg", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[0,\"Incorrect username/password\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Sign in\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/login.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "mODsgr7P", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[0,\"Incorrect username/password\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Sign in\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/login.hbs" } });
 });
 define('littlebits-frontend/transitions/cross-fade', ['exports', 'liquid-fire/transitions/cross-fade'], function (exports, _crossFade) {
   'use strict';
@@ -2152,6 +2344,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0"});
 }
 //# sourceMappingURL=littlebits-frontend.map

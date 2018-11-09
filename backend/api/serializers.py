@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Flashcard, Deck
+from api.models import Flashcard, Deck, Event
 
 class FlashcardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,9 @@ class FlashcardSerializer(serializers.ModelSerializer):
 class DeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
+        fields = "__all__"
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
         fields = "__all__"

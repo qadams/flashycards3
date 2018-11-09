@@ -25,7 +25,8 @@ export default Ember.Route.extend({
   getData(){
     var items = Ember.A([]);
     return Ember.$.get('/api/events').then(function(events){
-      events.forEach(function(event){
+      console.log(events);
+      events.data.forEach(function(event){
         // console.log(event);
         items.addObject({
           id: event.pk,
@@ -44,7 +45,7 @@ export default Ember.Route.extend({
     });
   },
 	model() {
-    return this.getData();
+    return this.store.findAll('event');
 	},
   setupController(controller, model){
     this._super(controller, model);

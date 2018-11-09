@@ -6,6 +6,11 @@ from django.core.validators import *
 from django.contrib.auth.models import User, Group
 
 from django.contrib import admin
+
+# from pygments.lexers import get_lexer_by_name
+# from pygments.formatters.html import HtmlFormatter
+# from pygments import highlight
+
 import base64
 
 class Event(models.Model):
@@ -45,7 +50,7 @@ class DeckAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 class Flashcard(models.Model):
-    # parentDeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True)
+    parentDeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True)
     term = models.TextField(max_length=50)
     definition = models.TextField(max_length=250)
     def __str__(self):

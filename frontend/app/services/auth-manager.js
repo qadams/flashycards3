@@ -30,9 +30,9 @@ export default Ember.Service.extend({
 		//make api request
 		Ember.$.post('/api/session', data, function(response){
 
-			if(response.isauthenticated){
+			if(response.data.isauthenticated){
 				//success
-				auth.set('userid', response.userid);
+				auth.set('userid', response.data.userid);
 				auth.set('isLoggedIn', true);
 
 				if(remember){

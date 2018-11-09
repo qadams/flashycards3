@@ -41,8 +41,7 @@ from django.core import serializers
 import requests
 
 from rest_framework import viewsets
-from models import Flashcard, Deck
-from serializers import FlashcardSerializer, DeckSerializer
+from api.serializers import FlashcardSerializer, DeckSerializer, EventSerializer
 
 def home(request):
    """
@@ -64,7 +63,7 @@ class Register(APIView):
     def post(self, request, *args, **kwargs):
         # Login
         username = request.POST.get('username') #you need to apply validators to these
-        print username
+        print (username)
         password = request.POST.get('password') #you need to apply validators to these
         email = request.POST.get('email') #you need to apply validators to these
         gender = request.POST.get('gender') #you need to apply validators to these
@@ -73,7 +72,7 @@ class Register(APIView):
         city = request.POST.get('city') #you need to apply validators to these
         state = request.POST.get('state') #you need to apply validators to these
 
-        print request.POST.get('username')
+        print (request.POST.get('username'))
         if User.objects.filter(username=username).exists():
             return Response({'username': 'Username is taken.', 'status': 'error'})
         elif User.objects.filter(email=email).exists():
@@ -101,7 +100,7 @@ class Session(APIView):
 
     def get(self, request, *args, **kwargs):
         # Get the current user
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return self.form_response(True, request.user.id, request.user.username)
         return self.form_response(False, None, None)
 
@@ -122,11 +121,12 @@ class Session(APIView):
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class Events(APIView):
-    permission_classes = (AllowAny,)
-    parser_classes = (parsers.JSONParser,parsers.FormParser)
-    renderer_classes = (renderers.JSONRenderer, )
-
+class EventViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Deck to be CRUDed.
+    """
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
 class ActivateIFTTT(APIView):
     permission_classes = (AllowAny,)

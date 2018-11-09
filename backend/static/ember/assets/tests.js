@@ -5,6 +5,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.module('ESLint | app');
 
+  QUnit.test('adapters/application.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'adapters/application.js should pass ESLint\n\n');
+  });
+
   QUnit.test('app.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'app.js should pass ESLint\n\n');
@@ -35,6 +40,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'initializers/constants.js should pass ESLint\n\n');
   });
 
+  QUnit.test('models/event.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/event.js should pass ESLint\n\n');
+  });
+
   QUnit.test('resolver.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'resolver.js should pass ESLint\n\n');
@@ -47,7 +57,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/index.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass ESLint\n\n42:7 - Unexpected console statement. (no-console)\n43:7 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'routes/index.js should pass ESLint\n\n28:7 - Unexpected console statement. (no-console)\n43:7 - Unexpected console statement. (no-console)\n44:7 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('routes/login.js', function (assert) {
@@ -179,6 +189,11 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
     assert.ok(true, 'test-helper.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/adapters/application-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/adapters/application-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/controllers/application-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/application-test.js should pass ESLint\n\n');
@@ -204,6 +219,11 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
     assert.ok(true, 'unit/initializers/constants-test.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/models/event-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/event-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/routes/index-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/index-test.js should pass ESLint\n\n');
@@ -222,6 +242,20 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
   QUnit.test('unit/services/constants-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/services/constants-test.js should pass ESLint\n\n');
+  });
+});
+define('littlebits-frontend/tests/unit/adapters/application-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('adapter:application', 'Unit | Adapter | application', {
+    // Specify the other units that are required for this test.
+    // needs: ['serializer:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var adapter = this.subject();
+    assert.ok(adapter);
   });
 });
 define('littlebits-frontend/tests/unit/controllers/application-test', ['ember-qunit'], function (_emberQunit) {
@@ -314,6 +348,20 @@ define('littlebits-frontend/tests/unit/initializers/constants-test', ['littlebit
 
     // you would normally confirm the results of the initializer here
     assert.ok(true);
+  });
+});
+define('littlebits-frontend/tests/unit/models/event-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleForModel)('event', 'Unit | Model | event', {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var model = this.subject();
+    // let store = this.store();
+    assert.ok(!!model);
   });
 });
 define('littlebits-frontend/tests/unit/routes/index-test', ['ember-qunit'], function (_emberQunit) {
