@@ -21,21 +21,39 @@ var defaultitems = Ember.A([
 
 ]);
 
+// export default Ember.Route.extend({
+//   getData(){
+//     var items = Ember.A([]);
+//     return Ember.$.get('/api/events').then(function(events){
+//       // console.log(events);
+//       events.data.forEach(function(event){
+//         // console.log(event);
+//         items.addObject({
+//           id: event.pk,
+//           eventtype: event.fields.eventtype,
+//           requestor: event.fields.requestor,
+//           timestamp: event.fields.timestamp,
+//           userid: event.fields.userid,
+//           img: 'img/event-icon.jpg',
+//           link: 'index'
+//         });
+//       });
+//       return items.reverse()
+//     }, function(msg){//error
+//       console.log('Error loading events:');
+//       console.log(msg.statusText);
+//     });
+//   },
 export default Ember.Route.extend({
   getData(){
     var items = Ember.A([]);
-    return Ember.$.get('/api/events').then(function(events){
-      console.log(events);
-      events.data.forEach(function(event){
+    return Ember.$.get('/api/decks').then(function(decks){
+      // console.log(events);
+      decks.data.forEach(function(deck){
         // console.log(event);
         items.addObject({
-          id: event.pk,
-          eventtype: event.fields.eventtype,
-          requestor: event.fields.requestor,
-          timestamp: event.fields.timestamp,
-          userid: event.fields.userid,
-          img: 'img/event-icon.jpg',
-          link: 'index'
+          id: deck.pk,
+          name: deck.fields.name,
         });
       });
       return items.reverse()
@@ -45,7 +63,8 @@ export default Ember.Route.extend({
     });
   },
 	model() {
-    return this.store.findAll('event');
+    return this.store.findAll('deck');
+    // return this.store.findAll('flashcard');
 	},
   setupController(controller, model){
     this._super(controller, model);

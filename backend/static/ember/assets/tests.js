@@ -40,9 +40,19 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'initializers/constants.js should pass ESLint\n\n');
   });
 
+  QUnit.test('models/deck.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/deck.js should pass ESLint\n\n');
+  });
+
   QUnit.test('models/event.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'models/event.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('models/flashcard.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/flashcard.js should pass ESLint\n\n');
   });
 
   QUnit.test('resolver.js', function (assert) {
@@ -57,7 +67,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/index.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass ESLint\n\n28:7 - Unexpected console statement. (no-console)\n43:7 - Unexpected console statement. (no-console)\n44:7 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'routes/index.js should pass ESLint\n\n61:7 - Unexpected console statement. (no-console)\n62:7 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('routes/login.js', function (assert) {
@@ -219,9 +229,19 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
     assert.ok(true, 'unit/initializers/constants-test.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/models/deck-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/deck-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/models/event-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/models/event-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/models/flashcard-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/flashcard-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/routes/index-test.js', function (assert) {
@@ -350,10 +370,38 @@ define('littlebits-frontend/tests/unit/initializers/constants-test', ['littlebit
     assert.ok(true);
   });
 });
+define('littlebits-frontend/tests/unit/models/deck-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleForModel)('deck', 'Unit | Model | deck', {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var model = this.subject();
+    // let store = this.store();
+    assert.ok(!!model);
+  });
+});
 define('littlebits-frontend/tests/unit/models/event-test', ['ember-qunit'], function (_emberQunit) {
   'use strict';
 
   (0, _emberQunit.moduleForModel)('event', 'Unit | Model | event', {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var model = this.subject();
+    // let store = this.store();
+    assert.ok(!!model);
+  });
+});
+define('littlebits-frontend/tests/unit/models/flashcard-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleForModel)('flashcard', 'Unit | Model | flashcard', {
     // Specify the other units that are required for this test.
     needs: []
   });

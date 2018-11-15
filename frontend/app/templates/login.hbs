@@ -4,7 +4,8 @@
 		<form>
 				<div class="row login-box">
 					<div class="col-sm-12 col-md-10 col-md-offset-1">
-
+						<p><img src="{{constants.rootURL}}img/flashycards-banner.png" width="100%" class="img-rounded"/></p>
+						<p>Don't have an account? {{#active-link}}{{#link-to 'index'}}Register!{{/link-to}}{{/active-link}}</p>
 						{{#if auth.errorMsg}}
 						<div class="alert alert-danger">
 							<p style="text-align: center;">Incorrect username/password</p>
