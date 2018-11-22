@@ -2124,3 +2124,34 @@ a.list-group-item.active > .badge,
 .nav-pills > li > a > .badge {
   margin-left: 3px;
 }
+
+/* Flashycard Specific */
+.centered {
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.container1 {
+    position: relative;
+    text-align: center;
+    color: #0000FF;
+    font-family: "Century Gothic";
+    font-weight: bold;
+    font-size: 20px;
+}
+.header-img {
+    width: 100%;
+    height: auto;
+}
+
+[data-icon]:before {
+  font-family: icons; /* BYO icon font, mapped smartly */
+  content: attr(data-icon);
+  color: #12C46B;
+  font-size: 400px;
+  font-weight: bold;
+  text-shadow: 2px 2px gray;
+  speak: none; /* Not to be trusted, but hey. */
+  border-radius: 20%;
+}

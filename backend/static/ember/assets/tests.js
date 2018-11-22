@@ -15,6 +15,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'app.js should pass ESLint\n\n');
   });
 
+  QUnit.test('components/deck-component.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/deck-component.js should pass ESLint\n\n');
+  });
+
   QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'controllers/application.js should pass ESLint\n\n32:11 - Unexpected console statement. (no-console)\n33:11 - Unexpected console statement. (no-console)');
@@ -63,6 +68,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
   QUnit.test('router.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'router.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('routes/createdeck.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/createdeck.js should pass ESLint\n\n');
   });
 
   QUnit.test('routes/index.js', function (assert) {
@@ -217,6 +227,36 @@ define('littlebits-frontend/tests/helpers/start-app', ['exports', 'littlebits-fr
     });
   }
 });
+define('littlebits-frontend/tests/integration/components/deck-component-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleForComponent)('deck-component', 'Integration | Component | deck component', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template({
+      "id": "QNevhvxZ",
+      "block": "{\"statements\":[[1,[26,[\"deck-component\"]],false]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}",
+      "meta": {}
+    }));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template({
+      "id": "5MJz38JS",
+      "block": "{\"statements\":[[0,\"\\n\"],[6,[\"deck-component\"],null,null,{\"statements\":[[0,\"      template block text\\n\"]],\"locals\":[]},null],[0,\"  \"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}",
+      "meta": {}
+    }));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
 define('littlebits-frontend/tests/test-helper', ['littlebits-frontend/tests/helpers/resolver', 'ember-qunit', 'ember-cli-qunit'], function (_resolver, _emberQunit, _emberCliQunit) {
   'use strict';
 
@@ -246,6 +286,11 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
   QUnit.test('helpers/start-app.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('integration/components/deck-component-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/deck-component-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('test-helper.js', function (assert) {
@@ -296,6 +341,11 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
   QUnit.test('unit/models/flashcard-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/models/flashcard-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/routes/createdeck-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/createdeck-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/routes/index-test.js', function (assert) {
@@ -464,6 +514,19 @@ define('littlebits-frontend/tests/unit/models/flashcard-test', ['ember-qunit'], 
     var model = this.subject();
     // let store = this.store();
     assert.ok(!!model);
+  });
+});
+define('littlebits-frontend/tests/unit/routes/createdeck-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('route:createdeck', 'Unit | Route | createdeck', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
   });
 });
 define('littlebits-frontend/tests/unit/routes/index-test', ['ember-qunit'], function (_emberQunit) {

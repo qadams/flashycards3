@@ -820,6 +820,14 @@ define('littlebits-frontend/components/bs-tooltip/element', ['exports', 'ember-b
     }
   });
 });
+define('littlebits-frontend/components/deck-component', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Component.extend({});
+});
 define('littlebits-frontend/components/ember-modal-dialog-positioned-container', ['exports', 'ember-modal-dialog/components/positioned-container'], function (exports, _positionedContainer) {
   'use strict';
 
@@ -2225,9 +2233,18 @@ define('littlebits-frontend/router', ['exports', 'littlebits-frontend/config/env
 
   Router.map(function () {
     this.route('login');
+    this.route('createdeck');
   });
 
   exports.default = Router;
+});
+define('littlebits-frontend/routes/createdeck', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Route.extend({});
 });
 define('littlebits-frontend/routes/index', ['exports'], function (exports) {
   'use strict';
@@ -2478,7 +2495,23 @@ define("littlebits-frontend/templates/application", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "+eF8T7/I", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[4,\" <div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\"> \"],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\n\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[4,\" </div> \"],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "sDmrNq3Z", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[4,\" <div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\"> \"],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"createdeck\"],null,{\"statements\":[[0,\"Create Deck\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\n\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[4,\" </div> \"],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+});
+define("littlebits-frontend/templates/components/create-flashcard-component", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "/ChRLJNN", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"\\n  Term:  \"],[1,[33,[\"input\"],null,[[\"value\"],[\"\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:  \"],[1,[33,[\"textarea\"],null,[[\"value\"],[\"\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"/static/ember/img/black-plus.svg\\\" width=\\\"30%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n\"],[11,\"span\",[]],[15,\"aria-hidden\",\"true\"],[15,\"data-icon\",\"+\"],[13],[14],[0,\"\\n\"],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/green-icon.png\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
+});
+define("littlebits-frontend/templates/components/deck-component", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "aQf7IYlu", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[1,[26,[\"name\"]],false],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/deck-component.hbs" } });
 });
 define('littlebits-frontend/templates/components/ember-popper-targeting-parent', ['exports', 'ember-popper/templates/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
   'use strict';
@@ -2548,13 +2581,21 @@ define('littlebits-frontend/templates/components/tether-dialog', ['exports', 'em
     }
   });
 });
+define("littlebits-frontend/templates/createdeck", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "eoQ33QKK", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"Title: \"],[1,[33,[\"input\"],null,[[\"value\"],[\"\"]]],false],[14],[0,\"\\n\"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
+});
 define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "aSM5I/z0", "block": "{\"statements\":[[11,\"ul\",[]],[13],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[11,\"li\",[]],[13],[1,[28,[\"deck\",\"name\"]],false],[14],[0,\"\\n\"]],\"locals\":[\"deck\"]},null],[14],[0,\"\\n\\n\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col s12 m6\"],[13],[0,\"\\n    \"],[11,\"div\",[]],[15,\"class\",\"card\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"card-image\"],[13],[0,\"\\n        \"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"50%\"],[15,\"class\",\"img-rounded\"],[13],[14],[0,\"\\n        \"],[11,\"br\",[]],[13],[14],[11,\"span\",[]],[15,\"class\",\"card-title\"],[13],[0,\"Card Title\"],[14],[0,\"\\n        \"],[11,\"a\",[]],[15,\"class\",\"btn-floating halfway-fab waves-effect waves-light red\"],[13],[11,\"i\",[]],[15,\"class\",\"material-icons\"],[13],[0,\"add\"],[14],[14],[0,\"\\n      \"],[14],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"card-content\"],[13],[0,\"\\n        \"],[11,\"p\",[]],[13],[0,\"This is the description area.\"],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "XKB/n43b", "block": "{\"statements\":[[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\"\\n\"]],\"locals\":[\"deck\"]},null]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
 });
 define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   "use strict";
@@ -2794,6 +2835,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+09ccca9e"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+b12e0881"});
 }
 //# sourceMappingURL=littlebits-frontend.map
