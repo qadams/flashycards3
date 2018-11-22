@@ -820,6 +820,19 @@ define('littlebits-frontend/components/bs-tooltip/element', ['exports', 'ember-b
     }
   });
 });
+define('littlebits-frontend/components/ember-modal-dialog-positioned-container', ['exports', 'ember-modal-dialog/components/positioned-container'], function (exports, _positionedContainer) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _positionedContainer.default;
+    }
+  });
+});
 define('littlebits-frontend/components/ember-popper-targeting-parent', ['exports', 'ember-popper/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
   'use strict';
 
@@ -843,6 +856,19 @@ define('littlebits-frontend/components/ember-popper', ['exports', 'ember-popper/
     enumerable: true,
     get: function () {
       return _emberPopper.default;
+    }
+  });
+});
+define('littlebits-frontend/components/ember-wormhole', ['exports', 'ember-wormhole/components/ember-wormhole'], function (exports, _emberWormhole) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberWormhole.default;
     }
   });
 });
@@ -897,6 +923,14 @@ define("littlebits-frontend/components/illiquid-model", ["exports", "liquid-fire
       return _illiquidModel.default;
     }
   });
+});
+define('littlebits-frontend/components/labeled-radio-button', ['exports', 'ember-radio-button/components/labeled-radio-button'], function (exports, _labeledRadioButton) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _labeledRadioButton.default;
 });
 define("littlebits-frontend/components/liquid-bind", ["exports", "liquid-fire/components/liquid-bind"], function (exports, _liquidBind) {
   "use strict";
@@ -1034,6 +1068,61 @@ define("littlebits-frontend/components/liquid-versions", ["exports", "liquid-fir
     }
   });
 });
+define('littlebits-frontend/components/modal-dialog-overlay', ['exports', 'ember-modal-dialog/components/modal-dialog-overlay'], function (exports, _modalDialogOverlay) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _modalDialogOverlay.default;
+    }
+  });
+});
+define('littlebits-frontend/components/modal-dialog', ['exports', 'ember-modal-dialog/components/modal-dialog'], function (exports, _modalDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _modalDialog.default;
+    }
+  });
+});
+define('littlebits-frontend/components/radio-button-input', ['exports', 'ember-radio-button/components/radio-button-input'], function (exports, _radioButtonInput) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _radioButtonInput.default;
+});
+define('littlebits-frontend/components/radio-button', ['exports', 'ember-radio-button/components/radio-button'], function (exports, _radioButton) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _radioButton.default;
+});
+define('littlebits-frontend/components/tether-dialog', ['exports', 'ember-modal-dialog/components/tether-dialog'], function (exports, _tetherDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _tetherDialog.default;
+    }
+  });
+});
 define('littlebits-frontend/components/welcome-page', ['exports', 'ember-welcome-page/components/welcome-page'], function (exports, _welcomePage) {
   'use strict';
 
@@ -1113,6 +1202,24 @@ define('littlebits-frontend/controllers/login', ['exports'], function (exports) 
 			}
 		}
 	});
+});
+define('littlebits-frontend/helpers/and', ['exports', 'ember-truth-helpers/helpers/and'], function (exports, _and) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_and.andHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_and.andHelper);
+  }
+
+  exports.default = forExport;
 });
 define('littlebits-frontend/helpers/app-version', ['exports', 'littlebits-frontend/config/environment', 'ember-cli-app-version/utils/regexp'], function (exports, _environment, _regexp) {
   'use strict';
@@ -1203,6 +1310,60 @@ define('littlebits-frontend/helpers/cancel-all', ['exports', 'ember-concurrency/
     }
   });
 });
+define('littlebits-frontend/helpers/eq', ['exports', 'ember-truth-helpers/helpers/equal'], function (exports, _equal) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_equal.equalHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_equal.equalHelper);
+  }
+
+  exports.default = forExport;
+});
+define('littlebits-frontend/helpers/gt', ['exports', 'ember-truth-helpers/helpers/gt'], function (exports, _gt) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_gt.gtHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_gt.gtHelper);
+  }
+
+  exports.default = forExport;
+});
+define('littlebits-frontend/helpers/gte', ['exports', 'ember-truth-helpers/helpers/gte'], function (exports, _gte) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_gte.gteHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_gte.gteHelper);
+  }
+
+  exports.default = forExport;
+});
 define('littlebits-frontend/helpers/is-after', ['exports', 'ember-moment/helpers/is-after'], function (exports, _isAfter) {
   'use strict';
 
@@ -1215,6 +1376,24 @@ define('littlebits-frontend/helpers/is-after', ['exports', 'ember-moment/helpers
       return _isAfter.default;
     }
   });
+});
+define('littlebits-frontend/helpers/is-array', ['exports', 'ember-truth-helpers/helpers/is-array'], function (exports, _isArray) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_isArray.isArrayHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_isArray.isArrayHelper);
+  }
+
+  exports.default = forExport;
 });
 define('littlebits-frontend/helpers/is-before', ['exports', 'ember-moment/helpers/is-before'], function (exports, _isBefore) {
   'use strict';
@@ -1318,6 +1497,42 @@ define('littlebits-frontend/helpers/lf-or', ['exports', 'liquid-fire/helpers/lf-
       return _lfOr.lfOr;
     }
   });
+});
+define('littlebits-frontend/helpers/lt', ['exports', 'ember-truth-helpers/helpers/lt'], function (exports, _lt) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_lt.ltHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_lt.ltHelper);
+  }
+
+  exports.default = forExport;
+});
+define('littlebits-frontend/helpers/lte', ['exports', 'ember-truth-helpers/helpers/lte'], function (exports, _lte) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_lte.lteHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_lte.lteHelper);
+  }
+
+  exports.default = forExport;
 });
 define('littlebits-frontend/helpers/moment-add', ['exports', 'ember-moment/helpers/moment-add'], function (exports, _momentAdd) {
   'use strict';
@@ -1488,6 +1703,42 @@ define('littlebits-frontend/helpers/moment', ['exports', 'ember-moment/helpers/m
     }
   });
 });
+define('littlebits-frontend/helpers/not-eq', ['exports', 'ember-truth-helpers/helpers/not-equal'], function (exports, _notEqual) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_notEqual.notEqualHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_notEqual.notEqualHelper);
+  }
+
+  exports.default = forExport;
+});
+define('littlebits-frontend/helpers/not', ['exports', 'ember-truth-helpers/helpers/not'], function (exports, _not) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_not.notHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_not.notHelper);
+  }
+
+  exports.default = forExport;
+});
 define('littlebits-frontend/helpers/now', ['exports', 'ember-moment/helpers/now'], function (exports, _now) {
   'use strict';
 
@@ -1500,6 +1751,24 @@ define('littlebits-frontend/helpers/now', ['exports', 'ember-moment/helpers/now'
       return _now.default;
     }
   });
+});
+define('littlebits-frontend/helpers/or', ['exports', 'ember-truth-helpers/helpers/or'], function (exports, _or) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_or.orHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_or.orHelper);
+  }
+
+  exports.default = forExport;
 });
 define('littlebits-frontend/helpers/perform', ['exports', 'ember-concurrency/helpers/perform'], function (exports, _perform) {
   'use strict';
@@ -1574,6 +1843,35 @@ define('littlebits-frontend/helpers/utc', ['exports', 'ember-moment/helpers/utc'
       return _utc.utc;
     }
   });
+});
+define('littlebits-frontend/helpers/xor', ['exports', 'ember-truth-helpers/helpers/xor'], function (exports, _xor) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var forExport = null;
+
+  if (Ember.Helper) {
+    forExport = Ember.Helper.helper(_xor.xorHelper);
+  } else if (Ember.HTMLBars.makeBoundHelper) {
+    forExport = Ember.HTMLBars.makeBoundHelper(_xor.xorHelper);
+  }
+
+  exports.default = forExport;
+});
+define('littlebits-frontend/initializers/add-modals-container', ['exports', 'ember-modal-dialog/initializers/add-modals-container'], function (exports, _addModalsContainer) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    name: 'add-modals-container',
+    initialize: _addModalsContainer.default
+  };
 });
 define('littlebits-frontend/initializers/app-version', ['exports', 'ember-cli-app-version/initializer-factory', 'littlebits-frontend/config/environment'], function (exports, _initializerFactory, _environment) {
   'use strict';
@@ -1681,6 +1979,25 @@ define('littlebits-frontend/initializers/ember-data', ['exports', 'ember-data/se
     name: 'ember-data',
     initialize: _setupContainer.default
   };
+});
+define('littlebits-frontend/initializers/ember-keyboard-first-responder-inputs', ['exports', 'ember-keyboard/initializers/ember-keyboard-first-responder-inputs'], function (exports, _emberKeyboardFirstResponderInputs) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberKeyboardFirstResponderInputs.default;
+    }
+  });
+  Object.defineProperty(exports, 'initialize', {
+    enumerable: true,
+    get: function () {
+      return _emberKeyboardFirstResponderInputs.initialize;
+    }
+  });
 });
 define('littlebits-frontend/initializers/export-application-global', ['exports', 'littlebits-frontend/config/environment'], function (exports, _environment) {
   'use strict';
@@ -1797,6 +2114,38 @@ define('littlebits-frontend/initializers/transforms', ['exports'], function (exp
     name: 'transforms',
     before: 'store',
     initialize: function initialize() {}
+  };
+});
+define('littlebits-frontend/initializers/truth-helpers', ['exports', 'ember-truth-helpers/utils/register-helper', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/is-array', 'ember-truth-helpers/helpers/not-equal', 'ember-truth-helpers/helpers/gt', 'ember-truth-helpers/helpers/gte', 'ember-truth-helpers/helpers/lt', 'ember-truth-helpers/helpers/lte'], function (exports, _registerHelper, _and, _or, _equal, _not, _isArray, _notEqual, _gt, _gte, _lt, _lte) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.initialize = initialize;
+  function initialize() /* container, application */{
+
+    // Do not register helpers from Ember 1.13 onwards, starting from 1.13 they
+    // will be auto-discovered.
+    if (Ember.Helper) {
+      return;
+    }
+
+    (0, _registerHelper.registerHelper)('and', _and.andHelper);
+    (0, _registerHelper.registerHelper)('or', _or.orHelper);
+    (0, _registerHelper.registerHelper)('eq', _equal.equalHelper);
+    (0, _registerHelper.registerHelper)('not', _not.notHelper);
+    (0, _registerHelper.registerHelper)('is-array', _isArray.isArrayHelper);
+    (0, _registerHelper.registerHelper)('not-eq', _notEqual.notEqualHelper);
+    (0, _registerHelper.registerHelper)('gt', _gt.gtHelper);
+    (0, _registerHelper.registerHelper)('gte', _gte.gteHelper);
+    (0, _registerHelper.registerHelper)('lt', _lt.ltHelper);
+    (0, _registerHelper.registerHelper)('lte', _lte.lteHelper);
+  }
+
+  exports.default = {
+    name: 'truth-helpers',
+    initialize: initialize
   };
 });
 define("littlebits-frontend/instance-initializers/ember-data", ["exports", "ember-data/initialize-store-service"], function (exports, _initializeStoreService) {
@@ -1927,24 +2276,6 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
   //     });
   //   },
   exports.default = Ember.Route.extend({
-    getData: function getData() {
-      var items = Ember.A([]);
-      return Ember.$.get('/api/decks').then(function (decks) {
-        // console.log(events);
-        decks.data.forEach(function (deck) {
-          // console.log(event);
-          items.addObject({
-            id: deck.pk,
-            name: deck.fields.name
-          });
-        });
-        return items.reverse();
-      }, function (msg) {
-        //error
-        console.log('Error loading events:');
-        console.log(msg.statusText);
-      });
-    },
     model: function model() {
       return this.store.findAll('deck');
       // return this.store.findAll('flashcard');
@@ -1953,16 +2284,6 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
       this._super(controller, model);
       controller.set('defaultitems', defaultitems);
       var route = this;
-      setInterval(Ember.run.later(route, function () {
-        // code here will execute within a RunLoop about every minute
-        if (controller.get('auth.isLoggedIn')) {
-          route.getData().then(function (data) {
-            if (data[0].id != controller.get('content')[0].id) {
-              controller.get('content').insertAt(0, data[0]);
-            }
-          });
-        }
-      }, 5), 3000);
     }
   });
 });
@@ -2111,6 +2432,19 @@ define('littlebits-frontend/services/constants', ['exports', 'littlebits-fronten
     rootURL: _environment.default.rootURL
   });
 });
+define('littlebits-frontend/services/keyboard', ['exports', 'ember-keyboard/services/keyboard'], function (exports, _keyboard) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _keyboard.default;
+    }
+  });
+});
 define("littlebits-frontend/services/liquid-fire-transitions", ["exports", "liquid-fire/transition-map"], function (exports, _transitionMap) {
   "use strict";
 
@@ -2118,6 +2452,14 @@ define("littlebits-frontend/services/liquid-fire-transitions", ["exports", "liqu
     value: true
   });
   exports.default = _transitionMap.default;
+});
+define('littlebits-frontend/services/modal-dialog', ['exports', 'ember-modal-dialog/services/modal-dialog'], function (exports, _modalDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _modalDialog.default;
 });
 define('littlebits-frontend/services/moment', ['exports', 'ember-moment/services/moment', 'littlebits-frontend/config/environment'], function (exports, _moment, _environment) {
   'use strict';
@@ -2136,7 +2478,7 @@ define("littlebits-frontend/templates/application", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "8JCQ1cei", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"id\",\"sidebar\"],[15,\"class\",\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\t\\t\\t\\t    \"],[4,\" <p class=\\\"sidebar-p\\\"><img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"100%\\\" class=\\\"img-rounded\\\"/></p> \"],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"copyright\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"class\",\"credit\"],[13],[0,\"©2018 Quinn Adams\"],[14],[0,\"\\n\\n\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[14],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\\ttest\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "+eF8T7/I", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[4,\" <div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\"> \"],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\n\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[4,\" </div> \"],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
 });
 define('littlebits-frontend/templates/components/ember-popper-targeting-parent', ['exports', 'ember-popper/templates/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
   'use strict';
@@ -2164,13 +2506,55 @@ define('littlebits-frontend/templates/components/ember-popper', ['exports', 'emb
     }
   });
 });
+define("littlebits-frontend/templates/components/labeled-radio-button", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "wk0Lgs5Y", "block": "{\"statements\":[[1,[33,[\"radio-button\"],null,[[\"radioClass\",\"radioId\",\"changed\",\"disabled\",\"groupValue\",\"name\",\"required\",\"value\"],[[28,[\"radioClass\"]],[28,[\"radioId\"]],\"innerRadioChanged\",[28,[\"disabled\"]],[28,[\"groupValue\"]],[28,[\"name\"]],[28,[\"required\"]],[28,[\"value\"]]]]],false],[0,\"\\n\\n\"],[18,\"default\"],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[\"default\"],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/labeled-radio-button.hbs" } });
+});
+define('littlebits-frontend/templates/components/modal-dialog', ['exports', 'ember-modal-dialog/templates/components/modal-dialog'], function (exports, _modalDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _modalDialog.default;
+    }
+  });
+});
+define("littlebits-frontend/templates/components/radio-button", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "LG2yvQTu", "block": "{\"statements\":[[6,[\"if\"],[[29,\"default\"]],null,{\"statements\":[[0,\"  \"],[11,\"label\",[]],[16,\"class\",[34,[\"ember-radio-button \",[33,[\"if\"],[[28,[\"checked\"]],\"checked\"],null],\" \",[26,[\"joinedClassNames\"]]]]],[16,\"for\",[26,[\"radioId\"]],null],[13],[0,\"\\n    \"],[1,[33,[\"radio-button-input\"],null,[[\"class\",\"id\",\"disabled\",\"name\",\"required\",\"groupValue\",\"value\",\"changed\"],[[28,[\"radioClass\"]],[28,[\"radioId\"]],[28,[\"disabled\"]],[28,[\"name\"]],[28,[\"required\"]],[28,[\"groupValue\"]],[28,[\"value\"]],\"changed\"]]],false],[0,\"\\n\\n    \"],[18,\"default\"],[0,\"\\n  \"],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"  \"],[1,[33,[\"radio-button-input\"],null,[[\"class\",\"id\",\"disabled\",\"name\",\"required\",\"groupValue\",\"value\",\"changed\"],[[28,[\"radioClass\"]],[28,[\"radioId\"]],[28,[\"disabled\"]],[28,[\"name\"]],[28,[\"required\"]],[28,[\"groupValue\"]],[28,[\"value\"]],\"changed\"]]],false],[0,\"\\n\"]],\"locals\":[]}]],\"locals\":[],\"named\":[],\"yields\":[\"default\"],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/radio-button.hbs" } });
+});
+define('littlebits-frontend/templates/components/tether-dialog', ['exports', 'ember-modal-dialog/templates/components/tether-dialog'], function (exports, _tetherDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _tetherDialog.default;
+    }
+  });
+});
 define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "kYr40jtp", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"hello world\"],[14],[0,\"\\n\\n\"],[4,\" <div class=\\\"deck-list\\\">\\n{{#each model as |deck|}}\\n    {{#link-to 'deck' deck.name class=\\\"deck\\\"}}\\n      {{deck.name}}\\n    {{/link-to}}\\n  {{/each}}</div> \"],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "aSM5I/z0", "block": "{\"statements\":[[11,\"ul\",[]],[13],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[11,\"li\",[]],[13],[1,[28,[\"deck\",\"name\"]],false],[14],[0,\"\\n\"]],\"locals\":[\"deck\"]},null],[14],[0,\"\\n\\n\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col s12 m6\"],[13],[0,\"\\n    \"],[11,\"div\",[]],[15,\"class\",\"card\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"card-image\"],[13],[0,\"\\n        \"],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"50%\"],[15,\"class\",\"img-rounded\"],[13],[14],[0,\"\\n        \"],[11,\"br\",[]],[13],[14],[11,\"span\",[]],[15,\"class\",\"card-title\"],[13],[0,\"Card Title\"],[14],[0,\"\\n        \"],[11,\"a\",[]],[15,\"class\",\"btn-floating halfway-fab waves-effect waves-light red\"],[13],[11,\"i\",[]],[15,\"class\",\"material-icons\"],[13],[0,\"add\"],[14],[14],[0,\"\\n      \"],[14],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"card-content\"],[13],[0,\"\\n        \"],[11,\"p\",[]],[13],[0,\"This is the description area.\"],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
 });
 define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   "use strict";
@@ -2362,6 +2746,32 @@ define('littlebits-frontend/transitions/wait', ['exports', 'liquid-fire/transiti
     }
   });
 });
+define('littlebits-frontend/utils/get-cmd-key', ['exports', 'ember-keyboard/utils/get-cmd-key'], function (exports, _getCmdKey) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _getCmdKey.default;
+    }
+  });
+});
+define('littlebits-frontend/utils/listener-name', ['exports', 'ember-keyboard/utils/listener-name'], function (exports, _listenerName) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _listenerName.default;
+    }
+  });
+});
 
 
 define('littlebits-frontend/config/environment', ['ember'], function(Ember) {
@@ -2384,6 +2794,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+09ccca9e"});
 }
 //# sourceMappingURL=littlebits-frontend.map

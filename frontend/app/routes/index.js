@@ -45,23 +45,6 @@ var defaultitems = Ember.A([
 //     });
 //   },
 export default Ember.Route.extend({
-  getData(){
-    var items = Ember.A([]);
-    return Ember.$.get('/api/decks').then(function(decks){
-      // console.log(events);
-      decks.data.forEach(function(deck){
-        // console.log(event);
-        items.addObject({
-          id: deck.pk,
-          name: deck.fields.name,
-        });
-      });
-      return items.reverse()
-    }, function(msg){//error
-      console.log('Error loading events:');
-      console.log(msg.statusText);
-    });
-  },
 	model() {
     return this.store.findAll('deck');
     // return this.store.findAll('flashcard');
@@ -70,15 +53,5 @@ export default Ember.Route.extend({
     this._super(controller, model);
     controller.set('defaultitems', defaultitems);
     var route = this;
-    setInterval(Ember.run.later(route, function() {
-      // code here will execute within a RunLoop about every minute
-      if(controller.get('auth.isLoggedIn')){
-        route.getData().then(function(data){
-          if(data[0].id!=controller.get('content')[0].id){
-            controller.get('content').insertAt(0, data[0]);
-          }
-        });
-      }
-    }, 5), 3000);
   }
 });

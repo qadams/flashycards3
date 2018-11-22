@@ -1,9 +1,21 @@
-<p>hello world</p>
+<ul>
+{{#each model as |deck|}}
+  <li>{{deck.name}}</li>
+{{/each}}
+</ul>
 
-<!-- <div class="deck-list">
-  {{#each model as |deck|}}
-    {{#link-to 'deck' deck.name class="deck"}}
-      {{deck.name}}
-    {{/link-to}}
-  {{/each}}
-</div> -->
+
+<div class="row">
+  <div class="col s12 m6">
+    <div class="card">
+      <div class="card-image">
+        <img src="{{constants.rootURL}}img/flashycards-banner.png" width="50%" class="img-rounded"/>
+        <br><span class="card-title">Card Title</span>
+        <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+      </div>
+      <div class="card-content">
+        <p>This is the description area.</p>
+      </div>
+    </div>
+  </div>
+</div>

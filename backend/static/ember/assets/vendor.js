@@ -85933,6 +85933,108 @@ window.matchMedia || (window.matchMedia = function() {
   var versionExtendedRegExp = exports.versionExtendedRegExp = /\d+[.]\d+[.]\d+-[a-z]*([.]\d+)?/; // Match the above but also hyphen followed by any number of lowercase letters, then optionally period and digits
   var shaRegExp = exports.shaRegExp = /[a-z\d]{8}$/; // Match 8 lowercase letters and digits, at the end of the string only (to avoid matching with version extended part)
 });
+;define('ember-composability/mixins/child-component-support', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var assert = Ember.assert,
+      computed = Ember.computed,
+      Mixin = Ember.Mixin;
+  exports.default = Mixin.create({
+    init: function init() {
+      this._super.apply(this, arguments);
+      assert('Must define _parentComponentTypes', this.get('_parentComponentTypes'));
+      this._registerWithParent();
+    },
+    willDestroyElement: function willDestroyElement() {
+      this._unregisterWithParent();
+      this._super.apply(this, arguments);
+    },
+
+
+    composableParent: computed(function () {
+      return this._componentToRegisterTo();
+    }),
+
+    _componentToRegisterTo: function _componentToRegisterTo() {
+      var c = null;
+      var parentTypes = this.get('_parentComponentTypes');
+      for (var i = 0; i < parentTypes.length && !c; i++) {
+        c = this.nearestOfType(parentTypes[i]);
+      }
+      return c;
+    },
+    shouldRegisterToParent: function shouldRegisterToParent() /* parentComponent*/{
+      return true;
+    },
+    _registerWithParent: function _registerWithParent() {
+      var parentComponent = this._componentToRegisterTo();
+      if (parentComponent) {
+        if (this.shouldRegisterToParent(parentComponent)) {
+          parentComponent.registerChildComponent(this);
+        }
+        this.set('composableParent', parentComponent);
+      }
+    },
+    _unregisterWithParent: function _unregisterWithParent() {
+      var parentComponent = this._componentToRegisterTo();
+      if (parentComponent) {
+        parentComponent.unregisterChildComponent(this);
+      }
+    }
+  });
+});
+;define('ember-composability/mixins/parent-component-support', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var A = Ember.A,
+      computed = Ember.computed,
+      Mixin = Ember.Mixin,
+      OrderedSet = Ember.OrderedSet,
+      debounce = Ember.run.debounce;
+  exports.default = Mixin.create({
+    _childComponents: null,
+    composableChildrenDebounceTime: 0,
+
+    init: function init() {
+      this._super.apply(this, arguments);
+      this.set('_childComponents', new OrderedSet());
+    },
+
+
+    composableChildren: computed(function () {
+      return this.getComposableChildren();
+    }).readOnly(),
+
+    getComposableChildren: function getComposableChildren() {
+      var comps = this.get('_childComponents');
+      return new A(comps && comps.size ? this.get('_childComponents').list : []);
+    },
+    _fireComposableChildrenChanged: function _fireComposableChildrenChanged() {
+      this.propertyDidChange('composableChildren');
+    },
+    _notifyComposableChildrenChanged: function _notifyComposableChildrenChanged() {
+      if (this.get('composableChildrenDebounceTime')) {
+        debounce(this, this._fireComposableChildrenChanged, this.get('composableChildrenDebounceTime'));
+      } else {
+        this._fireComposableChildrenChanged();
+      }
+    },
+    registerChildComponent: function registerChildComponent(childComponent) {
+      this.get('_childComponents').add(childComponent);
+      this._notifyComposableChildrenChanged();
+    },
+    unregisterChildComponent: function unregisterChildComponent(childComponent) {
+      this.get('_childComponents').delete(childComponent);
+      this._notifyComposableChildrenChanged();
+    }
+  });
+});
 ;define('ember-concurrency/-buffer-policy', ['exports'], function (exports) {
   'use strict';
 
@@ -89273,6 +89375,1077 @@ window.matchMedia || (window.matchMedia = function() {
     return Ember.Handlebars.makeBoundHelper(helperFunction);
   }
 });
+;define('ember-keyboard/fixtures/code-map', ['exports', 'ember-keyboard/utils/generate-code-map'], function (exports, _generateCodeMap) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var platform = void 0,
+      product = '';
+
+  if (typeof FastBoot === 'undefined') {
+    platform = navigator.platform;
+    product = navigator.product;
+  }
+
+  exports.default = (0, _generateCodeMap.default)(platform, product);
+});
+;define('ember-keyboard/fixtures/code-maps/chromium/linux', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    47: 'Help',
+    42: 'PrintScreen',
+    108: 'NumpadDecimal',
+    187: 'NumpadEqual'
+  };
+});
+;define('ember-keyboard/fixtures/code-maps/default', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    48: 'Digit0',
+    49: 'Digit1',
+    50: 'Digit2',
+    51: 'Digit3',
+    52: 'Digit4',
+    53: 'Digit5',
+    54: 'Digit6',
+    55: 'Digit7',
+    56: 'Digit8',
+    57: 'Digit9',
+    65: 'KeyA',
+    66: 'KeyB',
+    67: 'KeyC',
+    68: 'KeyD',
+    69: 'KeyE',
+    70: 'KeyF',
+    71: 'KeyG',
+    72: 'KeyH',
+    73: 'KeyI',
+    74: 'KeyJ',
+    75: 'KeyK',
+    76: 'KeyL',
+    77: 'KeyM',
+    78: 'KeyN',
+    79: 'KeyO',
+    80: 'KeyP',
+    81: 'KeyQ',
+    82: 'KeyR',
+    83: 'KeyS',
+    84: 'KeyT',
+    85: 'KeyU',
+    86: 'KeyV',
+    87: 'KeyW',
+    88: 'KeyX',
+    89: 'KeyY',
+    90: 'KeyZ',
+    188: 'Comma',
+    190: 'Period',
+    186: 'Semicolon',
+    191: 'Slash',
+    222: 'Quote',
+    219: 'BracketLeft',
+    221: 'BracketRight',
+    192: 'Backquote',
+    220: 'Backslash',
+    189: 'Minus',
+    187: 'Equal',
+    18: 'AltLeft',
+    20: 'CapsLock',
+    17: 'ControlLeft',
+    91: 'OSLeft',
+    92: 'OSRight',
+    16: 'ShiftLeft',
+    93: 'ContextMenu',
+    13: 'Enter',
+    32: 'Space',
+    9: 'Tab',
+    8: 'Backspace',
+    46: 'Delete',
+    35: 'End',
+    36: 'Home',
+    45: 'Insert',
+    34: 'PageDown',
+    33: 'PageUp',
+    40: 'ArrowDown',
+    37: 'ArrowLeft',
+    39: 'ArrowRight',
+    38: 'ArrowUp',
+    27: 'Escape',
+    44: 'PrintScreen',
+    145: 'ScrollLock',
+    19: 'Pause',
+    112: 'F1',
+    113: 'F2',
+    114: 'F3',
+    115: 'F4',
+    116: 'F5',
+    117: 'F6',
+    118: 'F7',
+    119: 'F8',
+    120: 'F9',
+    121: 'F10',
+    122: 'F11',
+    123: 'F12',
+    124: 'F13',
+    125: 'F14',
+    126: 'F15',
+    127: 'F16',
+    128: 'F17',
+    129: 'F18',
+    130: 'F19',
+    131: 'F20',
+    132: 'F21',
+    133: 'F22',
+    134: 'F23',
+    135: 'F24',
+    144: 'NumLock',
+    96: 'Numpad0',
+    97: 'Numpad1',
+    98: 'Numpad2',
+    99: 'Numpad3',
+    100: 'Numpad4',
+    101: 'Numpad5',
+    102: 'Numpad6',
+    103: 'Numpad7',
+    104: 'Numpad8',
+    105: 'Numpad9',
+    107: 'NumpadAdd',
+    194: 'NumpadComma',
+    110: 'NumpadDecimal',
+    111: 'NumpadDivide',
+    12: 'NumpadEqual',
+    106: 'NumpadMultiply',
+    109: 'NumpadSubtract'
+  };
+});
+;define('ember-keyboard/fixtures/code-maps/gecko', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    59: 'Semicolon',
+    173: 'Minus',
+    61: 'Equal',
+    91: 'OSRight'
+  };
+});
+;define('ember-keyboard/fixtures/code-maps/gecko/linux', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    225: 'AltRight',
+    6: 'Help',
+    42: 'PrintScreen',
+    108: 'NumpadDecimal'
+  };
+});
+;define('ember-keyboard/fixtures/code-maps/gecko/mac', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    224: 'OSLeft',
+    12: 'NumLock',
+    108: 'NumpadComma'
+  };
+});
+;define('ember-keyboard/fixtures/code-maps/mac-safari-and-chrome', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    93: 'OSRight',
+    124: 'PrintScreen',
+    125: 'ScrollLock',
+    126: 'Pause',
+    12: 'NumLock',
+    188: 'NumpadComma',
+    190: 'NumpadComma',
+    187: 'NumpadEqual'
+  };
+});
+;define('ember-keyboard/fixtures/modifiers-array', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = ['alt', 'ctrl', 'meta', 'shift', 'cmd'];
+});
+;define('ember-keyboard/fixtures/mouse-buttons-array', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = ['left', 'middle', 'right'];
+});
+;define('ember-keyboard/index', ['exports', 'ember-keyboard/listeners/key-events', 'ember-keyboard/listeners/mouse-events', 'ember-keyboard/listeners/touch-events', 'ember-keyboard/initializers/ember-keyboard-first-responder-inputs', 'ember-keyboard/utils/trigger-event', 'ember-keyboard/utils/get-code', 'ember-keyboard/utils/get-key-code', 'ember-keyboard/utils/get-mouse-code', 'ember-keyboard/mixins/ember-keyboard', 'ember-keyboard/mixins/keyboard-first-responder-on-focus', 'ember-keyboard/mixins/activate-keyboard-on-focus', 'ember-keyboard/mixins/activate-keyboard-on-insert', 'ember-keyboard/mixins/activate-keyboard-on-init'], function (exports, _keyEvents, _mouseEvents, _touchEvents, _emberKeyboardFirstResponderInputs, _triggerEvent, _getCode, _getKeyCode, _getMouseCode, _emberKeyboard, _keyboardFirstResponderOnFocus, _activateKeyboardOnFocus, _activateKeyboardOnInsert, _activateKeyboardOnInit) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.triggerKeyUp = exports.triggerKeyPress = exports.triggerKeyDown = exports.initialize = exports.touchEnd = exports.touchStart = exports.mouseUp = exports.mouseDown = exports.click = exports.keyPress = exports.keyUp = exports.keyDown = exports.getMouseCode = exports.getKeyCode = exports.getCode = exports.EKOnInitMixin = exports.EKOnInsertMixin = exports.EKOnFocusMixin = exports.EKFirstResponderOnFocusMixin = exports.EKMixin = undefined;
+  Object.defineProperty(exports, 'keyDown', {
+    enumerable: true,
+    get: function () {
+      return _keyEvents.keyDown;
+    }
+  });
+  Object.defineProperty(exports, 'keyUp', {
+    enumerable: true,
+    get: function () {
+      return _keyEvents.keyUp;
+    }
+  });
+  Object.defineProperty(exports, 'keyPress', {
+    enumerable: true,
+    get: function () {
+      return _keyEvents.keyPress;
+    }
+  });
+  Object.defineProperty(exports, 'click', {
+    enumerable: true,
+    get: function () {
+      return _mouseEvents.click;
+    }
+  });
+  Object.defineProperty(exports, 'mouseDown', {
+    enumerable: true,
+    get: function () {
+      return _mouseEvents.mouseDown;
+    }
+  });
+  Object.defineProperty(exports, 'mouseUp', {
+    enumerable: true,
+    get: function () {
+      return _mouseEvents.mouseUp;
+    }
+  });
+  Object.defineProperty(exports, 'touchStart', {
+    enumerable: true,
+    get: function () {
+      return _touchEvents.touchStart;
+    }
+  });
+  Object.defineProperty(exports, 'touchEnd', {
+    enumerable: true,
+    get: function () {
+      return _touchEvents.touchEnd;
+    }
+  });
+  Object.defineProperty(exports, 'initialize', {
+    enumerable: true,
+    get: function () {
+      return _emberKeyboardFirstResponderInputs.initialize;
+    }
+  });
+  Object.defineProperty(exports, 'triggerKeyDown', {
+    enumerable: true,
+    get: function () {
+      return _triggerEvent.triggerKeyDown;
+    }
+  });
+  Object.defineProperty(exports, 'triggerKeyPress', {
+    enumerable: true,
+    get: function () {
+      return _triggerEvent.triggerKeyPress;
+    }
+  });
+  Object.defineProperty(exports, 'triggerKeyUp', {
+    enumerable: true,
+    get: function () {
+      return _triggerEvent.triggerKeyUp;
+    }
+  });
+  exports.EKMixin = _emberKeyboard.default;
+  exports.EKFirstResponderOnFocusMixin = _keyboardFirstResponderOnFocus.default;
+  exports.EKOnFocusMixin = _activateKeyboardOnFocus.default;
+  exports.EKOnInsertMixin = _activateKeyboardOnInsert.default;
+  exports.EKOnInitMixin = _activateKeyboardOnInit.default;
+  exports.getCode = _getCode.default;
+  exports.getKeyCode = _getKeyCode.default;
+  exports.getMouseCode = _getMouseCode.default;
+});
+;define('ember-keyboard/initializers/ember-keyboard-first-responder-inputs', ['exports', 'ember-keyboard'], function (exports, _emberKeyboard) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.initialize = initialize;
+  function initialize() {
+    Ember.TextField.reopen(_emberKeyboard.EKMixin, _emberKeyboard.EKFirstResponderOnFocusMixin);
+    Ember.TextArea.reopen(_emberKeyboard.EKMixin, _emberKeyboard.EKFirstResponderOnFocusMixin);
+  }
+
+  exports.default = {
+    name: 'ember-keyboard-first-responder-inputs',
+    initialize: initialize
+  };
+});
+;define('ember-keyboard/listeners/key-events', ['exports', 'ember-keyboard/fixtures/code-map', 'ember-keyboard/utils/listener-name', 'ember-keyboard/fixtures/modifiers-array'], function (exports, _codeMap, _listenerName, _modifiersArray) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.keyDown = keyDown;
+  exports.keyPress = keyPress;
+  exports.keyUp = keyUp;
+
+
+  var keyMapValues = Object.keys(_codeMap.default).map(function (key) {
+    return _codeMap.default[key];
+  });
+  var validKeys = keyMapValues.concat(_modifiersArray.default);
+
+  var validateKeys = function validateKeys(keys) {
+    keys.forEach(function (key) {
+      if (validKeys.indexOf(key) === -1) {
+        /* eslint no-console: ["error", { allow: ["error"] }] */
+        console.error('`' + key + '` is not a valid key name');
+      }
+    });
+  };
+
+  var formattedListener = function formattedListener(type, keysString) {
+    var keys = keysString !== undefined ? keysString.split('+') : [];
+
+    validateKeys(keys);
+
+    return (0, _listenerName.default)(type, keys);
+  };
+
+  function keyDown(keys) {
+    return formattedListener('keydown', keys);
+  }
+
+  function keyPress(keys) {
+    return formattedListener('keypress', keys);
+  }
+
+  function keyUp(keys) {
+    return formattedListener('keyup', keys);
+  }
+});
+;define('ember-keyboard/listeners/mouse-events', ['exports', 'ember-keyboard/utils/listener-name', 'ember-keyboard/fixtures/mouse-buttons-array', 'ember-keyboard/fixtures/modifiers-array'], function (exports, _listenerName, _mouseButtonsArray, _modifiersArray) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.click = click;
+  exports.mouseDown = mouseDown;
+  exports.mouseUp = mouseUp;
+
+
+  var validKeys = _mouseButtonsArray.default.concat(_modifiersArray.default);
+
+  var validateKeys = function validateKeys(keys) {
+    keys.forEach(function (key) {
+      if (validKeys.indexOf(key) === -1) {
+        /* eslint no-console: ["error", { allow: ["error"] }] */
+        console.error('`' + key + '` is not a valid key name');
+      }
+    });
+  };
+
+  var formattedListener = function formattedListener(type, keysString) {
+    var keys = keysString !== undefined ? keysString.split('+') : [];
+
+    validateKeys(keys);
+
+    return (0, _listenerName.default)(type, keys);
+  };
+
+  function click(keys) {
+    return formattedListener('click', keys);
+  }
+
+  function mouseDown(keys) {
+    return formattedListener('mousedown', keys);
+  }
+
+  function mouseUp(keys) {
+    return formattedListener('mouseup', keys);
+  }
+});
+;define('ember-keyboard/listeners/touch-events', ['exports', 'ember-keyboard/utils/listener-name', 'ember-keyboard/fixtures/modifiers-array'], function (exports, _listenerName, _modifiersArray) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.touchEnd = touchEnd;
+  exports.touchStart = touchStart;
+
+
+  var validateKeys = function validateKeys(keys) {
+    keys.forEach(function (key) {
+      if (_modifiersArray.default.indexOf(key) === -1) {
+        /* eslint no-console: ["error", { allow: ["error"] }] */
+        console.error('`' + key + '` is not a valid key name');
+      }
+    });
+  };
+
+  var formattedListener = function formattedListener(type, keysString) {
+    var keys = keysString !== undefined ? keysString.split('+') : [];
+
+    validateKeys(keys);
+
+    return (0, _listenerName.default)(type, keys);
+  };
+
+  function touchEnd(keys) {
+    return formattedListener('touchEnd', keys);
+  }
+
+  function touchStart(keys) {
+    return formattedListener('touchstart', keys);
+  }
+});
+;define('ember-keyboard/mixins/activate-keyboard-on-focus', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Mixin.create({
+    activateKeyboardWhenFocused: Ember.on('click', 'focusIn', function () {
+      Ember.set(this, 'keyboardActivated', true);
+    }),
+
+    deactivateKeyboardWhenFocusOut: Ember.on('focusOut', function () {
+      Ember.set(this, 'keyboardActivated', false);
+    })
+  });
+});
+;define('ember-keyboard/mixins/activate-keyboard-on-init', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Mixin.create({
+    activateKeyboardWhenStarted: Ember.on('init', function () {
+      Ember.set(this, 'keyboardActivated', true);
+    })
+  });
+});
+;define('ember-keyboard/mixins/activate-keyboard-on-insert', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Mixin.create({
+    activateKeyboardWhenPresent: Ember.on('didInsertElement', function () {
+      Ember.set(this, 'keyboardActivated', true);
+    })
+  });
+});
+;define('ember-keyboard/mixins/ember-keyboard', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Mixin.create(Ember.Evented, {
+    keyboardPriority: 0,
+
+    keyboard: Ember.inject.service(),
+
+    init: function init() {
+      Ember.get(this, 'keyboard').register(this);
+
+      return this._super.apply(this, arguments);
+    },
+    willDestroyElement: function willDestroyElement() {
+      this._super.apply(this, arguments);
+
+      Ember.get(this, 'keyboard').unregister(this);
+    },
+    willDestroy: function willDestroy() {
+      this._super.apply(this, arguments);
+
+      Ember.get(this, 'keyboard').unregister(this);
+    }
+  });
+});
+;define('ember-keyboard/mixins/keyboard-first-responder-on-focus', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Mixin.create({
+    makeFirstResponderOnFocusIn: Ember.on('click', 'focusIn', function () {
+      Ember.setProperties(this, {
+        keyboardActivated: true,
+        keyboardFirstResponder: true
+      });
+    }),
+
+    resignFirstResponderOnFocusOut: Ember.on('focusOut', function () {
+      Ember.set(this, 'keyboardFirstResponder', false);
+    })
+  });
+});
+;define('ember-keyboard/services/keyboard', ['exports', 'ember-keyboard/listeners/key-events', 'ember-keyboard/utils/handle-key-event'], function (exports, _keyEvents, _handleKeyEvent) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Service.extend({
+    isPropagationEnabled: false,
+
+    registeredResponders: Ember.computed(function () {
+      return Ember.A();
+    }),
+
+    activeResponders: Ember.computed.filterBy('registeredResponders', 'keyboardActivated'),
+
+    sortedRespondersSortDefinition: Ember.computed('isPropagationEnabled', function () {
+      return Ember.get(this, 'isPropagationEnabled') ? ['keyboardPriority:desc'] : ['keyboardFirstResponder:desc', 'keyboardPriority:desc'];
+    }),
+
+    sortedResponders: Ember.computed.sort('activeResponders', 'sortedRespondersSortDefinition'),
+
+    firstResponders: Ember.computed.filterBy('sortedResponders', 'keyboardFirstResponder'),
+
+    normalResponders: Ember.computed.filter('sortedResponders.@each.keyboardFirstResponder', function (responder) {
+      return !Ember.get(responder, 'keyboardFirstResponder');
+    }),
+
+    init: function init() {
+      var _this = this;
+
+      this._super.apply(this, arguments);
+
+      if (typeof FastBoot !== 'undefined') {
+        return;
+      }
+
+      var config = Ember.getOwner(this).resolveRegistration('config:environment') || {};
+
+      var isPropagationEnabled = Boolean(Ember.get(config, 'emberKeyboard.propagation'));
+      Ember.set(this, 'isPropagationEnabled', isPropagationEnabled);
+
+      this._boundRespond = Ember.run.bind(this, this._respond);
+      this._listeners = Ember.get(config, 'emberKeyboard.listeners') || ['keyUp', 'keyDown', 'keyPress'];
+      this._listeners = this._listeners.map(function (listener) {
+        return listener.toLowerCase();
+      });
+
+      this._listeners.forEach(function (type) {
+        document.addEventListener(type, _this._boundRespond);
+      });
+    },
+    willDestroy: function willDestroy() {
+      var _this2 = this;
+
+      this._super.apply(this, arguments);
+
+      if (typeof FastBoot !== 'undefined') {
+        return;
+      }
+
+      this._listeners.forEach(function (type) {
+        document.removeEventListener(type, _this2._boundRespond);
+      });
+    },
+    _respond: function _respond(event) {
+      var _this3 = this;
+
+      Ember.run(function () {
+        if (Ember.get(_this3, 'isPropagationEnabled')) {
+          (0, _handleKeyEvent.handleKeyEventWithPropagation)(event, Ember.getProperties(_this3, 'firstResponders', 'normalResponders'));
+        } else {
+          (0, _handleKeyEvent.handleKeyEventWithLaxPriorities)(event, Ember.get(_this3, 'sortedResponders'));
+        }
+      });
+    },
+    register: function register(responder) {
+      Ember.get(this, 'registeredResponders').pushObject(responder);
+    },
+    unregister: function unregister(responder) {
+      Ember.get(this, 'registeredResponders').removeObject(responder);
+    },
+    keyDown: function keyDown() {
+      return _keyEvents.keyDown.apply(undefined, arguments);
+    },
+    keyPress: function keyPress() {
+      return _keyEvents.keyPress.apply(undefined, arguments);
+    },
+    keyUp: function keyUp() {
+      return _keyEvents.keyUp.apply(undefined, arguments);
+    }
+  });
+});
+;define('ember-keyboard/utils/generate-code-map', ['exports', 'ember-keyboard/fixtures/code-maps/default', 'ember-keyboard/fixtures/code-maps/mac-safari-and-chrome', 'ember-keyboard/fixtures/code-maps/gecko', 'ember-keyboard/fixtures/code-maps/gecko/linux', 'ember-keyboard/fixtures/code-maps/gecko/mac', 'ember-keyboard/fixtures/code-maps/chromium/linux'], function (exports, _default, _macSafariAndChrome, _gecko, _linux, _mac, _linux2) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = generateCodeMap;
+  function generateCodeMap() {
+    var platform = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var product = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+    var isGecko = product.indexOf('Gecko') > -1;
+    var isChromium = product.indexOf('Chromium') > -1;
+    var isChrome = product.indexOf('Chrome') > -1;
+    var isSafari = product.indexOf('Safari') > -1;
+    var isLinux = platform.indexOf('Linux') > -1;
+    var isMac = platform.indexOf('Mac') > -1;
+
+    var codeMap = Ember.assign({}, _default.default);
+
+    if (isGecko) {
+      Ember.assign(codeMap, _gecko.default);
+
+      if (isLinux) {
+        Ember.assign(codeMap, _linux.default);
+      } else if (isMac) {
+        Ember.assign(codeMap, _mac.default);
+      }
+    } else if (isChromium && isLinux) {
+      Ember.assign(codeMap, _linux2.default);
+    } else if (isMac && (isSafari || isChrome)) {
+      Ember.assign(codeMap, _macSafariAndChrome.default);
+    }
+
+    return codeMap;
+  }
+});
+;define('ember-keyboard/utils/get-cmd-key', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  exports.default = function (platform) {
+    if (typeof FastBoot === 'undefined') {
+      if (platform === undefined) {
+        platform = navigator.platform;
+      }
+      if (platform.indexOf('Mac') > -1) {
+        return 'meta';
+      } else {
+        return 'ctrl';
+      }
+    }
+  };
+});
+;define('ember-keyboard/utils/get-code', ['exports', 'ember-keyboard/fixtures/code-map'], function (exports, _codeMap) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getCode;
+  function getCode(event) {
+    return event.code || _codeMap.default[event.keyCode];
+  }
+});
+;define('ember-keyboard/utils/get-key-code', ['exports', 'ember-keyboard/fixtures/code-map'], function (exports, _codeMap) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getKeyCode;
+  function getKeyCode(key) {
+    return Object.keys(_codeMap.default).filter(function (keyCode) {
+      return _codeMap.default[keyCode] === key;
+    })[0];
+  }
+});
+;define('ember-keyboard/utils/get-mouse-code', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getMouseName;
+  function getMouseName(buttonCode) {
+    if (Ember.isNone(buttonCode)) return;
+
+    switch (buttonCode) {
+      case 'left':
+        return 0;
+      case 'middle':
+        return 1;
+      case 'right':
+        return 2;
+    }
+  }
+});
+;define('ember-keyboard/utils/get-mouse-name', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = getMouseName;
+  function getMouseName(buttonCode) {
+    if (Ember.isNone(buttonCode)) return;
+
+    switch (buttonCode) {
+      case 0:
+        return 'left';
+      case 1:
+        return 'middle';
+      case 2:
+        return 'right';
+    }
+  }
+});
+;define('ember-keyboard/utils/handle-key-event', ['exports', 'ember-keyboard/utils/get-mouse-name', 'ember-keyboard/utils/get-code', 'ember-keyboard/utils/listener-name'], function (exports, _getMouseName, _getCode, _listenerName3) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.handleKeyEventWithPropagation = handleKeyEventWithPropagation;
+  exports.handleKeyEventWithLaxPriorities = handleKeyEventWithLaxPriorities;
+
+
+  function gatherKeys(event) {
+    var key = (0, _getCode.default)(event);
+    var mouseButton = (0, _getMouseName.default)(event.button);
+    var primaryEvent = [];
+
+    if (Ember.isPresent(key)) primaryEvent.push(key);
+    if (Ember.isPresent(mouseButton)) primaryEvent.push(mouseButton);
+
+    return ['alt', 'ctrl', 'meta', 'shift'].reduce(function (keys, keyName) {
+      if (event[keyName + 'Key']) {
+        keys.push(keyName);
+      }
+
+      return keys;
+    }, primaryEvent);
+  }
+
+  function handleKeyEventWithPropagation(event, _ref) {
+    var firstResponders = _ref.firstResponders,
+        normalResponders = _ref.normalResponders;
+
+    var keys = gatherKeys(event);
+    var listenerNames = [(0, _listenerName3.default)(event.type, keys), (0, _listenerName3.default)(event.type)];
+
+    var isImmediatePropagationStopped = false;
+    var isPropagationStopped = false;
+    var ekEvent = {
+      stopImmediatePropagation: function stopImmediatePropagation() {
+        isImmediatePropagationStopped = true;
+      },
+      stopPropagation: function stopPropagation() {
+        isPropagationStopped = true;
+      }
+    };
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = firstResponders[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var responder = _step.value;
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = listenerNames[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var _listenerName = _step3.value;
+
+            responder.trigger(_listenerName, event, ekEvent);
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+
+        if (isImmediatePropagationStopped) {
+          break;
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    if (isPropagationStopped) {
+      return;
+    }
+
+    isImmediatePropagationStopped = false;
+
+    var previousPriorityLevel = Number.POSITIVE_INFINITY;
+
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = normalResponders[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var _responder = _step2.value;
+
+        var currentPriorityLevel = Number(Ember.get(_responder, 'keyboardPriority'));
+
+        if (isImmediatePropagationStopped && currentPriorityLevel === previousPriorityLevel) {
+          continue;
+        }
+
+        if (currentPriorityLevel < previousPriorityLevel) {
+          if (isPropagationStopped) {
+            return;
+          }
+          isImmediatePropagationStopped = false;
+          previousPriorityLevel = currentPriorityLevel;
+        }
+
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = listenerNames[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var _listenerName2 = _step4.value;
+
+            _responder.trigger(_listenerName2, event, ekEvent);
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
+            }
+          }
+        }
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+  }
+
+  function handleKeyEventWithLaxPriorities(event, sortedResponders) {
+    var currentPriorityLevel = void 0;
+    var noFirstResponders = true;
+    var isLax = true;
+
+    var keys = gatherKeys(event);
+    var listenerNames = [(0, _listenerName3.default)(event.type)];
+
+    if (keys.length > 0) listenerNames.unshift((0, _listenerName3.default)(event.type, keys));
+
+    sortedResponders.every(function (responder) {
+      var keyboardFirstResponder = Ember.get(responder, 'keyboardFirstResponder');
+      var keyboardPriority = Ember.get(responder, 'keyboardPriority');
+
+      if (keyboardFirstResponder || noFirstResponders && keyboardPriority >= currentPriorityLevel || isLax) {
+        if (!Ember.get(responder, 'keyboardLaxPriority')) {
+          isLax = false;
+        }
+
+        if (keyboardFirstResponder) {
+          if (!isLax) {
+            noFirstResponders = false;
+          }
+        } else {
+          currentPriorityLevel = keyboardPriority;
+        }
+
+        listenerNames.forEach(function (triggerName) {
+          if (responder.has(triggerName)) {
+            responder.trigger(triggerName, event);
+          }
+        });
+
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+});
+;define('ember-keyboard/utils/listener-name', ['exports', 'ember-keyboard/utils/get-cmd-key'], function (exports, _getCmdKey) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = listenerName;
+
+
+  function sortedKeys(keyArray) {
+    return keyArray.sort().join('+');
+  }
+
+  function listenerName(type) {
+    var keyArray = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    if (keyArray.indexOf('cmd') > -1) {
+      keyArray[keyArray.indexOf('cmd')] = (0, _getCmdKey.default)();
+    }
+
+    var keys = keyArray.length === 0 ? '_all' : sortedKeys(keyArray);
+
+    return type + ':' + keys;
+  }
+});
+;define('ember-keyboard/utils/trigger-event', ['exports', 'ember-keyboard/utils/get-cmd-key', 'ember-keyboard', 'ember-keyboard/fixtures/modifiers-array'], function (exports, _getCmdKey, _emberKeyboard, _modifiersArray) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.triggerKeyUp = exports.triggerKeyPress = exports.triggerKeyDown = undefined;
+
+  var _slicedToArray = function () {
+    function sliceIterator(arr, i) {
+      var _arr = [];
+      var _n = true;
+      var _d = false;
+      var _e = undefined;
+
+      try {
+        for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+          _arr.push(_s.value);
+
+          if (i && _arr.length === i) break;
+        }
+      } catch (err) {
+        _d = true;
+        _e = err;
+      } finally {
+        try {
+          if (!_n && _i["return"]) _i["return"]();
+        } finally {
+          if (_d) throw _e;
+        }
+      }
+
+      return _arr;
+    }
+
+    return function (arr, i) {
+      if (Array.isArray(arr)) {
+        return arr;
+      } else if (Symbol.iterator in Object(arr)) {
+        return sliceIterator(arr, i);
+      } else {
+        throw new TypeError("Invalid attempt to destructure non-iterable instance");
+      }
+    };
+  }();
+
+  var triggerKeyEvent = function triggerKeyEvent(eventType, rawCode, element) {
+    var event = new Event(eventType);
+    var parts = rawCode.split('+');
+
+    var _parts$filter = parts.filter(function (part) {
+      return !_modifiersArray.default.includes(part);
+    }),
+        _parts$filter2 = _slicedToArray(_parts$filter, 1),
+        code = _parts$filter2[0];
+
+    var modifiers = parts.filter(function (part) {
+      return part !== code;
+    });
+    var properties = modifiers.reduce(function (properties, modifier) {
+      modifier = modifier === 'cmd' ? (0, _getCmdKey.default)() : modifier;
+      properties[modifier + 'Key'] = true;
+
+      return properties;
+    }, {});
+
+    Ember.assign(event, { code: code, keyCode: (0, _emberKeyboard.getKeyCode)(code) }, properties);
+
+    (element || document).dispatchEvent(event);
+  };
+
+  var triggerKeyDown = function triggerKeyDown(code, element) {
+    triggerKeyEvent('keydown', code, element);
+  };
+
+  var triggerKeyPress = function triggerKeyPress(code, element) {
+    triggerKeyEvent('keypress', code, element);
+  };
+
+  var triggerKeyUp = function triggerKeyUp(code, element) {
+    triggerKeyEvent('keyup', code, element);
+  };
+
+  exports.triggerKeyDown = triggerKeyDown;
+  exports.triggerKeyPress = triggerKeyPress;
+  exports.triggerKeyUp = triggerKeyUp;
+});
 ;define('ember-load-initializers/index', ['exports'], function (exports) {
   'use strict';
 
@@ -90099,6 +91272,312 @@ window.matchMedia || (window.matchMedia = function() {
   } : function (obj) {
     return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
+});
+;define('ember-modal-dialog/components/modal-dialog-overlay', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    attributeBindings: ['data-ember-modal-dialog-overlay'],
+    'data-ember-modal-dialog-overlay': true,
+
+    // trigger only when clicking the overlay itself, not its children
+    click: function click(event) {
+      if (event.target === this.get('element')) {
+        this.sendAction();
+      }
+    }
+  });
+});
+;define('ember-modal-dialog/components/modal-dialog', ['exports', 'ember', 'ember-modal-dialog/templates/components/modal-dialog'], function (exports, _ember, _emberModalDialogTemplatesComponentsModalDialog) {
+  var dasherize = _ember['default'].String.dasherize;
+  var $ = _ember['default'].$;
+  var computed = _ember['default'].computed;
+  var inject = _ember['default'].inject;
+  var oneWay = computed.oneWay;
+
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  var computedJoin = function computedJoin(prop) {
+    return computed(prop, function () {
+      return this.get(prop).join(' ');
+    });
+  };
+
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: '',
+    layout: _emberModalDialogTemplatesComponentsModalDialog['default'],
+    modalService: inject.service('modal-dialog'),
+    destinationElementId: oneWay('modalService.destinationElementId'),
+
+    // container-class - set this from templates
+    containerClassNames: ['ember-modal-dialog'], // set this in a subclass definition
+    containerClassNamesString: computedJoin('containerClassNames'),
+
+    // 'overlay-class - set this from templates
+    overlayClassNames: ['ember-modal-overlay'], // set this in a subclass definition
+    overlayClassNamesString: computedJoin('overlayClassNames'),
+
+    // 'wrapper-class - set this from templates
+    wrapperClassNames: ['ember-modal-wrapper'], // set this in a subclass definition
+    wrapperClassNamesString: computedJoin('wrapperClassNames'),
+
+    concatenatedProperties: ['containerClassNames', 'overlayClassNames', 'wrapperClassNames'],
+
+    targetAttachmentClass: computed('targetAttachment', function () {
+      var targetAttachment = this.get('targetAttachment') || '';
+      // Convert tether-styled values like 'middle right' to 'right'
+      targetAttachment = targetAttachment.split(' ').slice(-1)[0];
+      return 'ember-modal-dialog-target-attachment-' + dasherize(targetAttachment);
+    }),
+
+    target: 'body', // element, css selector, or view instance
+    targetAttachment: 'middle center',
+
+    translucentOverlay: false,
+    clickOutsideToClose: false,
+    renderInPlace: false,
+
+    makeOverlayClickableOnIOS: _ember['default'].on('didInsertElement', function () {
+      if (isIOS) {
+        _ember['default'].$('div[data-ember-modal-dialog-overlay]').css('cursor', 'pointer');
+      }
+    }),
+
+    didInsertElement: function didInsertElement() {
+      var _this = this;
+
+      if (!this.get('clickOutsideToClose')) {
+        return;
+      }
+
+      var handleClick = function handleClick(event) {
+        if (!$(event.target).closest('.ember-modal-dialog').length) {
+          _this.send('close');
+        }
+      };
+      var registerClick = function registerClick() {
+        return $(document).on('click.ember-modal-dialog', handleClick);
+      };
+
+      // setTimeout needed or else the click handler will catch the click that spawned this modal dialog
+      setTimeout(registerClick);
+      this._super.apply(this, arguments);
+    },
+    willDestroyElement: function willDestroyElement() {
+      $(document).off('click.ember-modal-dialog');
+      this._super.apply(this, arguments);
+    },
+
+    actions: {
+      close: function close() {
+        this.sendAction('close');
+      }
+    }
+  });
+});
+;define('ember-modal-dialog/components/positioned-container', ['exports', 'ember'], function (exports, _ember) {
+  var computed = _ember['default'].computed;
+  var observer = _ember['default'].observer;
+  var on = _ember['default'].on;
+  var capitalize = _ember['default'].String.capitalize;
+
+  var SUPPORTED_TARGET_ATTACHMENTS = ['top', 'right', 'bottom', 'left', 'center', 'none'];
+
+  exports['default'] = _ember['default'].Component.extend({
+
+    // target - element selector, element, or Ember View
+    // targetAttachment - top, right, bottom, left, center, or none
+    //   left, right, top, bottom (relative to target)
+    //   center (relative to container)
+    targetAttachment: 'center',
+
+    isPositioned: computed('targetAttachment', 'target', 'renderInPlace', function () {
+      if (this.get('renderInPlace')) {
+        return false;
+      }
+      if (this.get('target') && this.get('targetAttachment')) {
+        return true;
+      }
+      var targetAttachment = this.get('targetAttachment');
+      return targetAttachment === 'center' || targetAttachment === 'middle center';
+    }),
+
+    didGetPositioned: observer('isPositioned', on('didInsertElement', function () {
+      if (this._state !== 'inDOM') {
+        return;
+      }
+
+      if (this.get('isPositioned')) {
+        this.updateTargetAttachment();
+      } else {
+        this.$().css('left', '').css('top', '');
+      }
+    })),
+
+    getWrappedTargetAttachmentElement: function getWrappedTargetAttachmentElement() {
+      var target = this.get('target');
+      if (!target) {
+        return null;
+      }
+
+      if (_ember['default'].typeOf(target) === 'string') {
+        var targetSelector = target;
+        var wrappedElement = _ember['default'].$(targetSelector).eq(0);
+        _ember['default'].assert('No element found for modal-dialog\'s target selector \'' + targetSelector + '\'.', wrappedElement);
+        return wrappedElement;
+      }
+
+      // passed an ember view or component
+      if (target.element) {
+        return _ember['default'].$(target.element);
+      }
+
+      // passed an element directly
+      return _ember['default'].$(target);
+    },
+
+    updateTargetAttachment: function updateTargetAttachment() {
+      var targetAttachment = this.get('targetAttachment');
+      // Convert tether-styled values like 'middle right' to 'right'
+      targetAttachment = targetAttachment.split(' ').slice(-1)[0];
+      _ember['default'].assert('Positioned container supports targetAttachments of ' + SUPPORTED_TARGET_ATTACHMENTS.join(', '), SUPPORTED_TARGET_ATTACHMENTS.indexOf(targetAttachment) > -1);
+      var targetAttachmentMethod = 'align' + capitalize(targetAttachment);
+      var targetAttachmentElement = this.getWrappedTargetAttachmentElement();
+
+      this[targetAttachmentMethod](targetAttachmentElement);
+    },
+
+    alignCenter: function alignCenter() {
+      var elementWidth = this.$().outerWidth();
+      var elementHeight = this.$().outerHeight();
+
+      this.$().css('left', '50%').css('top', '50%').css('margin-left', elementWidth * -0.5).css('margin-top', elementHeight * -0.5);
+    },
+
+    alignLeft: function alignLeft(targetAttachmentElement) {
+      _ember['default'].assert('Left targetAttachment requires a target', targetAttachmentElement.length > 0);
+
+      var elementWidth = this.$().outerWidth();
+      var originOffset = targetAttachmentElement.offset();
+      var originOffsetTop = originOffset.top - _ember['default'].$(window).scrollTop();
+
+      this.$().css('left', originOffset.left - elementWidth).css('top', originOffsetTop);
+    },
+
+    alignRight: function alignRight(targetAttachmentElement) {
+      _ember['default'].assert('Right targetAttachment requires a target', targetAttachmentElement.length > 0);
+
+      var targetWidth = targetAttachmentElement.outerWidth();
+      var originOffset = targetAttachmentElement.offset();
+      var originOffsetTop = originOffset.top - _ember['default'].$(window).scrollTop();
+
+      this.$().css('left', originOffset.left + targetWidth).css('top', originOffsetTop);
+    },
+
+    alignTop: function alignTop(targetAttachmentElement) {
+      _ember['default'].assert('Top targetAttachment requires a target', targetAttachmentElement.length > 0);
+
+      var elementWidth = this.$().outerWidth();
+      var elementHeight = this.$().outerHeight();
+      var originOffset = targetAttachmentElement.offset();
+      var originOffsetTop = originOffset.top - _ember['default'].$(window).scrollTop();
+      var targetWidth = targetAttachmentElement.outerWidth();
+
+      this.$().css('left', originOffset.left + targetWidth / 2 - elementWidth / 2).css('top', originOffsetTop - elementHeight);
+    },
+
+    alignBottom: function alignBottom(targetAttachmentElement) {
+      _ember['default'].assert('Bottom targetAttachment requires a target', targetAttachmentElement.length > 0);
+
+      var elementWidth = this.$().outerWidth();
+      var originOffset = targetAttachmentElement.offset();
+      var originOffsetTop = originOffset.top - _ember['default'].$(window).scrollTop();
+      var targetWidth = targetAttachmentElement.outerWidth();
+      var targetHeight = targetAttachmentElement.outerHeight();
+
+      this.$().css('left', originOffset.left + targetWidth / 2 - elementWidth / 2).css('top', originOffsetTop + targetHeight);
+    },
+
+    alignNone: function alignNone() {}
+  });
+});
+;define('ember-modal-dialog/components/tether-dialog', ['exports', 'ember', 'ember-modal-dialog/components/modal-dialog', 'ember-modal-dialog/templates/components/tether-dialog'], function (exports, _ember, _emberModalDialogComponentsModalDialog, _emberModalDialogTemplatesComponentsTetherDialog) {
+  var dasherize = _ember['default'].String.dasherize;
+  var computed = _ember['default'].computed;
+  var get = _ember['default'].get;
+
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  exports['default'] = _emberModalDialogComponentsModalDialog['default'].extend({
+    layout: _emberModalDialogTemplatesComponentsTetherDialog['default'],
+
+    targetAttachmentClass: computed('targetAttachment', function () {
+      var targetAttachment = this.get('targetAttachment') || '';
+      return 'ember-modal-dialog-target-attachment-' + dasherize(targetAttachment);
+    }),
+
+    targetAttachment: 'middle center',
+    attachment: 'middle center',
+    hasOverlay: true,
+    target: 'viewport', // element, css selector, view instance, 'viewport', or 'scroll-handle'
+
+    tetherClassPrefix: 'ember-tether',
+    // offset - passed in
+    // targetOffset - passed in
+    // targetModifier - passed in
+
+    makeOverlayClickableOnIOS: _ember['default'].on('didInsertElement', function () {
+      if (isIOS && get(this, 'hasOverlay')) {
+        _ember['default'].$('div[data-ember-modal-dialog-overlay]').css('cursor', 'pointer');
+      }
+    })
+
+  });
+});
+;define('ember-modal-dialog/initializers/add-modals-container', ['exports'], function (exports) {
+  /*globals document */
+  var hasDOM = typeof document !== 'undefined';
+
+  function appendContainerElement(rootElementId, id) {
+    if (!hasDOM) {
+      return;
+    }
+
+    if (document.getElementById(id)) {
+      return;
+    }
+
+    var rootEl = document.querySelector(rootElementId);
+    var modalContainerEl = document.createElement('div');
+    modalContainerEl.id = id;
+    rootEl.appendChild(modalContainerEl);
+  }
+
+  exports['default'] = function () {
+    var application = arguments[1] || arguments[0];
+    var emberModalDialog = application.emberModalDialog || {};
+    var modalContainerElId = emberModalDialog.modalRootElementId || 'modal-overlays';
+
+    application.register('config:modals-container-id', modalContainerElId, { instantiate: false });
+
+    application.inject('service:modal-dialog', 'destinationElementId', 'config:modals-container-id');
+
+    appendContainerElement(application.rootElement, modalContainerElId);
+  };
+});
+;define('ember-modal-dialog/services/modal-dialog', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Service.extend({
+    // destinationElementId - injected
+  });
+});
+;define("ember-modal-dialog/templates/components/modal-dialog", ["exports"], function (exports) {
+  "use strict";
+
+  exports.__esModule = true;
+  exports.default = Ember.HTMLBars.template({ "id": "gJiwOPxH", "block": "{\"statements\":[[6,[\"ember-wormhole\"],null,[[\"to\",\"renderInPlace\"],[[28,[\"destinationElementId\"]],[28,[\"renderInPlace\"]]]],{\"statements\":[[0,\"  \"],[11,\"div\",[]],[16,\"class\",[34,[[26,[\"wrapperClassNamesString\"]],\" \",[26,[\"wrapper-class\"]]]]],[13],[0,\"\\n\"],[6,[\"modal-dialog-overlay\"],null,[[\"action\",\"class\"],[\"close\",[33,[\"concat\"],[[33,[\"if\"],[[28,[\"overlayClassNamesString\"]],[33,[\"-normalize-class\"],[\"overlayClassNamesString\",[28,[\"overlayClassNamesString\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"translucentOverlay\"]],\"translucent\"],null],\" \",[33,[\"if\"],[[28,[\"overlay-class\"]],[33,[\"-normalize-class\"],[\"overlay-class\",[28,[\"overlay-class\"]]],null]],null],\" \"],null]]],{\"statements\":[[6,[\"ember-modal-dialog-positioned-container\"],null,[[\"targetAttachment\",\"target\",\"class\"],[[28,[\"targetAttachment\"]],[28,[\"target\"]],[33,[\"concat\"],[[33,[\"if\"],[[28,[\"containerClassNamesString\"]],[33,[\"-normalize-class\"],[\"containerClassNamesString\",[28,[\"containerClassNamesString\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"targetAttachmentClass\"]],[33,[\"-normalize-class\"],[\"targetAttachmentClass\",[28,[\"targetAttachmentClass\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"container-class\"]],[33,[\"-normalize-class\"],[\"container-class\",[28,[\"container-class\"]]],null]],null],\" \"],null]]],{\"statements\":[[0,\"        \"],[18,\"default\"],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"  \"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[],\"named\":[],\"yields\":[\"default\"],\"hasPartials\":false}", "meta": { "moduleName": "ember-modal-dialog/templates/components/modal-dialog.hbs" } });
+});
+;define("ember-modal-dialog/templates/components/tether-dialog", ["exports"], function (exports) {
+  "use strict";
+
+  exports.__esModule = true;
+  exports.default = Ember.HTMLBars.template({ "id": "WVFefeB6", "block": "{\"statements\":[[6,[\"ember-wormhole\"],null,[[\"to\",\"renderInPlace\"],[[28,[\"destinationElementId\"]],[28,[\"renderInPlace\"]]]],{\"statements\":[[6,[\"if\"],[[28,[\"hasOverlay\"]]],null,{\"statements\":[[0,\"    \"],[1,[33,[\"modal-dialog-overlay\"],null,[[\"action\",\"class\"],[\"close\",[33,[\"concat\"],[[33,[\"if\"],[[28,[\"overlayClassNamesString\"]],[33,[\"-normalize-class\"],[\"overlayClassNamesString\",[28,[\"overlayClassNamesString\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"translucentOverlay\"]],\"translucent\"],null],\" \",[33,[\"if\"],[[28,[\"overlay-class\"]],[33,[\"-normalize-class\"],[\"overlay-class\",[28,[\"overlay-class\"]]],null]],null],\" \"],null]]]],false],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},null],[6,[\"if\"],[[28,[\"renderInPlace\"]]],null,{\"statements\":[[6,[\"ember-modal-dialog-positioned-container\"],null,[[\"targetAttachment\",\"target\",\"renderInPlace\",\"class\"],[[28,[\"targetAttachment\"]],[28,[\"target\"]],[28,[\"renderInPlace\"]],[33,[\"concat\"],[[33,[\"if\"],[[28,[\"containerClassNamesString\"]],[33,[\"-normalize-class\"],[\"containerClassNamesString\",[28,[\"containerClassNamesString\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"targetAttachmentClass\"]],[33,[\"-normalize-class\"],[\"targetAttachmentClass\",[28,[\"targetAttachmentClass\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"container-class\"]],[33,[\"-normalize-class\"],[\"container-class\",[28,[\"container-class\"]]],null]],null],\" \"],null]]],{\"statements\":[[0,\"    \"],[18,\"default\"],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"ember-tether\"],null,[[\"target\",\"attachment\",\"targetAttachment\",\"targetModifier\",\"classPrefix\",\"offset\",\"targetOffset\",\"constraints\",\"class\"],[[28,[\"target\"]],[28,[\"attachment\"]],[28,[\"targetAttachment\"]],[28,[\"targetModifier\"]],[28,[\"tetherClassPrefix\"]],[28,[\"offset\"]],[28,[\"targetOffset\"]],[28,[\"constraints\"]],[33,[\"concat\"],[[33,[\"if\"],[[28,[\"containerClassNamesString\"]],[33,[\"-normalize-class\"],[\"containerClassNamesString\",[28,[\"containerClassNamesString\"]]],null]],null],\" \",[33,[\"if\"],[[28,[\"container-class\"]],[33,[\"-normalize-class\"],[\"container-class\",[28,[\"container-class\"]]],null]],null],\" \"],null]]],{\"statements\":[[0,\"    \"],[18,\"default\"],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]}]],\"locals\":[],\"named\":[],\"yields\":[\"default\"],\"hasPartials\":false}", "meta": { "moduleName": "ember-modal-dialog/templates/components/tether-dialog.hbs" } });
 });
 ;define('ember-moment/computeds/-base', ['exports', 'ember-macro-helpers/computed-unsafe'], function (exports, _computedUnsafe) {
   'use strict';
@@ -91635,6 +93114,64 @@ window.matchMedia || (window.matchMedia = function() {
     };
   };
 });
+;define('ember-new-computed/index', ['exports', 'ember', 'ember-new-computed/utils/can-use-new-syntax'], function (exports, _ember, _emberNewComputedUtilsCanUseNewSyntax) {
+  exports['default'] = newComputed;
+  var computed = _ember['default'].computed;
+
+  function newComputed() {
+    var polyfillArguments = [];
+    var config = arguments[arguments.length - 1];
+
+    if (typeof config === 'function' || _emberNewComputedUtilsCanUseNewSyntax['default']) {
+      return computed.apply(undefined, arguments);
+    }
+
+    for (var i = 0, l = arguments.length - 1; i < l; i++) {
+      polyfillArguments.push(arguments[i]);
+    }
+
+    var func;
+    if (config.set) {
+      func = function (key, value) {
+        if (arguments.length > 1) {
+          return config.set.call(this, key, value);
+        } else {
+          return config.get.call(this, key);
+        }
+      };
+    } else {
+      func = function (key) {
+        return config.get.call(this, key);
+      };
+    }
+
+    polyfillArguments.push(func);
+
+    return computed.apply(undefined, polyfillArguments);
+  }
+
+  var getKeys = Object.keys || _ember['default'].keys;
+  var computedKeys = getKeys(computed);
+
+  for (var i = 0, l = computedKeys.length; i < l; i++) {
+    newComputed[computedKeys[i]] = computed[computedKeys[i]];
+  }
+});
+;define('ember-new-computed/utils/can-use-new-syntax', ['exports', 'ember'], function (exports, _ember) {
+  var supportsSetterGetter;
+
+  try {
+    _ember['default'].computed({
+      set: function set() {},
+      get: function get() {}
+    });
+    supportsSetterGetter = true;
+  } catch (e) {
+    supportsSetterGetter = false;
+  }
+
+  exports['default'] = supportsSetterGetter;
+});
 ;define('ember-popper/components/ember-popper-base', ['exports', 'ember-popper/templates/components/ember-popper', 'ember-raf-scheduler'], function (exports, _emberPopper, _emberRafScheduler) {
   'use strict';
 
@@ -92015,6 +93552,111 @@ window.matchMedia || (window.matchMedia = function() {
 
   exports.__esModule = true;
   exports.default = Ember.HTMLBars.template({ "id": "Jb75+Fcv", "block": "{\"statements\":[[6,[\"if\"],[[28,[\"renderInPlace\"]]],null,{\"statements\":[[0,\"  \"],[11,\"div\",[]],[16,\"id\",[26,[\"id\"]],null],[16,\"class\",[26,[\"class\"]],null],[16,\"hidden\",[26,[\"hidden\"]],null],[16,\"role\",[26,[\"ariaRole\"]],null],[13],[0,\"\\n    \"],[18,\"default\",[[33,[\"hash\"],null,[[\"disableEventListeners\",\"enableEventListeners\",\"scheduleUpdate\",\"update\"],[[33,[\"action\"],[[28,[null]],\"disableEventListeners\"],null],[33,[\"action\"],[[28,[null]],\"enableEventListeners\"],null],[33,[\"action\"],[[28,[null]],\"scheduleUpdate\"],null],[33,[\"action\"],[[28,[null]],\"update\"],null]]]]]],[0,\"\\n  \"],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[6,[\"-in-element\"],[[28,[\"_popperContainer\"]]],null,{\"statements\":[[0,\"  \"],[11,\"div\",[]],[16,\"id\",[26,[\"id\"]],null],[16,\"class\",[26,[\"class\"]],null],[16,\"hidden\",[26,[\"hidden\"]],null],[16,\"role\",[26,[\"ariaRole\"]],null],[13],[0,\"\\n    \"],[18,\"default\",[[33,[\"hash\"],null,[[\"disableEventListeners\",\"enableEventListeners\",\"scheduleUpdate\",\"update\"],[[33,[\"action\"],[[28,[null]],\"disableEventListeners\"],null],[33,[\"action\"],[[28,[null]],\"enableEventListeners\"],null],[33,[\"action\"],[[28,[null]],\"scheduleUpdate\"],null],[33,[\"action\"],[[28,[null]],\"update\"],null]]]]]],[0,\"\\n  \"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]}]],\"locals\":[],\"named\":[],\"yields\":[\"default\"],\"hasPartials\":false}", "meta": { "moduleName": "ember-popper/templates/components/ember-popper.hbs" } });
+});
+;define('ember-radio-button/components/labeled-radio-button', ['exports', 'ember'], function (exports, _ember) {
+
+  var computed = _ember['default'].computed;
+
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: 'label',
+    attributeBindings: ['for'],
+    classNameBindings: ['checked'],
+    classNames: ['ember-radio-button'],
+    defaultLayout: null, // ie8 support
+
+    checked: computed('groupValue', 'value', function () {
+      return this.get('groupValue') === this.get('value');
+    }).readOnly(),
+
+    'for': computed.readOnly('radioId'),
+
+    actions: {
+      innerRadioChanged: function innerRadioChanged(value) {
+        this.sendAction('changed', value);
+      }
+    }
+  });
+});
+;define('ember-radio-button/components/radio-button-input', ['exports', 'ember'], function (exports, _ember) {
+
+  var computed = _ember['default'].computed;
+
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: 'input',
+    type: 'radio',
+
+    // value - required
+    // groupValue - required
+
+    // disabled - optional
+    // name - optional
+    // required - optional
+    // radioClass - string
+    // radioId - string
+
+    defaultLayout: null, // ie8 support
+
+    attributeBindings: ['checked', 'disabled', 'name', 'required', 'type', 'value'],
+
+    checked: computed('groupValue', 'value', function () {
+      return this.get('groupValue') === this.get('value');
+    }).readOnly(),
+
+    sendChangedAction: function sendChangedAction() {
+      this.sendAction('changed', this.get('value'));
+    },
+
+    change: function change() {
+      var value = this.get('value');
+      var groupValue = this.get('groupValue');
+
+      if (groupValue !== value) {
+        this.set('groupValue', value); // violates DDAU
+        _ember['default'].run.once(this, 'sendChangedAction');
+      }
+    }
+  });
+});
+;define('ember-radio-button/components/radio-button', ['exports', 'ember'], function (exports, _ember) {
+
+  var computed = _ember['default'].computed;
+
+  exports['default'] = _ember['default'].Component.extend({
+    tagName: '',
+    // value - passed in, required, the value for this radio button
+    // groupValue - passed in, required, the currently selected value
+
+    // optionally passed in:
+    // disabled - boolean
+    // required - boolean
+    // name - string
+    // radioClass - string
+    // radioId - string
+
+    // polyfill hasBlock for ember versions < 1.13
+    hasBlock: computed.bool('template').readOnly(),
+
+    joinedClassNames: computed('classNames', function () {
+      var classNames = this.get('classNames');
+      if (classNames && classNames.length && classNames.join) {
+        return classNames.join(' ');
+      }
+      return classNames;
+    }),
+
+    // is this needed here or just on radio-button-input?
+    defaultLayout: null, // ie8 support
+
+    checked: computed('groupValue', 'value', function () {
+      return this.get('groupValue') === this.get('value');
+    }).readOnly(),
+
+    actions: {
+      changed: function changed(newValue) {
+        this.sendAction('changed', newValue);
+      }
+    }
+  });
 });
 ;define('ember-raf-scheduler/index', ['exports'], function (exports) {
   'use strict';
@@ -92767,6 +94409,196 @@ define("ember-resolver/features", [], function () {
     return cache;
   }
 });
+;define('ember-truth-helpers/helpers/and', ['exports', 'ember-truth-helpers/utils/truth-convert'], function (exports, _emberTruthHelpersUtilsTruthConvert) {
+  exports.andHelper = andHelper;
+
+  function andHelper(params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      if ((0, _emberTruthHelpersUtilsTruthConvert['default'])(params[i]) === false) {
+        return params[i];
+      }
+    }
+    return params[params.length - 1];
+  }
+});
+;define("ember-truth-helpers/helpers/equal", ["exports"], function (exports) {
+  exports.equalHelper = equalHelper;
+
+  function equalHelper(params) {
+    return params[0] === params[1];
+  }
+});
+;define('ember-truth-helpers/helpers/gt', ['exports'], function (exports) {
+  exports.gtHelper = gtHelper;
+
+  function gtHelper(params, hash) {
+    var left = params[0];
+    var right = params[1];
+    if (hash.forceNumber) {
+      if (typeof left !== 'number') {
+        left = Number(left);
+      }
+      if (typeof right !== 'number') {
+        right = Number(right);
+      }
+    }
+    return left > right;
+  }
+});
+;define('ember-truth-helpers/helpers/gte', ['exports'], function (exports) {
+  exports.gteHelper = gteHelper;
+
+  function gteHelper(params, hash) {
+    var left = params[0];
+    var right = params[1];
+    if (hash.forceNumber) {
+      if (typeof left !== 'number') {
+        left = Number(left);
+      }
+      if (typeof right !== 'number') {
+        right = Number(right);
+      }
+    }
+    return left >= right;
+  }
+});
+;define('ember-truth-helpers/helpers/is-array', ['exports', 'ember'], function (exports, _ember) {
+  exports.isArrayHelper = isArrayHelper;
+
+  function isArrayHelper(params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      if (_ember['default'].isArray(params[i]) === false) {
+        return false;
+      }
+    }
+    return true;
+  }
+});
+;define('ember-truth-helpers/helpers/lt', ['exports'], function (exports) {
+  exports.ltHelper = ltHelper;
+
+  function ltHelper(params, hash) {
+    var left = params[0];
+    var right = params[1];
+    if (hash.forceNumber) {
+      if (typeof left !== 'number') {
+        left = Number(left);
+      }
+      if (typeof right !== 'number') {
+        right = Number(right);
+      }
+    }
+    return left < right;
+  }
+});
+;define('ember-truth-helpers/helpers/lte', ['exports'], function (exports) {
+  exports.lteHelper = lteHelper;
+
+  function lteHelper(params, hash) {
+    var left = params[0];
+    var right = params[1];
+    if (hash.forceNumber) {
+      if (typeof left !== 'number') {
+        left = Number(left);
+      }
+      if (typeof right !== 'number') {
+        right = Number(right);
+      }
+    }
+    return left <= right;
+  }
+});
+;define("ember-truth-helpers/helpers/not-equal", ["exports"], function (exports) {
+  exports.notEqualHelper = notEqualHelper;
+
+  function notEqualHelper(params) {
+    return params[0] !== params[1];
+  }
+});
+;define('ember-truth-helpers/helpers/not', ['exports', 'ember-truth-helpers/utils/truth-convert'], function (exports, _emberTruthHelpersUtilsTruthConvert) {
+  exports.notHelper = notHelper;
+
+  function notHelper(params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      if ((0, _emberTruthHelpersUtilsTruthConvert['default'])(params[i]) === true) {
+        return false;
+      }
+    }
+    return true;
+  }
+});
+;define('ember-truth-helpers/helpers/or', ['exports', 'ember-truth-helpers/utils/truth-convert'], function (exports, _emberTruthHelpersUtilsTruthConvert) {
+  exports.orHelper = orHelper;
+
+  function orHelper(params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      if ((0, _emberTruthHelpersUtilsTruthConvert['default'])(params[i]) === true) {
+        return params[i];
+      }
+    }
+    return params[params.length - 1];
+  }
+});
+;define('ember-truth-helpers/helpers/xor', ['exports', 'ember-truth-helpers/utils/truth-convert'], function (exports, _emberTruthHelpersUtilsTruthConvert) {
+  exports.xorHelper = xorHelper;
+
+  function xorHelper(params) {
+    return (0, _emberTruthHelpersUtilsTruthConvert['default'])(params[0]) !== (0, _emberTruthHelpersUtilsTruthConvert['default'])(params[1]);
+  }
+});
+;define('ember-truth-helpers/utils/register-helper', ['exports', 'ember'], function (exports, _ember) {
+	exports.registerHelper = registerHelper;
+
+	function registerHelperIteration1(name, helperFunction) {
+		//earlier versions of ember with htmlbars used this
+		_ember['default'].HTMLBars.helpers[name] = _ember['default'].HTMLBars.makeBoundHelper(helperFunction);
+	}
+
+	function registerHelperIteration2(name, helperFunction) {
+		//registerHelper has been made private as _registerHelper
+		//this is kept here if anyone is using it
+		_ember['default'].HTMLBars.registerHelper(name, _ember['default'].HTMLBars.makeBoundHelper(helperFunction));
+	}
+
+	function registerHelperIteration3(name, helperFunction) {
+		//latest versin of ember uses this
+		_ember['default'].HTMLBars._registerHelper(name, _ember['default'].HTMLBars.makeBoundHelper(helperFunction));
+	}
+
+	function registerHelper(name, helperFunction) {
+		// Do not register helpers from Ember 1.13 onwards, starting from 1.13 they
+		// will be auto-discovered.
+		if (_ember['default'].Helper) {
+			return;
+		}
+
+		if (_ember['default'].HTMLBars._registerHelper) {
+			if (_ember['default'].HTMLBars.helpers) {
+				registerHelperIteration1(name, helperFunction);
+			} else {
+				registerHelperIteration3(name, helperFunction);
+			}
+		} else if (_ember['default'].HTMLBars.registerHelper) {
+			registerHelperIteration2(name, helperFunction);
+		}
+	}
+});
+;define('ember-truth-helpers/utils/truth-convert', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = truthConvert;
+
+  function truthConvert(result) {
+    var truthy = result && _ember['default'].get(result, 'isTruthy');
+    if (typeof truthy === 'boolean') {
+      return truthy;
+    }
+
+    if (_ember['default'].isArray(result)) {
+      return _ember['default'].get(result, 'length') !== 0;
+    } else {
+      return !!result;
+    }
+  }
+});
 ;define('ember-welcome-page/components/welcome-page', ['exports', 'ember-welcome-page/templates/components/welcome-page'], function (exports, _welcomePage) {
   'use strict';
 
@@ -92830,6 +94662,85 @@ define("ember-resolver/features", [], function () {
 
   exports.__esModule = true;
   exports.default = Ember.HTMLBars.template({ "id": "zXwqwldc", "block": "{\"statements\":[[11,\"div\",[]],[15,\"id\",\"ember-welcome-page-id-selector\"],[16,\"data-ember-version\",[34,[[26,[\"emberVersion\"]]]]],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"columns\"],[13],[0,\"\\n    \"],[11,\"div\",[]],[15,\"class\",\"tomster\"],[13],[0,\"\\n      \"],[11,\"img\",[]],[15,\"src\",\"ember-welcome-page/images/construction.png\"],[15,\"alt\",\"Under construction\"],[13],[14],[0,\"\\n    \"],[14],[0,\"\\n    \"],[11,\"div\",[]],[15,\"class\",\"welcome\"],[13],[0,\"\\n      \"],[11,\"h2\",[]],[15,\"id\",\"title\"],[13],[0,\"Congratulations, you made it!\"],[14],[0,\"\\n\\n      \"],[11,\"p\",[]],[13],[0,\"You’ve officially spun up your very first Ember app :-)\"],[14],[0,\"\\n      \"],[11,\"p\",[]],[13],[0,\"You’ve got one more decision to make: what do you want to do next? We’d suggest one of the following to help you get going:\"],[14],[0,\"\\n      \"],[11,\"ol\",[]],[13],[0,\"\\n        \"],[11,\"li\",[]],[13],[11,\"a\",[]],[16,\"href\",[34,[\"https://guides.emberjs.com/v\",[26,[\"emberVersion\"]],\"/getting-started/quick-start/\"]]],[13],[0,\"Quick Start\"],[14],[0,\" - a quick introduction to how Ember works. Learn about defining your first route, writing a UI component and deploying your application.\"],[14],[0,\"\\n        \"],[11,\"li\",[]],[13],[11,\"a\",[]],[16,\"href\",[34,[\"https://guides.emberjs.com/v\",[26,[\"emberVersion\"]],\"/tutorial/ember-cli/\"]]],[13],[0,\"Ember Guides\"],[14],[0,\" - this is our more thorough, hands-on intro to Ember. Your crash course in Ember philosophy, background and some in-depth discussion of how things work (and why they work the way they do).\"],[14],[0,\"\\n      \"],[14],[0,\"\\n      \"],[11,\"p\",[]],[13],[0,\"If you run into problems, you can check \"],[11,\"a\",[]],[15,\"href\",\"http://stackoverflow.com/questions/tagged/ember.js\"],[13],[0,\"Stack Overflow\"],[14],[0,\" or \"],[11,\"a\",[]],[15,\"href\",\"http://discuss.emberjs.com/\"],[13],[0,\"our forums\"],[14],[0,\"  for ideas and answers—someone’s probably been through the same thing and already posted an answer.  If not, you can post your \"],[11,\"strong\",[]],[13],[0,\"own\"],[14],[0,\" question. People love to help new Ember developers get started, and our \"],[11,\"a\",[]],[15,\"href\",\"https://emberjs.com/community/\"],[13],[0,\"Ember Community\"],[14],[0,\" is incredibly supportive.\"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n    \"],[11,\"p\",[]],[15,\"class\",\"postscript\"],[13],[0,\"To remove this welcome message, remove the \"],[11,\"code\",[]],[13],[0,\"{{welcome-page}}\"],[14],[0,\" component from your \"],[11,\"code\",[]],[13],[0,\"application.hbs\"],[14],[0,\" file.\"],[11,\"br\",[]],[13],[14],[0,\"You'll see this page update soon after!\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "ember-welcome-page/templates/components/welcome-page.hbs" } });
+});
+;define('ember-wormhole/components/ember-wormhole', ['exports', 'ember'], function (exports, _ember) {
+
+  var computed = _ember['default'].computed;
+  var observer = _ember['default'].observer;
+  var run = _ember['default'].run;
+
+  exports['default'] = _ember['default'].Component.extend({
+    to: computed.alias('destinationElementId'),
+    destinationElementId: null,
+    destinationElement: computed('destinationElementId', 'renderInPlace', function () {
+      return this.get('renderInPlace') ? this.element : document.getElementById(this.get('destinationElementId'));
+    }),
+    renderInPlace: false,
+
+    didInsertElement: function didInsertElement() {
+      this._super.apply(this, arguments);
+      this._firstNode = this.element.firstChild;
+      this._lastNode = this.element.lastChild;
+      this.appendToDestination();
+    },
+
+    willDestroyElement: function willDestroyElement() {
+      var _this = this;
+
+      this._super.apply(this, arguments);
+      var firstNode = this._firstNode;
+      var lastNode = this._lastNode;
+      run.schedule('render', function () {
+        _this.removeRange(firstNode, lastNode);
+      });
+    },
+
+    destinationDidChange: observer('destinationElement', function () {
+      var destinationElement = this.get('destinationElement');
+      if (destinationElement !== this._firstNode.parentNode) {
+        run.schedule('render', this, 'appendToDestination');
+      }
+    }),
+
+    appendToDestination: function appendToDestination() {
+      var destinationElement = this.get('destinationElement');
+      var currentActiveElement = document.activeElement;
+      if (!destinationElement) {
+        var destinationElementId = this.get('destinationElementId');
+        if (destinationElementId) {
+          throw new Error('ember-wormhole failed to render into \'#' + this.get('destinationElementId') + '\' because the element is not in the DOM');
+        }
+        throw new Error('ember-wormhole failed to render content because the destinationElementId was set to an undefined or falsy value.');
+      }
+
+      this.appendRange(destinationElement, this._firstNode, this._lastNode);
+      if (document.activeElement !== currentActiveElement) {
+        currentActiveElement.focus();
+      }
+    },
+
+    appendRange: function appendRange(destinationElement, firstNode, lastNode) {
+      while (firstNode) {
+        destinationElement.insertBefore(firstNode, null);
+        firstNode = firstNode !== lastNode ? lastNode.parentNode.firstChild : null;
+      }
+    },
+
+    removeRange: function removeRange(firstNode, lastNode) {
+      var node = lastNode;
+      do {
+        var next = node.previousSibling;
+        if (node.parentNode) {
+          node.parentNode.removeChild(node);
+          if (node === firstNode) {
+            break;
+          }
+        }
+        node = next;
+      } while (node);
+    }
+
+  });
 });
 ;define("liquid-fire/action", ["exports", "liquid-fire/promise"], function (exports, _promise) {
   "use strict";

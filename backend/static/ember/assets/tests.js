@@ -67,7 +67,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/index.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass ESLint\n\n61:7 - Unexpected console statement. (no-console)\n62:7 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'routes/index.js should pass ESLint\n\n55:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/login.js', function (assert) {
@@ -95,6 +95,60 @@ define('littlebits-frontend/tests/helpers/destroy-app', ['exports'], function (e
   function destroyApp(application) {
     Ember.run(application, 'destroy');
   }
+});
+define('littlebits-frontend/tests/helpers/ember-keyboard/register-test-helpers', ['exports', 'ember-keyboard', 'ember-keyboard/fixtures/modifiers-array', 'ember-keyboard/fixtures/mouse-buttons-array', 'ember-keyboard/utils/get-cmd-key'], function (exports, _emberKeyboard, _modifiersArray, _mouseButtonsArray, _getCmdKey) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  exports.default = function () {
+    Ember.Test.registerAsyncHelper('keyDown', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'keydown', element);
+    });
+
+    Ember.Test.registerAsyncHelper('keyUp', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'keyup', element);
+    });
+
+    Ember.Test.registerAsyncHelper('keyPress', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'keypress', element);
+    });
+
+    Ember.Test.registerAsyncHelper('mouseDown', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'mousedown', element);
+    });
+
+    Ember.Test.registerAsyncHelper('mouseUp', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'mouseup', element);
+    });
+
+    Ember.Test.registerAsyncHelper('touchStart', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'touchstart', element);
+    });
+
+    Ember.Test.registerAsyncHelper('touchEnd', function (app, attributes, element) {
+      return keyEvent(app, attributes, 'touchend', element);
+    });
+  };
+
+  var keyEvent = function keyEvent(app, attributes, type, element) {
+    var event = (attributes || '').split('+').reduce(function (event, attribute) {
+      if (_modifiersArray.default.indexOf(attribute) > -1) {
+        attribute = attribute === 'cmd' ? (0, _getCmdKey.default)() : attribute;
+        event[attribute + 'Key'] = true;
+      } else if (_mouseButtonsArray.default.indexOf(attribute) > -1) {
+        event.button = (0, _emberKeyboard.getMouseCode)(attribute);
+      } else {
+        event.keyCode = (0, _emberKeyboard.getKeyCode)(attribute);
+      }
+
+      return event;
+    }, {});
+
+    return app.testHelpers.triggerEvent(element || document.body, type, event);
+  };
 });
 define('littlebits-frontend/tests/helpers/module-for-acceptance', ['exports', 'qunit', 'littlebits-frontend/tests/helpers/start-app', 'littlebits-frontend/tests/helpers/destroy-app'], function (exports, _qunit, _startApp, _destroyApp) {
   'use strict';

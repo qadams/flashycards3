@@ -38,7 +38,7 @@ class ApiKeyAdmin(admin.ModelAdmin):
 # My Added Code
 class Deck(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
-    #description = models.CharField(max_length=250, null=False, blank=True)
+    description = models.CharField(max_length=250, null=False, blank=True)
 
     def __str__(self):
         return self.name
@@ -47,7 +47,7 @@ class Deck(models.Model):
         resource_name = "deck"
 
 class DeckAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'description')
 
 class Flashcard(models.Model):
     parentDeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True)
