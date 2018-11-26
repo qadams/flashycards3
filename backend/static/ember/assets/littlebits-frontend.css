@@ -2149,7 +2149,7 @@ a.list-group-item.active > .badge,
   font-family: icons; /* BYO icon font, mapped smartly */
   content: attr(data-icon);
   color: #12C46B;
-  font-size: 400px;
+  font-size: 40px;
   font-weight: bold;
   text-shadow: 2px 2px gray;
   speak: none; /* Not to be trusted, but hey. */

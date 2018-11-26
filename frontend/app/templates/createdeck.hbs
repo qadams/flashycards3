@@ -1,2 +1,9 @@
-<p>Title: {{input value=""}}</p>
+<p>Title: {{input value="" size="50"}}</p>
 {{create-flashcard-component}}
+
+{{#if addFlashcard}}
+  {{create-flashcard-component}}
+{{/if}}
+
+<button {{action 'addFlashcard' bubbles=false}}>Add Flashcard</button>
+<button {{action 'addFlashcard' bubbles=false}}>Submit</button>

@@ -820,14 +820,6 @@ define('littlebits-frontend/components/bs-tooltip/element', ['exports', 'ember-b
     }
   });
 });
-define('littlebits-frontend/components/deck-component', ['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.Component.extend({});
-});
 define('littlebits-frontend/components/ember-modal-dialog-positioned-container', ['exports', 'ember-modal-dialog/components/positioned-container'], function (exports, _positionedContainer) {
   'use strict';
 
@@ -1141,6 +1133,21 @@ define('littlebits-frontend/components/welcome-page', ['exports', 'ember-welcome
     enumerable: true,
     get: function () {
       return _welcomePage.default;
+    }
+  });
+});
+define('littlebits-frontend/controllers/add-single-flashcard', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Controller.extend({
+    addCard: false,
+    actions: {
+      addFlashcard: function addFlashcard() {
+        this.set('addCard', true);
+      }
     }
   });
 });
@@ -2503,7 +2510,7 @@ define("littlebits-frontend/templates/components/create-flashcard-component", ["
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "/ChRLJNN", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"\\n  Term:  \"],[1,[33,[\"input\"],null,[[\"value\"],[\"\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:  \"],[1,[33,[\"textarea\"],null,[[\"value\"],[\"\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"/static/ember/img/black-plus.svg\\\" width=\\\"30%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n\"],[11,\"span\",[]],[15,\"aria-hidden\",\"true\"],[15,\"data-icon\",\"+\"],[13],[14],[0,\"\\n\"],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/green-icon.png\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "7Mgq6jGp", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"\\n  Term:  \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[\"\",\"50\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:  \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[\"\",\"50\",\"5\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
 });
 define("littlebits-frontend/templates/components/deck-component", ["exports"], function (exports) {
   "use strict";
@@ -2587,7 +2594,7 @@ define("littlebits-frontend/templates/createdeck", ["exports"], function (export
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "eoQ33QKK", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"Title: \"],[1,[33,[\"input\"],null,[[\"value\"],[\"\"]]],false],[14],[0,\"\\n\"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "sFRVtBaE", "block": "{\"statements\":[[11,\"p\",[]],[13],[0,\"Title: \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[\"\",\"50\"]]],false],[14],[0,\"\\n\"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"addFlashcard\"]]],null,{\"statements\":[[0,\"  \"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"],[[\"bubbles\"],[false]]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"],[[\"bubbles\"],[false]]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
 });
 define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   "use strict";
@@ -2835,6 +2842,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+b12e0881"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+ca843b00"});
 }
 //# sourceMappingURL=littlebits-frontend.map

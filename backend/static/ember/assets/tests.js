@@ -15,9 +15,9 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'app.js should pass ESLint\n\n');
   });
 
-  QUnit.test('components/deck-component.js', function (assert) {
+  QUnit.test('controllers/add-single-flashcard.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'components/deck-component.js should pass ESLint\n\n');
+    assert.ok(false, 'controllers/add-single-flashcard.js should pass ESLint\n\n3:16 - \'Ember\' is not defined. (no-undef)');
   });
 
   QUnit.test('controllers/application.js', function (assert) {
