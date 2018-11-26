@@ -1,0 +1,8 @@
+{{view-flashcard}}
+<button {{action 'switchView'}}>Switch</button>
+<!-- <a href {{action "switchView"}}><img src="{{source}}" /></a> -->
+{{#if isTerm}}
+  <p>{{flashcard.term}}</p>
+{{else}}
+  <p>isTerm is False</p>
+{{/if}}
