@@ -4,12 +4,13 @@ from api.models import Flashcard, Deck, Event
 class FlashcardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flashcard
-        fields = "__all__"
+        fields = ('id', 'term', 'definition')
 
 class DeckSerializer(serializers.ModelSerializer):
+    flashcards = FlashcardSerializer(read_only=True, many=True)
     class Meta:
         model = Deck
-        fields = "__all__"
+        fields = ('id', 'name', 'description', 'flashcards')
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:

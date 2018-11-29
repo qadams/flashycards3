@@ -1,9 +1,9 @@
-<p class="outlined">Deck Title: {{input value="" size="51"}}</p>
-{{create-flashcard-component}}
-
-{{#if anotherFlashcard}}
-  {{create-flashcard-component}}
-{{/if}}
+<p class="outlined">Deck Title: {{input type = "text" value=title size="51"}}</p>
+{{#with model as |deck|}}
+  {{#each deck.flashcards as |flashcard|}}
+    {{create-flashcard-component flashcard=flashcard}}
+  {{/each}}
+{{/with}}
 
 <button {{action 'addFlashcard'}}>Add Flashcard</button>
 <button>Submit</button>

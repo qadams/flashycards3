@@ -35,7 +35,7 @@ class ApiKey(models.Model):
 class ApiKeyAdmin(admin.ModelAdmin):
     list_display = ('owner','key')
 
-# My Added Code
+# A Deck is a model that has name and desription which has an arbitrary amount of flashcards
 class Deck(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
     description = models.CharField(max_length=250, null=False, blank=True)
@@ -49,8 +49,9 @@ class Deck(models.Model):
 class DeckAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
+# A flashcard has a term and definition which belongs to a deck.
 class Flashcard(models.Model):
-    parentDeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True)
+    parentdeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True, related_name='flashcards')
     term = models.TextField(max_length=50)
     definition = models.TextField(max_length=250)
     def __str__(self):

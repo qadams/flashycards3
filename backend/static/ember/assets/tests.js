@@ -40,6 +40,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'controllers/login.js should pass ESLint\n\n');
   });
 
+  QUnit.test('controllers/register.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'controllers/register.js should pass ESLint\n\n');
+  });
+
   QUnit.test('controllers/viewdeck.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'controllers/viewdeck.js should pass ESLint\n\n');
@@ -107,7 +112,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/viewdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/viewdeck.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/viewdeck.js should pass ESLint\n\n13:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('services/auth-manager.js', function (assert) {
