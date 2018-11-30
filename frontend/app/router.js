@@ -4,6 +4,10 @@ import config from './config/environment';
 const Router = Ember.Router.extend({
   location: config.locationType,
   rootURL: config.bURL
+
+//   redirect: function() {
+//     this.transitionTo('login');
+// }
 });
 
 Router.map(function() {

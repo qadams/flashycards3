@@ -44,7 +44,7 @@ class Deck(models.Model):
         return self.name
 
     class JSONAPIMeta:
-        resource_name = "deck"
+        resource_name = "decks"
 
 class DeckAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
@@ -57,7 +57,7 @@ class Flashcard(models.Model):
     def __str__(self):
         return self.term
     class JSONAPIMeta:
-        resource_name = "flashcard"
+        resource_name = "flashcards"
 
 class FlashcardAdmin(admin.ModelAdmin):
     list_display = ('term','definition')

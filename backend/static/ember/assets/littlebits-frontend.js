@@ -1136,21 +1136,6 @@ define('littlebits-frontend/components/welcome-page', ['exports', 'ember-welcome
     }
   });
 });
-define('littlebits-frontend/controllers/add-single-flashcard', ['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.Controller.extend({
-    addCard: false,
-    actions: {
-      addFlashcard: function addFlashcard() {
-        this.set('addCard', true);
-      }
-    }
-  });
-});
 define('littlebits-frontend/controllers/application', ['exports'], function (exports) {
   'use strict';
 
@@ -1205,6 +1190,9 @@ define('littlebits-frontend/controllers/createdeck', ['exports'], function (expo
         var deck = this.get('model');
         var flashcard = this.store.createRecord('flashcard');
         deck.get('flashcards').pushObject(flashcard);
+      },
+      submitDeck: function submitDeck() {
+        this.get('model').save();
       }
     }
   });
@@ -2278,6 +2266,10 @@ define('littlebits-frontend/router', ['exports', 'littlebits-frontend/config/env
   var Router = Ember.Router.extend({
     location: _environment.default.locationType,
     rootURL: _environment.default.bURL
+
+    //   redirect: function() {
+    //     this.transitionTo('login');
+    // }
   });
 
   Router.map(function () {
@@ -2298,9 +2290,7 @@ define('littlebits-frontend/routes/createdeck', ['exports'], function (exports) 
   });
   exports.default = Ember.Route.extend({
     model: function model() {
-      return this.store.createRecord('deck'); //This is original line
-      // let deck = this.store.createRecord('deck')
-      // deck.get('decks').pushObject(deck)
+      return this.store.createRecord('deck');
     }
   });
 });
@@ -2598,7 +2588,7 @@ define("littlebits-frontend/templates/components/create-flashcard-component", ["
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "8z34tX/F", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n  Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n  \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[\"\",\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:\\n  \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[\"\",\"60\",\"5\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "9Mxjvpka", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n  Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n  \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[[28,[\"model\",\"term\"]],\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:\\n  \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[[28,[\"model\",\"definition\"]],\"60\",\"5\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
 });
 define("littlebits-frontend/templates/components/deck-component", ["exports"], function (exports) {
   "use strict";
@@ -2690,7 +2680,7 @@ define("littlebits-frontend/templates/createdeck", ["exports"], function (export
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "cH84/ihB", "block": "{\"statements\":[[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"title\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"with\"],[[28,[\"model\"]]],null,{\"statements\":[[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[33,[\"create-flashcard-component\"],null,[[\"flashcard\"],[[28,[\"flashcard\"]]]]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "DDULfepx", "block": "{\"statements\":[[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"model\",\"name\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"with\"],[[28,[\"model\"]]],null,{\"statements\":[[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[33,[\"create-flashcard-component\"],null,[[\"flashcard\"],[[28,[\"flashcard\"]]]]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"submitDeck\"]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
 });
 define("littlebits-frontend/templates/editdeck", ["exports"], function (exports) {
   "use strict";
@@ -2962,6 +2952,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+1d391fd6"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+eaaf759a"});
 }
 //# sourceMappingURL=littlebits-frontend.map

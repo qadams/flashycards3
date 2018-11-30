@@ -1,4 +1,4 @@
-<p class="outlined">Deck Title: {{input type = "text" value=title size="51"}}</p>
+<p class="outlined">Deck Title: {{input type = "text" value=model.name size="51"}}</p>
 {{#with model as |deck|}}
   {{#each deck.flashcards as |flashcard|}}
     {{create-flashcard-component flashcard=flashcard}}
@@ -6,4 +6,4 @@
 {{/with}}
 
 <button {{action 'addFlashcard'}}>Add Flashcard</button>
-<button>Submit</button>
+<button {{action 'submitDeck'}}>Submit</button>
