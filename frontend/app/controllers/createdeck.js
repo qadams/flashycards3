@@ -4,9 +4,10 @@ export default Ember.Controller.extend({
 
   actions: {
       addFlashcard() {
-        let deck = this.get('model');
-        let flashcard = this.store.createRecord('flashcard');
-        deck.get('flashcards').pushObject(flashcard);
+        var context = this;
+        let flashcard = this.store.createRecord('flashcard').save().then(function(card){
+          context.get('deck').pushObject(card);
+        }
       },
       submitDeck() {
         this.get('model').save();
