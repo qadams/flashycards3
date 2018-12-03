@@ -1,3 +1,4 @@
+// This handles what happens when you go to the website
 import Ember from 'ember';
 
 

@@ -1,3 +1,4 @@
+// This handles any actions dealing with registering
 import Ember from 'ember';
 export default Ember.Controller.extend({
 });

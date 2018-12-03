@@ -1,3 +1,4 @@
+// This initializes the services to be used
 export function initialize(application) {
 	application.inject('route', 'auth', 'service:auth-manager');
 	application.inject('controller', 'auth', 'service:auth-manager');

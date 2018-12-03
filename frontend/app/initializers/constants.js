@@ -1,3 +1,4 @@
+// This handles constants 
 export function initialize(application) {
   application.inject('controller', 'constants', 'service:constants');
 }

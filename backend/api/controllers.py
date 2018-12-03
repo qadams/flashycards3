@@ -57,6 +57,7 @@ def xss_example(request):
   return render_to_response('dumb-test-app/index.html',
               {}, RequestContext(request))
 
+# This will need some handling done to it to properly handle registration
 class Register(APIView):
     permission_classes = (AllowAny,)
 
@@ -85,6 +86,8 @@ class Register(APIView):
 
         return Response({'status': 'success', 'userid': newuser.id, 'profile': newprofile.id})
 
+# This will need some work done to it in order to properly handle
+# sessions
 class Session(APIView):
     permission_classes = (AllowAny,)
     def form_response(self, isauthenticated, userid, username, error=""):
@@ -136,6 +139,8 @@ class ActivateIFTTT(APIView):
 class FlashcardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Flashcard to be CRUDed.
+    This flashcard set is a viewset allowing flashcards
+    to be created.
     """
     queryset = Flashcard.objects.all()
     serializer_class = FlashcardSerializer
@@ -154,6 +159,8 @@ class FlashcardViewSet(viewsets.ModelViewSet):
 class DeckViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Deck to be CRUDed.
+    This deck set is a viewset allowing decks
+    to be created.
     """
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer

@@ -1,3 +1,4 @@
+// This is the controller for the entire frontend app
 import Ember from 'ember';
 
 export default Ember.Controller.extend({

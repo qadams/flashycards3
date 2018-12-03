@@ -1,9 +1,6 @@
-{{#each model as |deck|}}
-  {{deck-component name=deck.name}}
-  {{#each deck.flashcards as |flashcard|}}
-    {{flashcard.id}}
-    {{flashcard.term}}
-  {{/each}}
-{{/each}}
-<br>
-{{#link-to 'createdeck' tagName='button'}} Create New Deck{{/link-to}}
+<!-- This should be the first thing we see when going to the website -->
+<h1>Welcome to FlashyCards!</h1>
+
+This website is a flashcard study tool which allows you to create
+a deck of flashcards and study them so you are prepared for your
+next exam.

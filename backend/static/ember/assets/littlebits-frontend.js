@@ -1184,12 +1184,12 @@ define('littlebits-frontend/controllers/createdeck', ['exports'], function (expo
     value: true
   });
   exports.default = Ember.Controller.extend({
-
     actions: {
       addFlashcard: function addFlashcard() {
-        var deck = this.get('model');
-        var flashcard = this.store.createRecord('flashcard');
-        deck.get('flashcards').pushObject(flashcard);
+        var context = this;
+        this.store.createRecord('flashcard').save().then(function (card) {
+          context.get('model.flashcards').pushObject(card);
+        });
       },
       submitDeck: function submitDeck() {
         this.get('model').save();
@@ -1943,6 +1943,7 @@ define('littlebits-frontend/initializers/auth-manager', ['exports'], function (e
 		value: true
 	});
 	exports.initialize = initialize;
+	// This initializes the services to be used
 	function initialize(application) {
 		application.inject('route', 'auth', 'service:auth-manager');
 		application.inject('controller', 'auth', 'service:auth-manager');
@@ -1961,6 +1962,7 @@ define('littlebits-frontend/initializers/constants', ['exports'], function (expo
     value: true
   });
   exports.initialize = initialize;
+  // This handles constants 
   function initialize(application) {
     application.inject('controller', 'constants', 'service:constants');
   }
@@ -2261,8 +2263,7 @@ define('littlebits-frontend/router', ['exports', 'littlebits-frontend/config/env
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-
-
+  // This handles all routes for the app
   var Router = Ember.Router.extend({
     location: _environment.default.locationType,
     rootURL: _environment.default.bURL
@@ -2278,6 +2279,7 @@ define('littlebits-frontend/router', ['exports', 'littlebits-frontend/config/env
     this.route('editdeck');
     this.route('register');
     this.route('viewdeck');
+    this.route('userprofile');
   });
 
   exports.default = Router;
@@ -2348,6 +2350,7 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
   //       console.log(msg.statusText);
   //     });
   //   },
+  // This handles what happens when you go to the website
   exports.default = Ember.Route.extend({
     model: function model() {
       return this.store.findAll('deck');
@@ -2376,6 +2379,40 @@ define('littlebits-frontend/routes/register', ['exports'], function (exports) {
   });
   exports.default = Ember.Route.extend({});
 });
+define('littlebits-frontend/routes/userprofile', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+
+  var defaultitems = Ember.A([{
+    title: 'CYBR 8470',
+    description: 'Exciting stuff!',
+    img: 'img/NGC-logo.png',
+    link: '',
+    link_external: 'http://mlhale.github.io/CYBR8470'
+
+  }, {
+    title: 'Masonry-based Event Display Template',
+    description: 'You are seeing this template, because you haven\'t loaded any data into your client yet. This Template will be used to display events as they load from your REST API.',
+    img: 'img/template-icon.svg',
+    link: 'index'
+
+  }]); // This handles what happens when going to profile page
+  exports.default = Ember.Route.extend({
+    model: function model() {
+      return this.store.findAll('deck');
+      return this.store.findAll('flashcard');
+    },
+    setupController: function setupController(controller, model) {
+      this._super(controller, model);
+      controller.set('defaultitems', defaultitems);
+      var route = this;
+    }
+  });
+});
 define('littlebits-frontend/routes/viewdeck', ['exports'], function (exports) {
   'use strict';
 
@@ -2384,10 +2421,10 @@ define('littlebits-frontend/routes/viewdeck', ['exports'], function (exports) {
   });
 
 
-  var defaultitems = Ember.A([]);
+  var defaultitems = Ember.A([]); // This handles what happens when going to viewdeck page
   exports.default = Ember.Route.extend({
     model: function model() {
-      return this.store.findAll('flashcard');
+      return this.store.findAll('deck');
       // return this.store.findAll('flashcard');
     },
     setupController: function setupController(controller, model) {
@@ -2580,15 +2617,7 @@ define("littlebits-frontend/templates/application", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "3JRcJOgM", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\\t\"],[11,\"div\",[]],[16,\"class\",[34,[\"row row-offcanvas row-offcanvas-left \",[26,[\"showMenu\"]]]]],[13],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR ***\"],[0,\"\\n\\t\\t\"],[4,\" <div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\"> \"],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"sidebar-content\"],[13],[0,\"\\n\"],[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[11,\"ul\",[]],[15,\"class\",\"sidebar-menu\"],[13],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\tLogged in as: \"],[1,[28,[\"auth\",\"username\"]],false],[0,\" (\"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\")\\n\"]],\"locals\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]}],[0,\"\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"register\"],null,{\"statements\":[[0,\"Register\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"viewdeck\"],null,{\"statements\":[[0,\"View Deck\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"createdeck\"],null,{\"statements\":[[0,\"Create Deck\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\\t\"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"editdeck\"],null,{\"statements\":[[0,\"Edit Deck\"]],\"locals\":[]},null]],\"locals\":[]},null],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\n\\n\\t\\t\\t\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"\\t      \"],[11,\"div\",[]],[15,\"class\",\"col-xs-12\"],[13],[0,\"\\n\\n\\t      \"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\"],[4,\" </div> \"],[0,\"\\n\\t\\t\"],[4,\"   *** SIDEBAR END ***  \"],[0,\"\\n\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-xs-12 col-sm-8 col-md-9 content-column\"],[13],[0,\"\\n\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"small-navbar visible-xs\"],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"button\",[]],[15,\"type\",\"button\"],[15,\"data-toggle\",\"offcanvas\"],[15,\"class\",\"btn btn-ghost pull-left\"],[5,[\"action\"],[[28,[null]],\"toggleMenu\"]],[13],[0,\" \"],[11,\"i\",[]],[15,\"class\",\"fa fa-align-left\"],[13],[0,\" \"],[14],[0,\"Menu\"],[14],[0,\"\\n\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
-});
-define("littlebits-frontend/templates/components/create-flashcard-component", ["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.HTMLBars.template({ "id": "n09tJZtq", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n  Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n  \"],[1,[33,[\"input\"],null,[[\"flashcard\",\"size\"],[[28,[\"model\",\"term\"]],\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n  Definition:\\n  \"],[1,[33,[\"textarea\"],null,[[\"flashcard\",\"cols\",\"rows\"],[[28,[\"model\",\"definition\"]],\"60\",\"5\"]]],false],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/create-flashcard-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "LQrOYZIn", "block": "{\"statements\":[[4,\" Everything here gets displayed on every page \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\"],[6,[\"bs-navbar\"],null,[[\"class\"],[\"bg-primary\"]],{\"statements\":[[0,\"\\t  \"],[11,\"div\",[]],[15,\"class\",\"navbar-header\"],[13],[0,\"\\n\\t    \"],[1,[28,[\"navbar\",\"toggle\"]],false],[0,\"\\n\\t    \"],[4,\" <a class=\\\"navbar-brand\\\">FlashyCards</a> \"],[0,\"\\n\\t  \"],[14],[0,\"\\n\"],[6,[\"component\"],[[28,[\"navbar\",\"content\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"navbar\",\"nav\"]]],null,{\"statements\":[[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"userprofile\"],null,{\"statements\":[[0,\"Profile\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"viewdeck\"],null,{\"statements\":[[0,\"View Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"editdeck\"],null,{\"statements\":[[0,\"Edit Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"register\"],null,{\"statements\":[[0,\"Register\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]}]],\"locals\":[\"nav\"]},null]],\"locals\":[]},null]],\"locals\":[\"navbar\"]},null],[0,\"\\n\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"  Welcome, \"],[1,[28,[\"auth\",\"username\"]],false],[0,\"!\\n\\t\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\n\\t\"],[4,\" <div class=\\\"row row-offcanvas row-offcanvas-left {{showMenu}}\\\">\\n\\t\\t<div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\">\\n\\n\\t\\t</div>\\n\\t\\t<div class=\\\"col-xs-12 col-sm-8 col-md-9 content-column\\\">\\n\\t\\t\\t<div class=\\\"small-navbar visible-xs\\\">\\n\\t\\t\\t\\t<button type=\\\"button\\\" data-toggle=\\\"offcanvas\\\" class=\\\"btn btn-ghost pull-left\\\" {{action 'toggleMenu'}}> <i class=\\\"fa fa-align-left\\\"> </i>Menu</button>\\n\\t\\t\\t</div>\\n\\t\\t\\t{{liquid-outlet \\\"main\\\"}}\\n\\t\\t</div>\\n\\t</div> \"],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
 });
 define("littlebits-frontend/templates/components/deck-component", ["exports"], function (exports) {
   "use strict";
@@ -2596,7 +2625,7 @@ define("littlebits-frontend/templates/components/deck-component", ["exports"], f
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "aQf7IYlu", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[1,[26,[\"name\"]],false],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/deck-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "ufzCs71V", "block": "{\"statements\":[[4,\" This what the deck looks like on userprofile page \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[1,[26,[\"name\"]],false],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/deck-component.hbs" } });
 });
 define('littlebits-frontend/templates/components/ember-popper-targeting-parent', ['exports', 'ember-popper/templates/components/ember-popper-targeting-parent'], function (exports, _emberPopperTargetingParent) {
   'use strict';
@@ -2672,7 +2701,7 @@ define("littlebits-frontend/templates/components/view-flashcard", ["exports"], f
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "IbpkENDK", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"30%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[1,[26,[\"info\"]],false],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/view-flashcard.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "SRBlvgdF", "block": "{\"statements\":[[4,\" This is what flashcard view looks like  \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"70%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[0,\"\\n          test\\n        \"],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/view-flashcard.hbs" } });
 });
 define("littlebits-frontend/templates/createdeck", ["exports"], function (exports) {
   "use strict";
@@ -2680,7 +2709,7 @@ define("littlebits-frontend/templates/createdeck", ["exports"], function (export
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "DDULfepx", "block": "{\"statements\":[[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"model\",\"name\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"with\"],[[28,[\"model\"]]],null,{\"statements\":[[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[33,[\"create-flashcard-component\"],null,[[\"flashcard\"],[[28,[\"flashcard\"]]]]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"submitDeck\"]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "lOuGkFa8", "block": "{\"statements\":[[4,\" This is where you enter deck and flashcard info \"],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"model\",\"name\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"with\"],[[28,[\"model\"]]],null,{\"statements\":[[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n      Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[[28,[\"flashcard\",\"term\"]],\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n      Definition:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[[28,[\"flashcard\",\"definition\"]],\"60\",\"5\"]]],false],[0,\"\\n    \"],[14],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"submitDeck\"]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
 });
 define("littlebits-frontend/templates/editdeck", ["exports"], function (exports) {
   "use strict";
@@ -2688,7 +2717,7 @@ define("littlebits-frontend/templates/editdeck", ["exports"], function (exports)
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "EJLJJcHh", "block": "{\"statements\":[[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[\"\",\"51\"]]],false],[14],[0,\"\\n\"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"addFlashcard\"]]],null,{\"statements\":[[0,\"  \"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/editdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "eEr+nB21", "block": "{\"statements\":[[4,\" This is where we can edit the deck \"],[0,\"\\n\"],[4,\" We will not be able to get to this page in the scope of this class \"],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[\"\",\"51\"]]],false],[14],[0,\"\\n\"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\\n\"],[6,[\"if\"],[[28,[\"addFlashcard\"]]],null,{\"statements\":[[0,\"  \"],[1,[26,[\"create-flashcard-component\"]],false],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/editdeck.hbs" } });
 });
 define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   "use strict";
@@ -2696,7 +2725,7 @@ define("littlebits-frontend/templates/index", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "bOQtwfUu", "block": "{\"statements\":[[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[28,[\"flashcard\",\"id\"]],false],[0,\"\\n    \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "vOTfxos+", "block": "{\"statements\":[[4,\" This should be the first thing we see when going to the website \"],[0,\"\\n\"],[11,\"h1\",[]],[13],[0,\"Welcome to FlashyCards!\"],[14],[0,\"\\n\\nThis website is a flashcard study tool which allows you to create\\na deck of flashcards and study them so you are prepared for your\\nnext exam.\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/index.hbs" } });
 });
 define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   "use strict";
@@ -2704,7 +2733,7 @@ define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "GirEB1lB", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Don't have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"register\"],null,{\"statements\":[[0,\"Register!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[0,\"Incorrect username/password\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Sign in\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/login.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "5/zzti23", "block": "{\"statements\":[[4,\" This is the login page for the app \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Don't have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"register\"],null,{\"statements\":[[0,\"Register!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[0,\"Incorrect username/password\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Sign in\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/login.hbs" } });
 });
 define("littlebits-frontend/templates/register", ["exports"], function (exports) {
   "use strict";
@@ -2712,7 +2741,15 @@ define("littlebits-frontend/templates/register", ["exports"], function (exports)
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "n3eiyX0G", "block": "{\"statements\":[[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n            \"],[11,\"h1\",[]],[13],[0,\"Register\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Already have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n            \"],[4,\" <div class=\\\"form-group\\\">\\n              <div class=\\\"input-group\\\">\\n                <span class=\\\"input-group-addon\\\">\\n                  <i class=\\\"glyphicon glyphicon-lock\\\"></i>\\n                </span>\\n                {{input type=\\\"text\\\"class=\\\"input-sm form-control\\\" value=auth.password enter=\\\"login\\\" placeholder=\\\"Confirm Password\\\" type=\\\"password\\\"}}\\n              </div>\\n            </div> \"],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Register\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/register.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "EgZA3tbb", "block": "{\"statements\":[[4,\" This is the registration page for the app \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n            \"],[11,\"h1\",[]],[13],[0,\"Register\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Already have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n            \"],[4,\" <div class=\\\"form-group\\\">\\n              <div class=\\\"input-group\\\">\\n                <span class=\\\"input-group-addon\\\">\\n                  <i class=\\\"glyphicon glyphicon-lock\\\"></i>\\n                </span>\\n                {{input type=\\\"text\\\"class=\\\"input-sm form-control\\\" value=auth.password enter=\\\"login\\\" placeholder=\\\"Confirm Password\\\" type=\\\"password\\\"}}\\n              </div>\\n            </div> \"],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Register\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/register.hbs" } });
+});
+define("littlebits-frontend/templates/userprofile", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "YFpe7yWH", "block": "{\"statements\":[[4,\" This is where the user sees all their created decks \"],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[28,[\"flashcard\",\"id\"]],false],[0,\"\\n    \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/userprofile.hbs" } });
 });
 define("littlebits-frontend/templates/viewdeck", ["exports"], function (exports) {
   "use strict";
@@ -2720,7 +2757,7 @@ define("littlebits-frontend/templates/viewdeck", ["exports"], function (exports)
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "RepjoHC0", "block": "{\"statements\":[[1,[26,[\"view-flashcard\"]],false],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"switchView\"]],[13],[0,\"Switch\"],[14],[0,\"\\n\"],[4,\" <a href {{action \\\"switchView\\\"}}><img src=\\\"{{source}}\\\" /></a> \"],[0,\"\\n\"],[6,[\"if\"],[[28,[\"isTerm\"]]],null,{\"statements\":[[0,\"  \"],[11,\"p\",[]],[13],[1,[28,[\"flashcard\",\"term\"]],false],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"  \"],[11,\"p\",[]],[13],[0,\"isTerm is False\"],[14],[0,\"\\n\"]],\"locals\":[]}]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/viewdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "J6xeHbUr", "block": "{\"statements\":[[1,[26,[\"outlet\"]],false],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/viewdeck.hbs" } });
 });
 define('littlebits-frontend/transitions/cross-fade', ['exports', 'liquid-fire/transitions/cross-fade'], function (exports, _crossFade) {
   'use strict';
@@ -2952,6 +2989,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+eaaf759a"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+26353915"});
 }
 //# sourceMappingURL=littlebits-frontend.map

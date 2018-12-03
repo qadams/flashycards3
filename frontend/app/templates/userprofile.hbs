@@ -1,0 +1,10 @@
+<!-- This is where the user sees all their created decks -->
+{{#each model as |deck|}}
+  {{deck-component name=deck.name}}
+  {{#each deck.flashcards as |flashcard|}}
+    {{flashcard.id}}
+    {{flashcard.term}}
+  {{/each}}
+{{/each}}
+<br>
+{{#link-to 'createdeck' tagName='button'}} Create New Deck{{/link-to}}

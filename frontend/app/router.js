@@ -1,3 +1,4 @@
+// This handles all routes for the app
 import Ember from 'ember';
 import config from './config/environment';
 
@@ -16,6 +17,7 @@ Router.map(function() {
   this.route('editdeck');
   this.route('register');
   this.route('viewdeck');
+  this.route('userprofile');
 });
 
 export default Router;

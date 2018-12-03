@@ -55,5 +55,7 @@
     "node": ">= 4"
   },
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "bleach": "^0.3.0"
+  }
 }

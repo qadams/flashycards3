@@ -52,8 +52,8 @@ class DeckAdmin(admin.ModelAdmin):
 # A flashcard has a term and definition which belongs to a deck.
 class Flashcard(models.Model):
     parentdeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True, related_name='flashcards')
-    term = models.TextField(max_length=50)
-    definition = models.TextField(max_length=250)
+    term = models.TextField(max_length=50, null=True)
+    definition = models.TextField(max_length=250, null=True)
     def __str__(self):
         return self.term
     class JSONAPIMeta:

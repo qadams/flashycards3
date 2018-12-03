@@ -1,3 +1,4 @@
+// This handles any actions on viewdeck page
 import Ember from 'ember';
 
 export default Ember.Controller.extend({

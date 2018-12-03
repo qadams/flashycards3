@@ -1,3 +1,4 @@
+// event model stuff
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -5,5 +6,5 @@ export default DS.Model.extend({
   timestamp: DS.attr("date"),
   userid: DS.attr("string"),
   requestor: DS.attr("string"),
-  
+
 });

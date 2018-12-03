@@ -1,42 +1,58 @@
+<!-- Everything here gets displayed on every page -->
 <div class="container-fluid" id="app-main">
-	<div class="row row-offcanvas row-offcanvas-left {{showMenu}}">
-		<!--   *** SIDEBAR ***-->
-		<!-- <div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas"> -->
-			<div class="sidebar-content">
-				{{#link-to 'index'}}
-
-        {{/link-to}}
-
-				<ul class="sidebar-menu">
-
-					{{#if auth.isLoggedIn}}
-						Logged in as: {{auth.username}} (<a {{action "logout"}}>Logout</a>)
-					{{else}}
-						{{#active-link}}{{#link-to 'login'}}Login{{/link-to}}{{/active-link}}
-					{{/if}}
-					{{#active-link}}{{#link-to 'register'}}Register{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'index'}}Home{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'viewdeck'}}View Deck{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'createdeck'}}Create Deck{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'editdeck'}}Edit Deck{{/link-to}}{{/active-link}}
-				</ul>
-
-
-
-			</div>
-			{{#if auth.isLoggedIn}}
-	      <div class="col-xs-12">
-
-	      </div>
+{{#bs-navbar class="bg-primary" as |navbar|}}
+	  <div class="navbar-header">
+	    {{navbar.toggle}}
+	    <!-- <a class="navbar-brand">FlashyCards</a> -->
+	  </div>
+  {{#navbar.content}}
+	  {{#navbar.nav as |nav|}}
+		  {{#if auth.isLoggedIn}}
+				{{#nav.item}}
+			    {{#nav.link-to "index"}}Home{{/nav.link-to}}
+		    {{/nav.item}}
+				{{#nav.item}}
+					{{#nav.link-to "userprofile"}}Profile{{/nav.link-to}}
+				{{/nav.item}}
+				{{#nav.item}}
+					{{#nav.link-to "viewdeck"}}View Deck{{/nav.link-to}}
+				{{/nav.item}}
+				{{#nav.item}}
+					{{#nav.link-to "editdeck"}}Edit Deck{{/nav.link-to}}
+				{{/nav.item}}
+				{{#nav.item}}
+				  <a {{action "logout"}}>Logout</a>
+				{{/nav.item}}
+			{{else}}
+			  {{#nav.item}}
+				  {{#nav.link-to "login"}}Login{{/nav.link-to}}
+			  {{/nav.item}}
+			  {{#nav.item}}
+			    {{#nav.link-to "register"}}Register{{/nav.link-to}}
+			  {{/nav.item}}
 			{{/if}}
-		<!-- </div> -->
-		<!--   *** SIDEBAR END ***  -->
+	   {{/navbar.nav}}
+  {{/navbar.content}}
+{{/bs-navbar}}
+
+<br>
+{{#if auth.isLoggedIn}}
+  Welcome, {{auth.username}}!
+	<br>
+{{/if}}
+
+{{liquid-outlet "main"}}
+
+	<!-- <div class="row row-offcanvas row-offcanvas-left {{showMenu}}">
+		<div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+
+		</div>
 		<div class="col-xs-12 col-sm-8 col-md-9 content-column">
 			<div class="small-navbar visible-xs">
 				<button type="button" data-toggle="offcanvas" class="btn btn-ghost pull-left" {{action 'toggleMenu'}}> <i class="fa fa-align-left"> </i>Menu</button>
 			</div>
 			{{liquid-outlet "main"}}
 		</div>
-	</div>
+	</div> -->
 
 </div>
