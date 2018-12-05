@@ -13,48 +13,44 @@ class DeckInlineSerializer(serializers.ModelSerializer):
 #         model = Flashcard
 #         fields = ('id', 'term', 'definition', 'parentdeck')
 
-# google message and find doc on overriding update method save model in model
 class FlashcardSerializer(serializers.ModelSerializer):
+    parentdeck = DeckInlineSerializer(read_only=True, many=True)
+    # parentdeck = DeckSerializer()
     class Meta:
         model = Flashcard
-        fields = ('id', 'term', 'definition')
-        extra_kwargs = {
-            'id': {
-                'read_only': False,
-                'required': True
-             }
-        } #very important
-        
-    def create(self, request):
-        serialized = self.serializer_class(data=request.DATA)
-        if serialized.is_valid():
-            serialized.save()
-            return Response(status=HTTP_202_ACCEPTED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        fields = ('id', 'term', 'definition', 'parentdeck')
+    # def create(self, validated_data):
+    #     parentdeck_parsed = validated_data.pop('parentdeck')
+    #     flashcard = Flashcard.objects.create(**validated_data)
+    #     Deck.objects.create(flashcard=flashcard, **parentdeck_parsed)
+    #     return flashcard
 
-    def update(self, instance, validated_data):
-        # Update the  instance
-        instance.parentdeck = validated_data['parentdeck']
-        instance.save()
+    # def create(self, validated_data):
+    # 	parentdeck_parsed = validated_data.pop('parentdeck')
+    # 	parentdeck = Deck.get_object_or_create(id=parentdeck_parsed.id)
+    # 	flashcard = Flashcard.objects.create(parentdeck=parentdeck, **validated_data)
+    # 	return flashcard
+    #
+    # def update(self, instance, validated_data):
+    #     parentdeck_parsed = validated_data.pop('parentdeck')
+    #     parentdeck = instance.parentdeck
+    #
+    #     instance.term = validated_data.get('term', instance.term)
+    #     instance.definition = validated_data.get('definition', instance.definition)
+    #     instance.save()
 
-        # Delete any detail not included in the request
-        flashcard_ids = [item['flashcard_id'] for item in validated_data['flashcards']]
-        for flashcard in cars.flashcards.all(): ###
-            if flashcard.id not in flashcard_ids:
-                flashcard.delete()
+        # profile.is_premium_member = profile_data.get(
+        #     'is_premium_member',
+        #     profile.is_premium_member
+        # )
+        # profile.has_support_contract = profile_data.get(
+        #     'has_support_contract',
+        #     profile.has_support_contract
+        #  )
+        # profile.save()
+        #
+        # return instance
 
-        # Create or update flashcard
-        for flashcard in validated_data['flashcards']:
-            flashcardObj = Flashcard.objects.get(pk=item['id'])
-            if flashcardObj:
-                flashcardObj.parentdeck=item['parentdeck']
-                ....fields... ###
-            else:
-               flashcardObj = Flashcard.create(flashcard=instance,**flashcard)
-            flashcardObj.save()
-
-        return instance
 
 # Converts the deck data as needed in order to be passed
 class DeckSerializer(serializers.ModelSerializer):
@@ -62,7 +58,16 @@ class DeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
         fields = ('id', 'name', 'description', 'flashcards')
-
+# class DeckSerializer(serializers.ModelSerializer):
+#     flashcards = FlashcardSerializer()
+#     class Meta:
+#         model = Deck
+#         fields = ('id', 'name', 'description', 'flashcards')
+    # def create(self, validated_data):
+    #     flashcards_parsed = validated_data.pop('flashcards')
+    #     deck = Deck.objects.create(**validated_data)
+    #     Flashcard.objects.create(deck=deck, **flashcards_parsed)
+    #     return deck
 # Not used right now
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
