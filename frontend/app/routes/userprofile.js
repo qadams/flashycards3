@@ -25,7 +25,6 @@ var defaultitems = Ember.A([
 export default Ember.Route.extend({
 	model() {
     return this.store.findAll('deck');
-    return this.store.findAll('flashcard');
 	},
   setupController(controller, model){
     this._super(controller, model);

@@ -25,6 +25,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'controllers/createdeck.js should pass ESLint\n\n');
   });
 
+  QUnit.test('controllers/decks.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'controllers/decks.js should pass ESLint\n\n');
+  });
+
   QUnit.test('controllers/index.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'controllers/index.js should pass ESLint\n\n');
@@ -38,11 +43,6 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
   QUnit.test('controllers/register.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'controllers/register.js should pass ESLint\n\n');
-  });
-
-  QUnit.test('controllers/viewdeck.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'controllers/viewdeck.js should pass ESLint\n\n');
   });
 
   QUnit.test('initializers/auth-manager.js', function (assert) {
@@ -85,6 +85,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'routes/createdeck.js should pass ESLint\n\n');
   });
 
+  QUnit.test('routes/deck.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'routes/deck.js should pass ESLint\n\n14:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+  });
+
   QUnit.test('routes/editdeck.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/editdeck.js should pass ESLint\n\n');
@@ -92,7 +97,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/index.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass ESLint\n\n56:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/index.js should pass ESLint\n\n55:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/login.js', function (assert) {
@@ -107,12 +112,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/userprofile.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/userprofile.js should pass ESLint\n\n28:5 - Unreachable code. (no-unreachable)\n33:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
-  });
-
-  QUnit.test('routes/viewdeck.js', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'routes/viewdeck.js should pass ESLint\n\n14:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/userprofile.js should pass ESLint\n\n32:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('services/auth-manager.js', function (assert) {

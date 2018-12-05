@@ -55,7 +55,7 @@ class Flashcard(models.Model):
     term = models.TextField(max_length=50, null=True)
     definition = models.TextField(max_length=250, null=True)
     def __str__(self):
-        return self.term
+        return str(self.term)
     class JSONAPIMeta:
         resource_name = "flashcards"
 

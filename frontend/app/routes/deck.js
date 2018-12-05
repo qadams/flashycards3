@@ -4,9 +4,9 @@ import Ember from 'ember';
 var defaultitems = Ember.A([
 ]);
 export default Ember.Route.extend({
-  model() {
-    return this.store.findAll('deck');
-    // return this.store.findAll('flashcard');
+  model(params) {
+    // return this.store.findAll('deck')
+    return this.store.findRecord('deck', params.deck_id);
   },
   setupController(controller, model){
     this._super(controller, model);
