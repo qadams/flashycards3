@@ -5,7 +5,7 @@ from api.models import Flashcard, Deck, Event
 class DeckInlineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
-        fields = ('id',)
+        fields = ('id', 'name', 'description', 'flashcards')
 
 # class FlashcardSerializer(serializers.ModelSerializer):
 #     parentdeck = DeckInlineSerializer()
