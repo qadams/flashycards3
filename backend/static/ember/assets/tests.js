@@ -22,7 +22,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/createdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'controllers/createdeck.js should pass ESLint\n\n');
+    assert.ok(false, 'controllers/createdeck.js should pass ESLint\n\n25:13 - Unexpected console statement. (no-console)\n45:17 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/decks.js', function (assert) {

@@ -1190,12 +1190,44 @@ define('littlebits-frontend/controllers/createdeck', ['exports'], function (expo
         var card = this.store.createRecord('flashcard');
         this.get('flashcards').pushObject(card);
       },
+
+      // submitDeck() {
+      //   let flashcards = this.get('flashcards');
+      //   this.get('model').save().then(function(deck) {
+      //     flashcards.forEach(function(card) {
+      //       card.set('parentdeck', deck);
+      //       card.save();
+      //     });
+      //   });
+      // }
       submitDeck: function submitDeck() {
         var flashcards = this.get('flashcards');
         this.get('model').save().then(function (deck) {
           flashcards.forEach(function (card) {
             card.set('parentdeck', deck);
-            card.save();
+            console.log(card.get('term'), card.get('definition'));
+            var carddata = {
+
+              'attributes': {
+                'term': card.get('term'),
+                'definition': card.get('definition')
+              },
+              'relationships': {
+                'parentdeck': deck.id
+              },
+              'type': 'flashcards'
+
+            };
+            Ember.$.ajax({
+              contentType: 'application/vnd.api+json;charset=UTF-8',
+              url: '../api/flashcards',
+              type: "POST",
+              data: carddata,
+              success: function success(response) {
+                console.log('Response from API for card', card, ':', response);
+              }
+
+            });
           });
         });
       }
@@ -2993,6 +3025,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+e2a727e5"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+7f33d635"});
 }
 //# sourceMappingURL=littlebits-frontend.map
