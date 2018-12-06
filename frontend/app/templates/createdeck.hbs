@@ -1,7 +1,6 @@
 <!-- This is where you enter deck and flashcard info -->
 <p class="outlined">Deck Title: {{input type = "text" value=model.name size="51"}}</p>
-{{#with model as |deck|}}
-  {{#each deck.flashcards as |flashcard|}}
+  {{#each flashcards as |flashcard|}}
     <p class="outlined">
       Term:<br>
       {{input value=flashcard.term size="61"}}<br><br>
@@ -9,7 +8,6 @@
       {{textarea value=flashcard.definition cols="60" rows="5"}}
     </p>
   {{/each}}
-{{/with}}
 
 <button {{action 'addFlashcard'}}>Add Flashcard</button>
 <button {{action 'submitDeck'}}>Submit</button>

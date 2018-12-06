@@ -7,18 +7,39 @@ class DeckInlineSerializer(serializers.ModelSerializer):
         model = Deck
         fields = ('id', 'name', 'description', 'flashcards')
 
+# Converts the flashcard data as needed in order to be passed
+class FlashcardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flashcard
+        fields = ('id', 'term', 'definition', 'parentdeck')
+
+# Converts the deck data as needed in order to be passed
+class DeckSerializer(serializers.ModelSerializer):
+    flashcards = FlashcardSerializer(read_only=True, many=True)
+    class Meta:
+        model = Deck
+        fields = ('id', 'name', 'description', 'flashcards')
+
+# Not used right now
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = "__all__"
+
+# Converts the flashcard data as needed in order to be passed
+# class FlashcardSerializer(serializers.ModelSerializer):
+#     parentdeck = DeckInlineSerializer(read_only=True, many=True)
+#     # parentdeck = DeckSerializer()
+#     class Meta:
+#         model = Flashcard
+#         fields = ('id', 'term', 'definition', 'parentdeck')
 # class FlashcardSerializer(serializers.ModelSerializer):
 #     parentdeck = DeckInlineSerializer()
 #     class Meta:
 #         model = Flashcard
 #         fields = ('id', 'term', 'definition', 'parentdeck')
 
-class FlashcardSerializer(serializers.ModelSerializer):
-    parentdeck = DeckInlineSerializer(read_only=True, many=True)
-    # parentdeck = DeckSerializer()
-    class Meta:
-        model = Flashcard
-        fields = ('id', 'term', 'definition', 'parentdeck')
+
     # def create(self, validated_data):
     #     parentdeck_parsed = validated_data.pop('parentdeck')
     #     flashcard = Flashcard.objects.create(**validated_data)
@@ -52,12 +73,7 @@ class FlashcardSerializer(serializers.ModelSerializer):
         # return instance
 
 
-# Converts the deck data as needed in order to be passed
-class DeckSerializer(serializers.ModelSerializer):
-    flashcards = FlashcardSerializer(read_only=True, many=True)
-    class Meta:
-        model = Deck
-        fields = ('id', 'name', 'description', 'flashcards')
+
 # class DeckSerializer(serializers.ModelSerializer):
 #     flashcards = FlashcardSerializer()
 #     class Meta:
@@ -68,8 +84,3 @@ class DeckSerializer(serializers.ModelSerializer):
     #     deck = Deck.objects.create(**validated_data)
     #     Flashcard.objects.create(deck=deck, **flashcards_parsed)
     #     return deck
-# Not used right now
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = "__all__"
