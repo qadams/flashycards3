@@ -22,7 +22,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/createdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/createdeck.js should pass ESLint\n\n13:48 - \'deck\' is defined but never used. (no-unused-vars)');
+    assert.ok(true, 'controllers/createdeck.js should pass ESLint\n\n');
   });
 
   QUnit.test('controllers/deck.js', function (assert) {

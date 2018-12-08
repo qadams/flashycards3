@@ -1194,7 +1194,7 @@ define('littlebits-frontend/controllers/createdeck', ['exports'], function (expo
         var flashcards = this.get('flashcards');
         this.get('model').save().then(function (deck) {
           flashcards.forEach(function (card) {
-            card.set('parentdeck', 42);
+            card.set('parentdeck', deck);
             card.save();
           });
         });
