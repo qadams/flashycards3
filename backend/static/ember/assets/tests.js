@@ -22,12 +22,12 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/createdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/createdeck.js should pass ESLint\n\n25:13 - Unexpected console statement. (no-console)\n45:17 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/createdeck.js should pass ESLint\n\n13:48 - \'deck\' is defined but never used. (no-unused-vars)');
   });
 
-  QUnit.test('controllers/decks.js', function (assert) {
+  QUnit.test('controllers/deck.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'controllers/decks.js should pass ESLint\n\n');
+    assert.ok(true, 'controllers/deck.js should pass ESLint\n\n');
   });
 
   QUnit.test('controllers/index.js', function (assert) {
@@ -87,7 +87,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/deck.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/deck.js should pass ESLint\n\n14:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/deck.js should pass ESLint\n\n4:5 - \'defaultitems\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/editdeck.js', function (assert) {

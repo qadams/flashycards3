@@ -7,5 +7,10 @@ export default Ember.Controller.extend({
       switchView() {
         this.toggleProperty('isTerm');
       }
+      // deleteDeck(){
+      //   let deck = this.get('model');
+      //   deck.destroyRecord();
+      //   this.transitionTo('userprofile');
+      // }
     }
 });

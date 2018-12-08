@@ -1,6 +1,5 @@
 
 {{outlet}}
-test
 <!-- <button {{action 'switchView'}}>Switch</button>
 {{#each model as |deck|}}
   {{#each deck.flashcards as |flashcard|}}
@@ -22,3 +21,13 @@ test
   </div>
   {{/each}}
 {{/each}} -->
+
+{{#each model.flashcards as |flashcard|}}
+  {{#if isTerm}}
+    {{view-flashcard flashcard=flashcard.term}}<br>
+  {{else}}
+    {{view-flashcard flashcard=flashcard.definition}}<br>
+  {{/if}}
+{{/each}}
+<button {{action 'switchView'}}>Switch</button><br>
+<button {{action 'deleteDeck'}}>Delete Deck</button><br>
