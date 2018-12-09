@@ -2338,6 +2338,11 @@ define('littlebits-frontend/routes/createdeck', ['exports'], function (exports) 
     value: true
   });
   exports.default = Ember.Route.extend({
+    beforeModel: function beforeModel(transition) {
+      if (!this.get('auth.isLoggedIn')) {
+        this.transitionTo('login');
+      }
+    },
     model: function model() {
       return this.store.createRecord('deck');
     }
@@ -2370,7 +2375,13 @@ define('littlebits-frontend/routes/editdeck', ['exports'], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.Route.extend({});
+  exports.default = Ember.Route.extend({
+    beforeModel: function beforeModel(transition) {
+      if (!this.get('auth.isLoggedIn')) {
+        this.transitionTo('login');
+      }
+    }
+  });
 });
 define('littlebits-frontend/routes/index', ['exports'], function (exports) {
   'use strict';
@@ -2469,6 +2480,11 @@ define('littlebits-frontend/routes/userprofile', ['exports'], function (exports)
 
   }]); // This handles what happens when going to profile page
   exports.default = Ember.Route.extend({
+    beforeModel: function beforeModel(transition) {
+      if (!this.get('auth.isLoggedIn')) {
+        this.transitionTo('login');
+      }
+    },
     model: function model() {
       return this.store.findAll('deck');
     },
@@ -3034,6 +3050,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+6c721fef"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+c355f4de"});
 }
 //# sourceMappingURL=littlebits-frontend.map

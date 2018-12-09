@@ -82,7 +82,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/createdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/createdeck.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/createdeck.js should pass ESLint\n\n6:15 - \'transition\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/deck.js', function (assert) {
@@ -92,7 +92,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/editdeck.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/editdeck.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/editdeck.js should pass ESLint\n\n5:13 - \'transition\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/index.js', function (assert) {
@@ -112,7 +112,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/userprofile.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/userprofile.js should pass ESLint\n\n32:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/userprofile.js should pass ESLint\n\n27:13 - \'transition\' is defined but never used. (no-unused-vars)\n38:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('services/auth-manager.js', function (assert) {
