@@ -27,6 +27,11 @@ exit
 docker-compose up
 ```
 
+## In the frontend directory
+```bash
+ember build -w -o ../backend/static/ember/
+```
+
 ## License
 MIT License
 
