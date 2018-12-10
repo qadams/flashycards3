@@ -43,6 +43,7 @@ from django.core.validators import *
 import requests
 
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 def home(request):
    """
@@ -91,7 +92,7 @@ class Session(APIView):
         serializer = ''
         profileData = ''
         if(userid is not None):
-            serializer = ProfileSerializer(Profile.objects.get(pk=userid))
+            serializer = ProfileSerializer(get_object_or_404(Profile, user__id=userid))
             profileData = serializer.data
         data = {
             'isauthenticated': isauthenticated,

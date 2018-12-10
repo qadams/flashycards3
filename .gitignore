@@ -1,0 +1,3 @@
+backend/django_backend/settings.py
+backend/django_backend/localsettings.py
+backend/api/migrations/*

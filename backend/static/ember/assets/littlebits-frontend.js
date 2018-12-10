@@ -1123,6 +1123,27 @@ define('littlebits-frontend/components/tether-dialog', ['exports', 'ember-modal-
     }
   });
 });
+define('littlebits-frontend/components/view-flashcard', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Component.extend({
+    isTerm: true,
+    actions: {
+      switchView: function switchView() {
+        this.toggleProperty('isTerm');
+      }
+      // deleteDeck(){
+      //   let deck = this.get('model');
+      //   deck.destroyRecord();
+      //   this.transitionTo('userprofile');
+      // }
+
+    }
+  });
+});
 define('littlebits-frontend/components/welcome-page', ['exports', 'ember-welcome-page/components/welcome-page'], function (exports, _welcomePage) {
   'use strict';
 
@@ -1253,13 +1274,12 @@ define('littlebits-frontend/controllers/deck', ['exports'], function (exports) {
     actions: {
       switchView: function switchView() {
         this.toggleProperty('isTerm');
+      },
+      deleteDeck: function deleteDeck() {
+        var deck = this.get('model');
+        deck.destroyRecord();
+        this.transitionToRoute('profile');
       }
-      // deleteDeck(){
-      //   let deck = this.get('model');
-      //   deck.destroyRecord();
-      //   this.transitionTo('userprofile');
-      // }
-
     }
   });
 });
@@ -2818,7 +2838,7 @@ define("littlebits-frontend/templates/components/view-flashcard", ["exports"], f
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "nZTzaPdy", "block": "{\"statements\":[[4,\" This is what flashcard view looks like  \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"60%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[1,[26,[\"flashcard\"]],false],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/view-flashcard.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "wfz7Xsn5", "block": "{\"statements\":[[4,\" This is what flashcard view looks like  \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n  \"],[11,\"div\",[]],[15,\"class\",\"col-sm-3 col-md-2 col-md-offset-1\"],[13],[0,\"\\n    \"],[11,\"article\",[]],[15,\"class\",\"deck\"],[13],[0,\"\\n      \"],[11,\"div\",[]],[15,\"class\",\"container\"],[13],[0,\"\\n        \"],[4,\" <div class=\\\"header-img\\\"><img src=\\\"{{constants.rootURL}}img/flashy    <img src=\\\"{{constants.rootURL}}img/flashycards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/>cards-banner.png\\\" width=\\\"25%\\\" class=\\\"img-rounded\\\"/></div> \"],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"header-img\"],[13],[11,\"img\",[]],[15,\"src\",\"/static/ember/img/plain-notecard.jpg\"],[15,\"width\",\"60%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n        \"],[11,\"div\",[]],[15,\"class\",\"centered\"],[13],[0,\"\\n\"],[6,[\"if\"],[[28,[\"isTerm\"]]],null,{\"statements\":[[0,\"            \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"              \"],[1,[28,[\"flashcard\",\"definition\"]],false],[0,\"\\n\\n\"]],\"locals\":[]}],[0,\"        \"],[14],[0,\"\\n      \"],[14],[0,\"\\n    \"],[14],[0,\"\\n  \"],[14],[0,\"\\n\"],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"isTerm\"]]],null,{\"statements\":[[0,\"  \"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"switchView\"]],[13],[0,\"View Definition\"],[14],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"  \"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"switchView\"]],[13],[0,\"View Term\"],[14],[11,\"br\",[]],[13],[14],[0,\"\\n\\n\"]],\"locals\":[]}]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/components/view-flashcard.hbs" } });
 });
 define("littlebits-frontend/templates/createdeck", ["exports"], function (exports) {
   "use strict";
@@ -2834,7 +2854,7 @@ define("littlebits-frontend/templates/deck", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "V4C5bEWi", "block": "{\"statements\":[[0,\"\\n\"],[1,[26,[\"outlet\"]],false],[0,\"\\n\"],[4,\" <button {{action 'switchView'}}>Switch</button>\\n{{#each model as |deck|}}\\n  {{#each deck.flashcards as |flashcard|}}\\n  <div class=\\\"row\\\">\\n    <div class=\\\"col-sm-3 col-md-2 col-md-offset-1\\\">\\n      <article class=\\\"deck\\\">\\n        <div class=\\\"container\\\">\\n          <div class=\\\"header-img\\\"><img src=\\\"/static/ember/img/plain-notecard.jpg\\\" width=\\\"30%\\\" class=\\\"img-rounded\\\"/></div>\\n          <div class=\\\"centered\\\">\\n            {{#if isTerm}}\\n              {{flashcard.term}}\\n            {{else}}\\n              {{flashcard.definition}}\\n            {{/if}}\\n          </div>\\n        </div>\\n      </article>\\n    </div>\\n  </div>\\n  {{/each}}\\n{{/each}} \"],[0,\"\\n\\n\"],[6,[\"each\"],[[28,[\"model\",\"flashcards\"]]],null,{\"statements\":[[6,[\"if\"],[[28,[\"isTerm\"]]],null,{\"statements\":[[0,\"    \"],[1,[33,[\"view-flashcard\"],null,[[\"flashcard\"],[[28,[\"flashcard\",\"term\"]]]]],false],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]},{\"statements\":[[0,\"    \"],[1,[33,[\"view-flashcard\"],null,[[\"flashcard\"],[[28,[\"flashcard\",\"definition\"]]]]],false],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]}]],\"locals\":[\"flashcard\"]},null],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"switchView\"]],[13],[0,\"Switch\"],[14],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"deleteDeck\"]],[13],[0,\"Delete Deck\"],[14],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/deck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "0dRUOaER", "block": "{\"statements\":[[0,\"\\n\"],[1,[26,[\"outlet\"]],false],[0,\"\\n\"],[4,\" <button {{action 'switchView'}}>Switch</button>\\n{{#each model as |deck|}}\\n  {{#each deck.flashcards as |flashcard|}}\\n  <div class=\\\"row\\\">\\n    <div class=\\\"col-sm-3 col-md-2 col-md-offset-1\\\">\\n      <article class=\\\"deck\\\">\\n        <div class=\\\"container\\\">\\n          <div class=\\\"header-img\\\"><img src=\\\"/static/ember/img/plain-notecard.jpg\\\" width=\\\"30%\\\" class=\\\"img-rounded\\\"/></div>\\n          <div class=\\\"centered\\\">\\n            {{#if isTerm}}\\n              {{flashcard.term}}\\n            {{else}}\\n              {{flashcard.definition}}\\n            {{/if}}\\n          </div>\\n        </div>\\n      </article>\\n    </div>\\n  </div>\\n  {{/each}}\\n{{/each}} \"],[0,\"\\n\\n\"],[6,[\"each\"],[[28,[\"model\",\"flashcards\"]]],null,{\"statements\":[[0,\"  \"],[1,[33,[\"view-flashcard\"],null,[[\"flashcard\"],[[28,[\"flashcard\"]]]]],false],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"deleteDeck\"]],[13],[0,\"Delete Deck\"],[14],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/deck.hbs" } });
 });
 define("littlebits-frontend/templates/editdeck", ["exports"], function (exports) {
   "use strict";
@@ -3106,6 +3126,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+84bca03b"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+ff582170"});
 }
 //# sourceMappingURL=littlebits-frontend.map

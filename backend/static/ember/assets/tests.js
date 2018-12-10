@@ -15,6 +15,11 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'app.js should pass ESLint\n\n');
   });
 
+  QUnit.test('components/view-flashcard.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/view-flashcard.js should pass ESLint\n\n');
+  });
+
   QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'controllers/application.js should pass ESLint\n\n33:11 - Unexpected console statement. (no-console)\n34:11 - Unexpected console statement. (no-console)');
@@ -302,6 +307,36 @@ define('littlebits-frontend/tests/integration/components/deck-component-test', [
     assert.equal(this.$().text().trim(), 'template block text');
   });
 });
+define('littlebits-frontend/tests/integration/components/view-flashcard-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleForComponent)('view-flashcard', 'Integration | Component | view flashcard', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template({
+      "id": "McyLQArT",
+      "block": "{\"statements\":[[1,[26,[\"view-flashcard\"]],false]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}",
+      "meta": {}
+    }));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template({
+      "id": "0+NefrFK",
+      "block": "{\"statements\":[[0,\"\\n\"],[6,[\"view-flashcard\"],null,null,{\"statements\":[[0,\"      template block text\\n\"]],\"locals\":[]},null],[0,\"  \"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}",
+      "meta": {}
+    }));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
 define('littlebits-frontend/tests/test-helper', ['littlebits-frontend/tests/helpers/resolver', 'ember-qunit', 'ember-cli-qunit'], function (_resolver, _emberQunit, _emberCliQunit) {
   'use strict';
 
@@ -336,6 +371,11 @@ define('littlebits-frontend/tests/tests.lint-test', [], function () {
   QUnit.test('integration/components/deck-component-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'integration/components/deck-component-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('integration/components/view-flashcard-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/view-flashcard-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('test-helper.js', function (assert) {

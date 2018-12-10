@@ -1,4 +1,4 @@
-// This handles logging in and out 
+// This handles logging in and out
 import Ember from 'ember';
 
 export default Ember.Controller.extend({

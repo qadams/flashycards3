@@ -6,11 +6,11 @@ export default Ember.Controller.extend({
   actions: {
       switchView() {
         this.toggleProperty('isTerm');
+      },
+      deleteDeck(){
+        let deck = this.get('model');
+        deck.destroyRecord();
+        this.transitionToRoute('profile');
       }
-      // deleteDeck(){
-      //   let deck = this.get('model');
-      //   deck.destroyRecord();
-      //   this.transitionTo('userprofile');
-      // }
     }
 });
