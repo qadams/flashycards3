@@ -2367,8 +2367,17 @@ define('littlebits-frontend/models/profile', ['exports', 'ember-data'], function
         // decks: DS.hasMany('deck')
     });
 });
-define("littlebits-frontend/models/user", [], function () {
-  "use strict";
+define('littlebits-frontend/models/user', ['exports', 'ember-data'], function (exports, _emberData) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = _emberData.default.Model.extend({
+        profile: _emberData.default.belongsTo('profile'),
+        username: _emberData.default.attr('string')
+
+    });
 });
 define('littlebits-frontend/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   'use strict';
@@ -2433,6 +2442,11 @@ define('littlebits-frontend/routes/deck', ['exports'], function (exports) {
 
   var defaultitems = Ember.A([]); // This handles what happens when going to viewdeck page
   exports.default = Ember.Route.extend({
+    beforeModel: function beforeModel(transition) {
+      if (!this.get('auth.isLoggedIn')) {
+        this.transitionTo('login');
+      }
+    },
     model: function model(params) {
       return this.store.findRecord('deck', params.deck_id);
     }
@@ -3126,6 +3140,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+67c272f8"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+13f72ae3"});
 }
 //# sourceMappingURL=littlebits-frontend.map

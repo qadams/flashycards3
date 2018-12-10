@@ -107,7 +107,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/deck.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/deck.js should pass ESLint\n\n4:5 - \'defaultitems\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/deck.js should pass ESLint\n\n4:5 - \'defaultitems\' is assigned a value but never used. (no-unused-vars)\n8:13 - \'transition\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/editdeck.js', function (assert) {

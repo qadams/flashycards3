@@ -5,6 +5,11 @@ var defaultitems = Ember.A([
 ]);
 export default Ember.Route.extend({
 
+beforeModel(transition){
+  if(!this.get('auth.isLoggedIn')){
+    this.transitionTo('login');
+  }
+},
   model(params) {
     return this.store.findRecord('deck', params.deck_id);
   },
