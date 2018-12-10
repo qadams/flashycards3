@@ -40,9 +40,14 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'controllers/login.js should pass ESLint\n\n');
   });
 
+  QUnit.test('controllers/profile.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'controllers/profile.js should pass ESLint\n\n');
+  });
+
   QUnit.test('controllers/register.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'controllers/register.js should pass ESLint\n\n');
+    assert.ok(false, 'controllers/register.js should pass ESLint\n\n22:11 - Unexpected console statement. (no-console)\n23:11 - Unexpected console statement. (no-console)\n27:9 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('initializers/auth-manager.js', function (assert) {
@@ -68,6 +73,16 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
   QUnit.test('models/flashcard.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'models/flashcard.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('models/profile.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/profile.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('models/user.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/user.js should pass ESLint\n\n');
   });
 
   QUnit.test('resolver.js', function (assert) {
@@ -105,14 +120,14 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
     assert.ok(true, 'routes/login.js should pass ESLint\n\n');
   });
 
+  QUnit.test('routes/profile.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'routes/profile.js should pass ESLint\n\n27:13 - \'transition\' is defined but never used. (no-unused-vars)\n38:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+  });
+
   QUnit.test('routes/register.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/register.js should pass ESLint\n\n');
-  });
-
-  QUnit.test('routes/userprofile.js', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'routes/userprofile.js should pass ESLint\n\n27:13 - \'transition\' is defined but never used. (no-unused-vars)\n38:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('services/auth-manager.js', function (assert) {

@@ -5,9 +5,11 @@ from django.contrib import admin
 #else:
 from api.models import *
 
-# Register your models here.
+# Register deck and flashcard models here
+# Note: May add a profile model
 admin.site.register(Deck, DeckAdmin)
 admin.site.register(Flashcard, FlashcardAdmin)
+admin.site.register(Profile, ProfileAdmin)
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(ApiKey, ApiKeyAdmin)

@@ -18,7 +18,7 @@ Router.map(function() {
   this.route('register');
   // this.route('deck');
   this.route('deck', {path: '/decks/:deck_id'});
-  this.route('userprofile');
+  this.route('profile');
 });
 
 export default Router;

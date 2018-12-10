@@ -20,17 +20,16 @@ class FlashcardSerializer(serializers.ModelSerializer):
         fields = ('id', 'term', 'definition', 'parentdeck')
 
 # Profile for a user to have decks
-class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    # decks = DeckInlineSerializer(read_only = True, many = True)
-
-    class Meta:
-        model = Profile
-        fields = ('id', 'user',)
-        # fields = ('id', 'user', 'deck')
-
-    class JSONAPIMeta:
-        included_resources = ['user', 'decks']
+# class ProfileSerializer(serializers.ModelSerializer):
+#     user = UserSerializer(read_only=True)
+#     decks = DeckInlineSerializer(read_only = True, many = True)
+#
+#     class Meta:
+#         model = Profile
+#         fields = ('id', 'user', 'deck')
+#
+#     class JSONAPIMeta:
+#         included_resources = ['user', 'decks']
 
 # Converts the deck data as needed in order to be passed
 class DeckSerializer(serializers.ModelSerializer):

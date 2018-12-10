@@ -35,16 +35,16 @@ class ApiKey(models.Model):
 class ApiKeyAdmin(admin.ModelAdmin):
     list_display = ('owner','key')
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
-    def __str__(self):
-        return str(self.user)
-
-    class JSONAPIMeta:
-        resource_name = "profiles"
-
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user',)
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
+#     def __str__(self):
+#         return str(self.user)
+#
+#     class JSONAPIMeta:
+#         resource_name = "profiles"
+#
+# class ProfileAdmin(admin.ModelAdmin):
+#     list_display = ('user',)
 
 # A Deck is a model that has name and desription which has an arbitrary amount of flashcards
 class Deck(models.Model):

@@ -1284,13 +1284,49 @@ define('littlebits-frontend/controllers/login', ['exports'], function (exports) 
 		}
 	});
 });
-define('littlebits-frontend/controllers/register', ['exports'], function (exports) {
+define('littlebits-frontend/controllers/profile', ['exports'], function (exports) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = Ember.Controller.extend({});
+});
+define('littlebits-frontend/controllers/register', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Controller.extend({
+    auth: Ember.inject.service('auth-manager'),
+    showMenu: '',
+    actions: {
+      register: function register() {
+        var context = this;
+        var data = {
+          username: this.get('auth.username'),
+          password: this.get('auth.password')
+        };
+
+        Ember.$.ajax({
+          url: '/api/register',
+          type: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          dataType: "json",
+          success: function success(response) {
+            console.log('Attempting to turn ifttt on. Response from server is: ');
+            console.log(response);
+          }
+        }).then(function (response) {
+          //Authenticate here
+          console.log(response);
+          context.get('auth').login();
+        });
+      }
+    }
+  });
 });
 define('littlebits-frontend/helpers/and', ['exports', 'ember-truth-helpers/helpers/and'], function (exports, _and) {
   'use strict';
@@ -2295,6 +2331,20 @@ define("littlebits-frontend/models/flashcard", ["exports", "ember-data"], functi
     parentdeck: _emberData.default.belongsTo("deck")
   });
 });
+define('littlebits-frontend/models/profile', ['exports', 'ember-data'], function (exports, _emberData) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = _emberData.default.Model.extend({
+        user: _emberData.default.belongsTo('user')
+        // decks: DS.hasMany('deck')
+    });
+});
+define("littlebits-frontend/models/user", [], function () {
+  "use strict";
+});
 define('littlebits-frontend/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   'use strict';
 
@@ -2326,7 +2376,7 @@ define('littlebits-frontend/router', ['exports', 'littlebits-frontend/config/env
     this.route('register');
     // this.route('deck');
     this.route('deck', { path: '/decks/:deck_id' });
-    this.route('userprofile');
+    this.route('profile');
   });
 
   exports.default = Router;
@@ -2449,15 +2499,7 @@ define('littlebits-frontend/routes/login', ['exports'], function (exports) {
   });
   exports.default = Ember.Route.extend({});
 });
-define('littlebits-frontend/routes/register', ['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.Route.extend({});
-});
-define('littlebits-frontend/routes/userprofile', ['exports'], function (exports) {
+define('littlebits-frontend/routes/profile', ['exports'], function (exports) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -2494,6 +2536,14 @@ define('littlebits-frontend/routes/userprofile', ['exports'], function (exports)
       var route = this;
     }
   });
+});
+define('littlebits-frontend/routes/register', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Route.extend({});
 });
 define('littlebits-frontend/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _ajax) {
   'use strict';
@@ -2678,7 +2728,7 @@ define("littlebits-frontend/templates/application", ["exports"], function (expor
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "KFm85ZzB", "block": "{\"statements\":[[4,\" Everything here gets displayed on every page \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\"],[6,[\"bs-navbar\"],null,[[\"class\"],[\"bg-primary\"]],{\"statements\":[[0,\"\\t  \"],[11,\"div\",[]],[15,\"class\",\"navbar-header\"],[13],[0,\"\\n\\t    \"],[1,[28,[\"navbar\",\"toggle\"]],false],[0,\"\\n\\t    \"],[4,\" <a class=\\\"navbar-brand\\\">FlashyCards</a> \"],[0,\"\\n\\t  \"],[14],[0,\"\\n\"],[6,[\"component\"],[[28,[\"navbar\",\"content\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"navbar\",\"nav\"]]],null,{\"statements\":[[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"userprofile\"],null,{\"statements\":[[0,\"Profile\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"editdeck\"],null,{\"statements\":[[0,\"Edit Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"register\"],null,{\"statements\":[[0,\"Register\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]}]],\"locals\":[\"nav\"]},null]],\"locals\":[]},null]],\"locals\":[\"navbar\"]},null],[0,\"\\n\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"  Welcome, \"],[1,[28,[\"auth\",\"username\"]],false],[0,\"!\\n\\t\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\n\\t\"],[4,\" <div class=\\\"row row-offcanvas row-offcanvas-left {{showMenu}}\\\">\\n\\t\\t<div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\">\\n\\n\\t\\t</div>\\n\\t\\t<div class=\\\"col-xs-12 col-sm-8 col-md-9 content-column\\\">\\n\\t\\t\\t<div class=\\\"small-navbar visible-xs\\\">\\n\\t\\t\\t\\t<button type=\\\"button\\\" data-toggle=\\\"offcanvas\\\" class=\\\"btn btn-ghost pull-left\\\" {{action 'toggleMenu'}}> <i class=\\\"fa fa-align-left\\\"> </i>Menu</button>\\n\\t\\t\\t</div>\\n\\t\\t\\t{{liquid-outlet \\\"main\\\"}}\\n\\t\\t</div>\\n\\t</div> \"],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "tglKMsu6", "block": "{\"statements\":[[4,\" Everything here gets displayed on every page \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"container-fluid\"],[15,\"id\",\"app-main\"],[13],[0,\"\\n\"],[6,[\"bs-navbar\"],null,[[\"class\"],[\"bg-primary\"]],{\"statements\":[[0,\"\\t  \"],[11,\"div\",[]],[15,\"class\",\"navbar-header\"],[13],[0,\"\\n\\t    \"],[1,[28,[\"navbar\",\"toggle\"]],false],[0,\"\\n\\t    \"],[4,\" <a class=\\\"navbar-brand\\\">FlashyCards</a> \"],[0,\"\\n\\t  \"],[14],[0,\"\\n\"],[6,[\"component\"],[[28,[\"navbar\",\"content\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"navbar\",\"nav\"]]],null,{\"statements\":[[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"index\"],null,{\"statements\":[[0,\"Home\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"profile\"],null,{\"statements\":[[0,\"Profile\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"editdeck\"],null,{\"statements\":[[0,\"Edit Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[11,\"a\",[]],[5,[\"action\"],[[28,[null]],\"logout\"]],[13],[0,\"Logout\"],[14],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]},{\"statements\":[[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t  \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"login\"],null,{\"statements\":[[0,\"Login\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null],[6,[\"component\"],[[28,[\"nav\",\"item\"]]],null,{\"statements\":[[0,\"\\t\\t\\t    \"],[6,[\"component\"],[[28,[\"nav\",\"link-to\"]],\"register\"],null,{\"statements\":[[0,\"Register\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[]},null]],\"locals\":[]}]],\"locals\":[\"nav\"]},null]],\"locals\":[]},null]],\"locals\":[\"navbar\"]},null],[0,\"\\n\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"isLoggedIn\"]]],null,{\"statements\":[[0,\"  Welcome, \"],[1,[28,[\"auth\",\"username\"]],false],[0,\"!\\n\\t\"],[11,\"br\",[]],[13],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\n\"],[1,[33,[\"liquid-outlet\"],[\"main\"],null],false],[0,\"\\n\\n\\t\"],[4,\" <div class=\\\"row row-offcanvas row-offcanvas-left {{showMenu}}\\\">\\n\\t\\t<div id=\\\"sidebar\\\" class=\\\"col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas\\\">\\n\\n\\t\\t</div>\\n\\t\\t<div class=\\\"col-xs-12 col-sm-8 col-md-9 content-column\\\">\\n\\t\\t\\t<div class=\\\"small-navbar visible-xs\\\">\\n\\t\\t\\t\\t<button type=\\\"button\\\" data-toggle=\\\"offcanvas\\\" class=\\\"btn btn-ghost pull-left\\\" {{action 'toggleMenu'}}> <i class=\\\"fa fa-align-left\\\"> </i>Menu</button>\\n\\t\\t\\t</div>\\n\\t\\t\\t{{liquid-outlet \\\"main\\\"}}\\n\\t\\t</div>\\n\\t</div> \"],[0,\"\\n\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/application.hbs" } });
 });
 define("littlebits-frontend/templates/components/deck-component", ["exports"], function (exports) {
   "use strict";
@@ -2804,21 +2854,21 @@ define("littlebits-frontend/templates/login", ["exports"], function (exports) {
   });
   exports.default = Ember.HTMLBars.template({ "id": "5/zzti23", "block": "{\"statements\":[[4,\" This is the login page for the app \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Don't have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"register\"],null,{\"statements\":[[0,\"Register!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[0,\"Incorrect username/password\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Sign in\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/login.hbs" } });
 });
+define("littlebits-frontend/templates/profile", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "5Ew5VZaY", "block": "{\"statements\":[[4,\" This is where the user sees all their created decks \"],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[6,[\"link-to\"],[\"deck\",[28,[\"deck\",\"id\"]]],null,{\"statements\":[[0,\" \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\" \"]],\"locals\":[]},null],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[28,[\"flashcard\",\"id\"]],false],[0,\"\\n    \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/profile.hbs" } });
+});
 define("littlebits-frontend/templates/register", ["exports"], function (exports) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "EgZA3tbb", "block": "{\"statements\":[[4,\" This is the registration page for the app \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n            \"],[11,\"h1\",[]],[13],[0,\"Register\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Already have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n            \"],[4,\" <div class=\\\"form-group\\\">\\n              <div class=\\\"input-group\\\">\\n                <span class=\\\"input-group-addon\\\">\\n                  <i class=\\\"glyphicon glyphicon-lock\\\"></i>\\n                </span>\\n                {{input type=\\\"text\\\"class=\\\"input-sm form-control\\\" value=auth.password enter=\\\"login\\\" placeholder=\\\"Confirm Password\\\" type=\\\"password\\\"}}\\n              </div>\\n            </div> \"],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Register\"],[5,[\"action\"],[[28,[null]],\"login\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/register.hbs" } });
-});
-define("littlebits-frontend/templates/userprofile", ["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.HTMLBars.template({ "id": "P48oTx8k", "block": "{\"statements\":[[4,\" This is where the user sees all their created decks \"],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[6,[\"link-to\"],[\"deck\",[28,[\"deck\",\"id\"]]],null,{\"statements\":[[0,\" \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\" \"]],\"locals\":[]},null],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[28,[\"flashcard\",\"id\"]],false],[0,\"\\n    \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/userprofile.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "h9VYMlv9", "block": "{\"statements\":[[4,\" This is the registration page for the app \"],[0,\"\\n\"],[11,\"div\",[]],[15,\"class\",\"row\"],[13],[0,\"\\n\"],[0,\"\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-6 col-md-4 login-box shadow-2\"],[13],[0,\"\\n\\t\\t\"],[11,\"form\",[]],[13],[0,\"\\n\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"row login-box\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"col-sm-12 col-md-10 col-md-offset-1\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[11,\"img\",[]],[16,\"src\",[34,[[28,[\"constants\",\"rootURL\"]],\"img/flashycards-banner.png\"]]],[15,\"width\",\"100%\"],[15,\"class\",\"img-rounded\"],[13],[14],[14],[0,\"\\n            \"],[11,\"h1\",[]],[13],[0,\"Register\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[13],[0,\"Already have an account? \"],[6,[\"active-link\"],null,null,{\"statements\":[[6,[\"link-to\"],[\"login\"],null,{\"statements\":[[0,\"Login!\"]],\"locals\":[]},null]],\"locals\":[]},null],[14],[0,\"\\n\"],[6,[\"if\"],[[28,[\"auth\",\"errorMsg\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"alert alert-danger\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"p\",[]],[15,\"style\",\"text-align: center;\"],[13],[1,[28,[\"auth\",\"errorMsg\"]],false],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\"]],\"locals\":[]},null],[0,\"\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-user\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"required\",\"value\",\"enter\",\"placeholder\",\"autofocus\"],[\"text\",\"input-sm form-control\",true,[28,[\"auth\",\"username\"]],\"login\",\"Username\",\"autofocus\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"input-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"span\",[]],[15,\"class\",\"input-group-addon\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\"],[11,\"i\",[]],[15,\"class\",\"glyphicon glyphicon-lock\"],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\\t\"],[1,[33,[\"input\"],null,[[\"type\",\"class\",\"required\",\"value\",\"enter\",\"placeholder\",\"type\"],[\"text\",\"input-sm form-control\",true,[28,[\"auth\",\"password\"]],\"login\",\"Password\",\"password\"]]],false],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n            \"],[4,\" <div class=\\\"form-group\\\">\\n              <div class=\\\"input-group\\\">\\n                <span class=\\\"input-group-addon\\\">\\n                  <i class=\\\"glyphicon glyphicon-lock\\\"></i>\\n                </span>\\n                {{input type=\\\"text\\\"class=\\\"input-sm form-control\\\" value=auth.password enter=\\\"login\\\" placeholder=\\\"Confirm Password\\\" type=\\\"password\\\"}}\\n              </div>\\n            </div> \"],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[11,\"div\",[]],[15,\"class\",\"form-group\"],[13],[0,\"\\n\\t\\t\\t\\t\\t\\t\\t\"],[11,\"input\",[]],[15,\"type\",\"submit\"],[15,\"class\",\"btn btn-lg btn-primary btn-block\"],[15,\"value\",\"Register\"],[5,[\"action\"],[[28,[null]],\"register\"]],[13],[14],[0,\"\\n\\t\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\\t\"],[14],[0,\"\\n\\t\\t\\t\\t\"],[14],[0,\"\\n\\n\\t\\t\"],[14],[0,\"\\n\\t\"],[14],[0,\"\\n\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/register.hbs" } });
 });
 define('littlebits-frontend/transitions/cross-fade', ['exports', 'liquid-fire/transitions/cross-fade'], function (exports, _crossFade) {
   'use strict';
@@ -3050,6 +3100,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+c355f4de"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+088c7933"});
 }
 //# sourceMappingURL=littlebits-frontend.map

@@ -8,12 +8,17 @@
 						<p><img src="{{constants.rootURL}}img/flashycards-banner.png" width="100%" class="img-rounded"/></p>
             <h1>Register</h1>
 						<p>Already have an account? {{#active-link}}{{#link-to 'login'}}Login!{{/link-to}}{{/active-link}}</p>
+						{{#if auth.errorMsg}}
+						<div class="alert alert-danger">
+							<p style="text-align: center;">{{auth.errorMsg}}</p>
+						</div>
+						{{/if}}
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-user"></i>
 								</span>
-								{{input type="text" class="input-sm form-control" value=auth.username enter="login" placeholder="Username" autofocus="autofocus"}}
+								{{input type="text" class="input-sm form-control" required=true value=auth.username enter="login" placeholder="Username" autofocus="autofocus"}}
 							</div>
 						</div>
 						<div class="form-group">
@@ -21,7 +26,7 @@
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-lock"></i>
 								</span>
-								{{input type="text"class="input-sm form-control" value=auth.password enter="login" placeholder="Password" type="password"}}
+								{{input type="text" class="input-sm form-control" required=true value=auth.password enter="login" placeholder="Password" type="password"}}
 							</div>
 						</div>
             <!-- <div class="form-group">
@@ -33,7 +38,7 @@
               </div>
             </div> -->
 						<div class="form-group">
-							<input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" {{action "login"}}>
+							<input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" {{action "register"}}>
 						</div>
 					</div>
 				</div>
