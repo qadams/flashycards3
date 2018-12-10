@@ -1173,6 +1173,11 @@ define('littlebits-frontend/controllers/application', ['exports'], function (exp
             console.log(response);
           }
         });
+      },
+      createNew: function createNew() {
+
+        var newprofile = this.store.createRecord('profile', {});
+        newprofile.save();
       }
     }
   });
@@ -2482,6 +2487,7 @@ define('littlebits-frontend/routes/index', ['exports'], function (exports) {
   // This handles what happens when you go to the website
   exports.default = Ember.Route.extend({
     model: function model() {
+      // return this.store.findAll('profile')
       // return this.store.findAll('deck');
     },
     setupController: function setupController(controller, model) {
@@ -2596,7 +2602,7 @@ define('littlebits-frontend/services/auth-manager', ['exports'], function (expor
 
 				if (response.data.isauthenticated) {
 					//success
-					auth.set('userid', response.data.userid);
+					auth.set('userid', response.userid);
 					auth.set('isLoggedIn', true);
 
 					if (remember) {
@@ -2860,7 +2866,7 @@ define("littlebits-frontend/templates/profile", ["exports"], function (exports) 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "5Ew5VZaY", "block": "{\"statements\":[[4,\" This is where the user sees all their created decks \"],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[6,[\"link-to\"],[\"deck\",[28,[\"deck\",\"id\"]]],null,{\"statements\":[[0,\" \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\" \"]],\"locals\":[]},null],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[1,[28,[\"flashcard\",\"id\"]],false],[0,\"\\n    \"],[1,[28,[\"flashcard\",\"term\"]],false],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/profile.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "ccD7S8YG", "block": "{\"statements\":[[4,\" This is where the user sees all their created decks \"],[0,\"\\n\"],[6,[\"each\"],[[28,[\"model\"]]],null,{\"statements\":[[0,\"  \"],[6,[\"link-to\"],[\"deck\",[28,[\"deck\",\"id\"]]],null,{\"statements\":[[0,\" \"],[1,[33,[\"deck-component\"],null,[[\"name\"],[[28,[\"deck\",\"name\"]]]]],false],[0,\" \"]],\"locals\":[]},null],[0,\"\\n\"],[6,[\"each\"],[[28,[\"deck\",\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[4,\" {{flashcard.id}}\\n    {{flashcard.term}} \"],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null]],\"locals\":[\"deck\"]},null],[11,\"br\",[]],[13],[14],[0,\"\\n\"],[6,[\"link-to\"],[\"createdeck\"],[[\"tagName\"],[\"button\"]],{\"statements\":[[0,\" Create New Deck\"]],\"locals\":[]},null],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/profile.hbs" } });
 });
 define("littlebits-frontend/templates/register", ["exports"], function (exports) {
   "use strict";
@@ -3100,6 +3106,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+088c7933"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+84bca03b"});
 }
 //# sourceMappingURL=littlebits-frontend.map

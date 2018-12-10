@@ -30,7 +30,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         # fields = ('id', 'user', 'deck')
 
     class JSONAPIMeta:
-        included_resources = ['user', 'decks']
+        included_resources = ['user']
+        # included_resources = ['user', 'decks']
 
 # Converts the deck data as needed in order to be passed
 class DeckSerializer(serializers.ModelSerializer):

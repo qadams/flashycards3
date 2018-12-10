@@ -34,6 +34,13 @@ export default Ember.Controller.extend({
           console.log(response);
         }
       });
+    },
+    createNew(){
+
+      var newprofile = this.store.createRecord('profile', {
+
+      });
+      newprofile.save();
     }
   }
 });

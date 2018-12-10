@@ -47,6 +47,7 @@ var defaultitems = Ember.A([
 //   },
 export default Ember.Route.extend({
 	model() {
+    // return this.store.findAll('profile')
     // return this.store.findAll('deck');
 	},
   setupController(controller, model){

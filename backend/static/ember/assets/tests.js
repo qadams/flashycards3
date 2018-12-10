@@ -112,7 +112,7 @@ define('littlebits-frontend/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/index.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass ESLint\n\n55:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(false, 'routes/index.js should pass ESLint\n\n56:9 - \'route\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('routes/login.js', function (assert) {

@@ -106,7 +106,7 @@ class Session(APIView):
 
     def get(self, request, *args, **kwargs):
         # Get the current user
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return self.form_response(True, request.user.id, request.user.username)
         return self.form_response(False, None, None)
 

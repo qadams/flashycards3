@@ -32,7 +32,7 @@ export default Ember.Service.extend({
 
 			if(response.data.isauthenticated){
 				//success
-				auth.set('userid', response.data.userid);
+				auth.set('userid', response.userid);
 				auth.set('isLoggedIn', true);
 
 				if(remember){

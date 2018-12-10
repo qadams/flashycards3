@@ -2,8 +2,8 @@
 {{#each model as |deck|}}
   {{#link-to "deck" deck.id}} {{deck-component name=deck.name}} {{/link-to}}
   {{#each deck.flashcards as |flashcard|}}
-    {{flashcard.id}}
-    {{flashcard.term}}
+    <!-- {{flashcard.id}}
+    {{flashcard.term}} -->
   {{/each}}
 {{/each}}
 <br>
