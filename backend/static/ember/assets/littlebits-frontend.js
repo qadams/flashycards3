@@ -1220,7 +1220,7 @@ define('littlebits-frontend/controllers/createdeck', ['exports'], function (expo
         var flashcards = this.get('flashcards');
         this.get('model').save().then(function (deck) {
           flashcards.forEach(function (card) {
-            card.set('parentdeck', deck);
+            card.set('parentdeck', deck.get('id'));
             card.save();
           });
         });
@@ -3126,6 +3126,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+ff582170"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+67c272f8"});
 }
 //# sourceMappingURL=littlebits-frontend.map

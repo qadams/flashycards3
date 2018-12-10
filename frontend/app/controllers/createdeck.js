@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
         let flashcards = this.get('flashcards');
         this.get('model').save().then(function(deck) {
           flashcards.forEach(function(card) {
-            card.set('parentdeck', deck);
+            card.set('parentdeck', deck.get('id'));
             card.save();
           });
         });
