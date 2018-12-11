@@ -9,9 +9,14 @@
             <h1>Register</h1>
 						<p>Already have an account? {{#active-link}}{{#link-to 'login'}}Login!{{/link-to}}{{/active-link}}</p>
 						{{#if auth.errorMsg}}
-						<div class="alert alert-danger">
-							<p style="text-align: center;">{{auth.errorMsg}}</p>
-						</div>
+							<div class="alert alert-danger">
+								<p style="text-align: center;">{{auth.errorMsg}}</p>
+							</div>
+						{{/if}}
+						{{#if invalid}}
+							<div class="alert alert-danger">
+								<p style="text-align: center;">{{invalidCreds}}</p>
+							</div>
 						{{/if}}
 						<div class="form-group">
 							<div class="input-group">
