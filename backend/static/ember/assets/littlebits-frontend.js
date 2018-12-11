@@ -1110,6 +1110,19 @@ define('littlebits-frontend/components/radio-button', ['exports', 'ember-radio-b
   });
   exports.default = _radioButton.default;
 });
+define('littlebits-frontend/components/sanitize-html', ['exports', 'ember-cli-sanitize-html/components/sanitize-html'], function (exports, _sanitizeHtml) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _sanitizeHtml.default;
+    }
+  });
+});
 define('littlebits-frontend/components/tether-dialog', ['exports', 'ember-modal-dialog/components/tether-dialog'], function (exports, _tetherDialog) {
   'use strict';
 
@@ -2020,6 +2033,19 @@ define('littlebits-frontend/helpers/xor', ['exports', 'ember-truth-helpers/helpe
 
   exports.default = forExport;
 });
+define('littlebits-frontend/index', ['exports', 'ember-cli-sanitize-html'], function (exports, _emberCliSanitizeHtml) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _emberCliSanitizeHtml.default;
+    }
+  });
+});
 define('littlebits-frontend/initializers/add-modals-container', ['exports', 'ember-modal-dialog/initializers/add-modals-container'], function (exports, _addModalsContainer) {
   'use strict';
 
@@ -2868,7 +2894,7 @@ define("littlebits-frontend/templates/createdeck", ["exports"], function (export
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "FUnjEKiy", "block": "{\"statements\":[[4,\" This is where you enter deck and flashcard info \"],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"model\",\"name\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"each\"],[[28,[\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n      Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[[28,[\"flashcard\",\"term\"]],\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n      Definition:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[[28,[\"flashcard\",\"definition\"]],\"60\",\"5\"]]],false],[0,\"\\n    \"],[14],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"submitDeck\"]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "N86eqsC/", "block": "{\"statements\":[[4,\" This is where you enter deck and flashcard info \"],[0,\"\\n\"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"Deck Title: \"],[1,[33,[\"input\"],null,[[\"type\",\"value\",\"size\"],[\"text\",[28,[\"model\",\"name\"]],\"51\"]]],false],[14],[0,\"\\n\"],[6,[\"each\"],[[28,[\"flashcards\"]]],null,{\"statements\":[[0,\"    \"],[11,\"p\",[]],[15,\"class\",\"outlined\"],[13],[0,\"\\n      Term:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"input\"],null,[[\"value\",\"size\"],[[28,[\"flashcard\",\"term\"]],\"61\"]]],false],[11,\"br\",[]],[13],[14],[11,\"br\",[]],[13],[14],[0,\"\\n      Definition:\"],[11,\"br\",[]],[13],[14],[0,\"\\n      \"],[1,[33,[\"textarea\"],null,[[\"value\",\"cols\",\"rows\"],[[28,[\"flashcard\",\"definition\"]],\"60\",\"5\"]]],false],[0,\"\\n    \"],[14],[0,\"\\n    \"],[4,\" {{sanitize-html value=flashcard.term}} \"],[0,\"\\n    \"],[4,\" {{flashcard.term}} \"],[0,\"\\n\"]],\"locals\":[\"flashcard\"]},null],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"addFlashcard\"]],[13],[0,\"Add Flashcard\"],[14],[0,\"\\n\"],[11,\"button\",[]],[5,[\"action\"],[[28,[null]],\"submitDeck\"]],[13],[0,\"Submit\"],[14],[0,\"\\n\"]],\"locals\":[],\"named\":[],\"yields\":[],\"hasPartials\":false}", "meta": { "moduleName": "littlebits-frontend/templates/createdeck.hbs" } });
 });
 define("littlebits-frontend/templates/deck", ["exports"], function (exports) {
   "use strict";
@@ -3148,6 +3174,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+0ebf114a"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+630693d3"});
 }
 //# sourceMappingURL=littlebits-frontend.map

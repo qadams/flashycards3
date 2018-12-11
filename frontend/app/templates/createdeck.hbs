@@ -7,6 +7,8 @@
       Definition:<br>
       {{textarea value=flashcard.definition cols="60" rows="5"}}
     </p>
+    <!-- {{sanitize-html value=flashcard.term}} -->
+    <!-- {{flashcard.term}} -->
   {{/each}}
 
 <button {{action 'addFlashcard'}}>Add Flashcard</button>
