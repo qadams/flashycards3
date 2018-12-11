@@ -3148,6 +3148,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+9e6e8e8a"});
+  require("littlebits-frontend/app")["default"].create({"name":"littlebits-frontend","version":"0.0.0+0ebf114a"});
 }
 //# sourceMappingURL=littlebits-frontend.map

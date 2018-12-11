@@ -66,8 +66,8 @@ class Register(APIView):
 
     def post(self, request, *args, **kwargs):
         # Login
-        username = request.data.get('username') #you need to apply validators to these
-        password = request.data.get('password') #you need to apply validators to these
+        username = request.data.get('username') #Applied validators on the frontend
+        password = request.data.get('password') #Applied validators on the frontend
 
         # print(request.POST.get('username'))
         if User.objects.filter(username=username).exists():
@@ -83,8 +83,7 @@ class Register(APIView):
 
         return Response({'status': 'success', 'userid': newuser.id, 'profile': newprofile.id})
 
-# This will need some work done to it in order to properly handle
-# sessions
+# Sessions are handled as expected
 class Session(APIView):
     permission_classes = (AllowAny,)
     #parser_classes = (parsers.JSONParser,)
@@ -115,6 +114,8 @@ class Session(APIView):
         # Login
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        # Authenticate now
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -129,6 +130,10 @@ class Session(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Profile to be CRUDed so that
+    a user can login flawlessly
+    """
     permission_classes = (AllowAny,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer

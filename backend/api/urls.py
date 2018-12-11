@@ -13,7 +13,7 @@ from rest_framework.routers import DefaultRouter
 
 
 # Create a router and register our viewsets with it.
-# flashcards and decks are accessible routes
+# flashcards and decks and profiles are accessible routes
 router = DefaultRouter(trailing_slash=False)
 router.register(r'profiles', controllers.ProfileViewSet)
 router.register(r'flashcards', controllers.FlashcardViewSet)

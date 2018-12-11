@@ -35,6 +35,8 @@ class ApiKey(models.Model):
 class ApiKeyAdmin(admin.ModelAdmin):
     list_display = ('owner','key')
 
+# A Profile is a model that holds a user so they can login.
+# Eventually will add back in a profile holding a deck
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
     def __str__(self):
