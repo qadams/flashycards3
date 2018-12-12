@@ -13,6 +13,8 @@ from django.contrib import admin
 
 import base64
 
+from django_bleach.models import BleachField
+
 class Event(models.Model):
     eventtype = models.CharField(max_length=1000, blank=False)
     timestamp = models.DateTimeField()
@@ -51,8 +53,10 @@ class ProfileAdmin(admin.ModelAdmin):
 # A Deck is a model that has name and desription which has an arbitrary amount of flashcards
 class Deck(models.Model):
     # profile = models.ForeignKey(Profile, on_delete=models.CASCADE,  related_name = 'decks')
-    name = models.CharField(max_length=50, null=False, blank=False)
-    description = models.CharField(max_length=250, null=False, blank=True)
+    # name = models.CharField(max_length=50, null=False, blank=False)
+    # description = models.CharField(max_length=250, null=False, blank=True)
+    name = BleachField(max_length=50, null=False, blank=False)
+    description = BleachField(max_length=50, null=False, blank=True)
 
     def __str__(self):
         return self.name
@@ -66,8 +70,11 @@ class DeckAdmin(admin.ModelAdmin):
 # A flashcard has a term and definition which belongs to a deck.
 class Flashcard(models.Model):
     parentdeck = models.ForeignKey(Deck, on_delete=models.CASCADE, blank=True, null=True, related_name='flashcards')
-    term = models.TextField(max_length=50, null=True)
-    definition = models.TextField(max_length=250, null=True)
+    # term = models.TextField(max_length=50, null=True)
+    # definition = models.TextField(max_length=250, null=True)
+    term = BleachField(max_length=50, null=True)
+    definition = BleachField(max_length=250, null=True)
+
     def __str__(self):
         return str(self.term)
     class JSONAPIMeta:

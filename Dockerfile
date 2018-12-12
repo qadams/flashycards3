@@ -22,3 +22,4 @@ RUN pip install psycopg2-binary
 RUN pip install requests
 RUN pip install gunicorn
 RUN pip install djangorestframework-jsonapi
+RUN pip install django-bleach
