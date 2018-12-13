@@ -4,7 +4,7 @@
 2. As a **registered user**, I want to **type in my valid credentials** so I can  **login successfully**.
 3. As a **registered user**, I want to **login to the Flashycard's user page** so I can  **use a flashcard deck**.
 4. As a **registered user**, I want to **logout of Flashycard's app** so I can  **prevent unwanted modification of my work**.
-5. As a **registered user**, I want to **left-click on the add button** so I can  **access the necessary form fields to create a flashcard deck**.
+5. As a **registered user**, I want to **create a flashcard deck** so that I can **store it and use it for studying**.
 6. As a **registered user**, I want to **fill in the necessary form fields** so I can  **create my first deck of flashcards**.
 7. As a **registered user**, I want to **left-click on Astronomy Flashcards** so I can  **study for my Astronomy Exam**.
 8. As a **registered user**, I want to **left-click on a flashcard** so I can  **switch between term and definition**.
