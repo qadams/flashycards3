@@ -8,7 +8,7 @@
 6. As a **registered user**, I want to **fill in the necessary form fields** so I can  **create my first deck of flashcards**.
 7. As a **registered user**, I want to **left-click on Astronomy Flashcards** so I can  **study for my Astronomy Exam**.
 8. As a **registered user**, I want to **left-click on a flashcard** so I can  **switch between term and definition**.
-9. As a **registered user**, I want to **left-click on  pencil icon next to Astronomy Flashcards** so I can  **edit the Astronomy Flashcards**.
+9. As a **student of astronomy** I want to **edit my astronomy flashcards** so I can **add or revise information in my study deck**.
 10. As a **registered user**, I want to **left-click on  trash can icon next to Astronomy Flashcards** so I can  **delete the Astronomy Flashcards**.
 11. As a **registered user**, I want to **left-click on  the corresponding arrows next to the current flash card** so I can  **iterate through the flashcard deck**.
 
